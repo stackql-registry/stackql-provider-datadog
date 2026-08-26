@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>gcp_accounts</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>gcp_accounts</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="gcp_accounts" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.integrations.gcp_accounts" /></td></tr>
 </tbody></table>
@@ -66,7 +67,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of account. (default: gcp_service_account, example: gcp_service_account)</td>
+    <td>The type of account. (gcp_service_account) (default: gcp_service_account, example: gcp_service_account)</td>
 </tr>
 </tbody>
 </table>
@@ -91,28 +92,28 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_gcpstsaccounts"><CopyableCode code="list_gcpstsaccounts" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>List all GCP STS-enabled service accounts configured in your Datadog account.</td>
 </tr>
 <tr>
     <td><a href="#create_gcpstsaccount"><CopyableCode code="create_gcpstsaccount" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Create a new entry within Datadog for your STS enabled service account.</td>
 </tr>
 <tr>
     <td><a href="#update_gcpstsaccount"><CopyableCode code="update_gcpstsaccount" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-account_id"><code>account_id</code></a></td>
     <td></td>
     <td>Update an STS enabled service account.</td>
 </tr>
 <tr>
     <td><a href="#delete_gcpstsaccount"><CopyableCode code="delete_gcpstsaccount" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-account_id"><code>account_id</code></a></td>
     <td></td>
     <td>Delete an STS enabled GCP account from within Datadog.</td>
 </tr>
@@ -137,10 +138,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>Your GCP STS enabled service account's unique ID.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -164,7 +165,6 @@ attributes,
 meta,
 type
 FROM datadog.integrations.gcp_accounts
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -186,12 +186,10 @@ Create a new entry within Datadog for your STS enabled service account.
 
 ```sql
 INSERT INTO datadog.integrations.gcp_accounts (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}',
-'{{ region }}'
+'{{ data }}'
 RETURNING
 data
 ;
@@ -199,18 +197,40 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: gcp_accounts
   props:
-    - name: region
-      value: string
-      description: Required parameter for the gcp_accounts resource.
     - name: data
-      value: object
       description: |
         Additional metadata on your generated service account.
-```
+      value:
+        attributes:
+          account_tags:
+            - "{{ account_tags }}"
+          automute: {{ automute }}
+          client_email: "{{ client_email }}"
+          cloud_run_revision_filters:
+            - "{{ cloud_run_revision_filters }}"
+          host_filters:
+            - "{{ host_filters }}"
+          is_cspm_enabled: {{ is_cspm_enabled }}
+          is_global_location_enabled: {{ is_global_location_enabled }}
+          is_per_project_quota_enabled: {{ is_per_project_quota_enabled }}
+          is_resource_change_collection_enabled: {{ is_resource_change_collection_enabled }}
+          is_security_command_center_enabled: {{ is_security_command_center_enabled }}
+          metric_namespace_configs:
+            - disabled: {{ disabled }}
+              filters: "{{ filters }}"
+              id: "{{ id }}"
+          monitored_resource_configs:
+            - filters: "{{ filters }}"
+              type: "{{ type }}"
+          region_filter_configs:
+            - "{{ region_filter_configs }}"
+          resource_collection_enabled: {{ resource_collection_enabled }}
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -230,10 +250,9 @@ Update an STS enabled service account.
 ```sql
 UPDATE datadog.integrations.gcp_accounts
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 account_id = '{{ account_id }}' --required
-AND region = '{{ region }}' --required
 RETURNING
 data;
 ```
@@ -256,7 +275,6 @@ Delete an STS enabled GCP account from within Datadog.
 ```sql
 DELETE FROM datadog.integrations.gcp_accounts
 WHERE account_id = '{{ account_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>role_permissions</code> resourc
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>role_permissions</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="role_permissions" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.organization.role_permissions" /></td></tr>
 </tbody></table>
@@ -61,7 +62,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Permissions resource type. (default: permissions, example: permissions)</td>
+    <td>Permissions resource type. (permissions) (default: permissions, example: permissions)</td>
 </tr>
 </tbody>
 </table>
@@ -86,30 +87,23 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_role_permissions"><CopyableCode code="list_role_permissions" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-role_id"><code>role_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-role_id"><code>role_id</code></a></td>
     <td></td>
     <td>Returns a list of all permissions for a single role.</td>
 </tr>
 <tr>
     <td><a href="#add_permission_to_role"><CopyableCode code="add_permission_to_role" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-role_id"><code>role_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-role_id"><code>role_id</code></a></td>
     <td></td>
     <td>Adds a permission to a role.</td>
 </tr>
 <tr>
     <td><a href="#remove_permission_from_role"><CopyableCode code="remove_permission_from_role" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-role_id"><code>role_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-role_id"><code>role_id</code></a></td>
     <td></td>
     <td>Removes a permission from a role.</td>
-</tr>
-<tr>
-    <td><a href="#remove_user_from_role"><CopyableCode code="remove_user_from_role" /></a></td>
-    <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-role_id"><code>role_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
-    <td></td>
-    <td>Removes a user from a role.</td>
 </tr>
 </tbody>
 </table>
@@ -127,15 +121,15 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
-    <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
-</tr>
 <tr id="parameter-role_id">
     <td><CopyableCode code="role_id" /></td>
     <td><code>string</code></td>
     <td>The unique identifier of the role.</td>
+</tr>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
+    <td><code>string</code></td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -159,7 +153,6 @@ attributes,
 type
 FROM datadog.organization.role_permissions
 WHERE role_id = '{{ role_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -181,14 +174,12 @@ Adds a permission to a role.
 
 ```sql
 INSERT INTO datadog.organization.role_permissions (
-data__data,
-role_id,
-region
+data,
+role_id
 )
 SELECT 
 '{{ data }}',
-'{{ role_id }}',
-'{{ region }}'
+'{{ role_id }}'
 RETURNING
 data
 ;
@@ -196,21 +187,20 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: role_permissions
   props:
     - name: role_id
-      value: string
-      description: Required parameter for the role_permissions resource.
-    - name: region
-      value: string
+      value: "{{ role_id }}"
       description: Required parameter for the role_permissions resource.
     - name: data
-      value: object
       description: |
         Relationship to permission object.
-```
+      value:
+        id: "{{ id }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -220,8 +210,7 @@ data
 <Tabs
     defaultValue="remove_permission_from_role"
     values={[
-        { label: 'remove_permission_from_role', value: 'remove_permission_from_role' },
-        { label: 'remove_user_from_role', value: 'remove_user_from_role' }
+        { label: 'remove_permission_from_role', value: 'remove_permission_from_role' }
     ]}
 >
 <TabItem value="remove_permission_from_role">
@@ -231,18 +220,6 @@ Removes a permission from a role.
 ```sql
 DELETE FROM datadog.organization.role_permissions
 WHERE role_id = '{{ role_id }}' --required
-AND region = '{{ region }}' --required
-;
-```
-</TabItem>
-<TabItem value="remove_user_from_role">
-
-Removes a user from a role.
-
-```sql
-DELETE FROM datadog.organization.role_permissions
-WHERE role_id = '{{ role_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>vulnerable_assets</code> resour
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>vulnerable_assets</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="vulnerable_assets" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.security.vulnerable_assets" /></td></tr>
 </tbody></table>
@@ -61,7 +62,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The JSON:API type. (example: assets)</td>
+    <td>The JSON:API type. (assets) (example: assets)</td>
 </tr>
 </tbody>
 </table>
@@ -86,9 +87,9 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_vulnerable_assets"><CopyableCode code="list_vulnerable_assets" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-page[token]"><code>page[token]</code></a>, <a href="#parameter-page[number]"><code>page[number]</code></a>, <a href="#parameter-filter[name]"><code>filter[name]</code></a>, <a href="#parameter-filter[type]"><code>filter[type]</code></a>, <a href="#parameter-filter[version.first]"><code>filter[version.first]</code></a>, <a href="#parameter-filter[version.last]"><code>filter[version.last]</code></a>, <a href="#parameter-filter[repository_url]"><code>filter[repository_url]</code></a>, <a href="#parameter-filter[risks.in_production]"><code>filter[risks.in_production]</code></a>, <a href="#parameter-filter[risks.under_attack]"><code>filter[risks.under_attack]</code></a>, <a href="#parameter-filter[risks.is_publicly_accessible]"><code>filter[risks.is_publicly_accessible]</code></a>, <a href="#parameter-filter[risks.has_privileged_access]"><code>filter[risks.has_privileged_access]</code></a>, <a href="#parameter-filter[risks.has_access_to_sensitive_data]"><code>filter[risks.has_access_to_sensitive_data]</code></a>, <a href="#parameter-filter[environments]"><code>filter[environments]</code></a>, <a href="#parameter-filter[teams]"><code>filter[teams]</code></a>, <a href="#parameter-filter[arch]"><code>filter[arch]</code></a>, <a href="#parameter-filter[operating_system.name]"><code>filter[operating_system.name]</code></a>, <a href="#parameter-filter[operating_system.version]"><code>filter[operating_system.version]</code></a></td>
-    <td>Get a list of vulnerable assets.<br /><br />### Pagination<br /><br />Please review the [Pagination section for the "List Vulnerabilities"] endpoint.<br /><br />### Filtering<br /><br />Please review the [Filtering section for the "List Vulnerabilities"] endpoint.<br /><br />### Metadata<br /><br />Please review the [Metadata section for the "List Vulnerabilities"] endpoint.<br /></td>
+    <td>Get a list of vulnerable assets.&lt;br /&gt;&lt;br /&gt;### Pagination&lt;br /&gt;&lt;br /&gt;Please review the &#91;Pagination section for the "List Vulnerabilities"&#93;(#pagination) endpoint.&lt;br /&gt;&lt;br /&gt;### Filtering&lt;br /&gt;&lt;br /&gt;Please review the &#91;Filtering section for the "List Vulnerabilities"&#93;(#filtering) endpoint.&lt;br /&gt;&lt;br /&gt;### Metadata&lt;br /&gt;&lt;br /&gt;Please review the &#91;Metadata section for the "List Vulnerabilities"&#93;(#metadata) endpoint.</td>
 </tr>
 </tbody>
 </table>
@@ -106,10 +107,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter[arch]">
     <td><CopyableCode code="filter[arch]" /></td>
@@ -124,7 +125,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-filter[name]">
     <td><CopyableCode code="filter[name]" /></td>
     <td><code>string</code></td>
-    <td>Filter by name. (example: datadog-agent)</td>
+    <td>Filter by name. This field supports the usage of wildcards (*). (example: datadog-agent)</td>
 </tr>
 <tr id="parameter-filter[operating_system.name]">
     <td><CopyableCode code="filter[operating_system.name]" /></td>
@@ -209,7 +210,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 >
 <TabItem value="list_vulnerable_assets">
 
-Get a list of vulnerable assets.<br /><br />### Pagination<br /><br />Please review the [Pagination section for the "List Vulnerabilities"] endpoint.<br /><br />### Filtering<br /><br />Please review the [Filtering section for the "List Vulnerabilities"] endpoint.<br /><br />### Metadata<br /><br />Please review the [Metadata section for the "List Vulnerabilities"] endpoint.<br />
+Get a list of vulnerable assets.&lt;br /&gt;&lt;br /&gt;### Pagination&lt;br /&gt;&lt;br /&gt;Please review the &#91;Pagination section for the "List Vulnerabilities"&#93;(#pagination) endpoint.&lt;br /&gt;&lt;br /&gt;### Filtering&lt;br /&gt;&lt;br /&gt;Please review the &#91;Filtering section for the "List Vulnerabilities"&#93;(#filtering) endpoint.&lt;br /&gt;&lt;br /&gt;### Metadata&lt;br /&gt;&lt;br /&gt;Please review the &#91;Metadata section for the "List Vulnerabilities"&#93;(#metadata) endpoint.
 
 ```sql
 SELECT
@@ -217,8 +218,7 @@ id,
 attributes,
 type
 FROM datadog.security.vulnerable_assets
-WHERE region = '{{ region }}' -- required
-AND page[token] = '{{ page[token] }}'
+WHERE page[token] = '{{ page[token] }}'
 AND page[number] = '{{ page[number] }}'
 AND filter[name] = '{{ filter[name] }}'
 AND filter[type] = '{{ filter[type] }}'

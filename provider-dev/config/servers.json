@@ -1,0 +1,12 @@
+[
+  {
+    "url": "https://api.{site:.+}",
+    "variables": {
+      "site": {
+        "default": "datadoghq.com",
+        "description": "The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set.",
+        "x-stackQL-envVar": "DD_SITE"
+      }
+    }
+  }
+]

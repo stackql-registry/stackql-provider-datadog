@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>workflow_instances</code> resou
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>workflow_instances</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="workflow_instances" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.software_delivery.workflow_instances" /></td></tr>
 </tbody></table>
@@ -96,30 +97,30 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_workflow_instance"><CopyableCode code="get_workflow_instance" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-workflow_id"><code>workflow_id</code></a>, <a href="#parameter-instance_id"><code>instance_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-workflow_id"><code>workflow_id</code></a>, <a href="#parameter-instance_id"><code>instance_id</code></a></td>
     <td></td>
-    <td>Get a specific execution of a given workflow. This API requires a [registered application key](https://docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions [in the UI](https://docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
+    <td>Get a specific execution of a given workflow. This API requires a &#91;registered application key&#93;(https:​//docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions &#91;in the UI&#93;(https:​//docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
 </tr>
 <tr>
     <td><a href="#list_workflow_instances"><CopyableCode code="list_workflow_instances" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-workflow_id"><code>workflow_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-workflow_id"><code>workflow_id</code></a></td>
     <td><a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-page[number]"><code>page[number]</code></a></td>
-    <td>List all instances of a given workflow. This API requires a [registered application key](https://docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions [in the UI](https://docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
+    <td>List all instances of a given workflow. This API requires a &#91;registered application key&#93;(https:​//docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions &#91;in the UI&#93;(https:​//docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
 </tr>
 <tr>
     <td><a href="#create_workflow_instance"><CopyableCode code="create_workflow_instance" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-workflow_id"><code>workflow_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-workflow_id"><code>workflow_id</code></a></td>
     <td></td>
-    <td>Execute the given workflow. This API requires a [registered application key](https://docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions [in the UI](https://docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
+    <td>Execute the given workflow. This API requires a &#91;registered application key&#93;(https:​//docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions &#91;in the UI&#93;(https:​//docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
 </tr>
 <tr>
     <td><a href="#cancel_workflow_instance"><CopyableCode code="cancel_workflow_instance" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-workflow_id"><code>workflow_id</code></a>, <a href="#parameter-instance_id"><code>instance_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-workflow_id"><code>workflow_id</code></a>, <a href="#parameter-instance_id"><code>instance_id</code></a></td>
     <td></td>
-    <td>Cancels a specific execution of a given workflow. This API requires a [registered application key](https://docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions [in the UI](https://docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
+    <td>Cancels a specific execution of a given workflow. This API requires a &#91;registered application key&#93;(https:​//docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions &#91;in the UI&#93;(https:​//docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
 </tr>
 </tbody>
 </table>
@@ -142,10 +143,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The ID of the workflow instance.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-workflow_id">
     <td><CopyableCode code="workflow_id" /></td>
@@ -160,7 +161,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-page[size]">
     <td><CopyableCode code="page[size]" /></td>
     <td><code>integer (int64)</code></td>
-    <td>Size for a given page. The maximum allowed value is 100.</td>
+    <td>Number of items to return per page. The maximum allowed value is 100.</td>
 </tr>
 </tbody>
 </table>
@@ -184,7 +185,6 @@ attributes
 FROM datadog.software_delivery.workflow_instances
 WHERE workflow_id = '{{ workflow_id }}' -- required
 AND instance_id = '{{ instance_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -197,7 +197,6 @@ SELECT
 id
 FROM datadog.software_delivery.workflow_instances
 WHERE workflow_id = '{{ workflow_id }}' -- required
-AND region = '{{ region }}' -- required
 AND page[size] = '{{ page[size] }}'
 AND page[number] = '{{ page[number] }}'
 ;
@@ -221,14 +220,12 @@ Execute the given workflow. This API requires a [registered application key](htt
 
 ```sql
 INSERT INTO datadog.software_delivery.workflow_instances (
-data__meta,
-workflow_id,
-region
+meta,
+workflow_id
 )
 SELECT 
 '{{ meta }}',
-'{{ workflow_id }}',
-'{{ region }}'
+'{{ workflow_id }}'
 RETURNING
 data
 ;
@@ -236,26 +233,26 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: workflow_instances
   props:
     - name: workflow_id
-      value: string
-      description: Required parameter for the workflow_instances resource.
-    - name: region
-      value: string
+      value: "{{ workflow_id }}"
       description: Required parameter for the workflow_instances resource.
     - name: meta
-      value: object
       description: |
         Additional information for creating a workflow instance.
-```
+      value:
+        payload: "{{ payload }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
 
 ## Lifecycle Methods
+
+EXEC variables use wire (API) names.
 
 <Tabs
     defaultValue="cancel_workflow_instance"
@@ -270,8 +267,7 @@ Cancels a specific execution of a given workflow. This API requires a [registere
 ```sql
 EXEC datadog.software_delivery.workflow_instances.cancel_workflow_instance 
 @workflow_id='{{ workflow_id }}' --required, 
-@instance_id='{{ instance_id }}' --required, 
-@region='{{ region }}' --required
+@instance_id='{{ instance_id }}' --required 
 ;
 ```
 </TabItem>

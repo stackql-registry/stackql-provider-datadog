@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>connections</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>connections</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="connections" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.organization.connections" /></td></tr>
 </tbody></table>
@@ -66,7 +67,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Org connection type. (example: org_connection)</td>
+    <td>Org connection type. (org_connection) (example: org_connection)</td>
 </tr>
 </tbody>
 </table>
@@ -91,28 +92,28 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_org_connections"><CopyableCode code="list_org_connections" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
     <td></td>
+    <td><a href="#parameter-sink_org_id"><code>sink_org_id</code></a>, <a href="#parameter-source_org_id"><code>source_org_id</code></a>, <a href="#parameter-limit"><code>limit</code></a>, <a href="#parameter-offset"><code>offset</code></a></td>
     <td>Returns a list of org connections.</td>
 </tr>
 <tr>
     <td><a href="#create_org_connections"><CopyableCode code="create_org_connections" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Create a new org connection between the current org and a target org.</td>
 </tr>
 <tr>
     <td><a href="#update_org_connections"><CopyableCode code="update_org_connections" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-connection_id"><code>connection_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-connection_id"><code>connection_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Update an existing org connection.</td>
 </tr>
 <tr>
     <td><a href="#delete_org_connections"><CopyableCode code="delete_org_connections" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-connection_id"><code>connection_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-connection_id"><code>connection_id</code></a></td>
     <td></td>
     <td>Delete an existing org connection.</td>
 </tr>
@@ -137,10 +138,30 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string (uuid)</code></td>
     <td>The unique identifier of the org connection.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
+</tr>
+<tr id="parameter-limit">
+    <td><CopyableCode code="limit" /></td>
+    <td><code>integer (int64)</code></td>
+    <td>The limit of number of entries you want to return. Default is 1000. (example: 1000)</td>
+</tr>
+<tr id="parameter-offset">
+    <td><CopyableCode code="offset" /></td>
+    <td><code>integer (int64)</code></td>
+    <td>The pagination offset which you want to query from. Default is 0. (example: 0)</td>
+</tr>
+<tr id="parameter-sink_org_id">
+    <td><CopyableCode code="sink_org_id" /></td>
+    <td><code>string</code></td>
+    <td>The Org ID of the sink org. (example: 0879ce27-29a1-481f-a12e-bc2a48ec9ae1)</td>
+</tr>
+<tr id="parameter-source_org_id">
+    <td><CopyableCode code="source_org_id" /></td>
+    <td><code>string</code></td>
+    <td>The Org ID of the source org. (example: 0879ce27-29a1-481f-a12e-bc2a48ec9ae1)</td>
 </tr>
 </tbody>
 </table>
@@ -164,7 +185,10 @@ attributes,
 relationships,
 type
 FROM datadog.organization.connections
-WHERE region = '{{ region }}' -- required
+WHERE sink_org_id = '{{ sink_org_id }}'
+AND source_org_id = '{{ source_org_id }}'
+AND limit = '{{ limit }}'
+AND offset = '{{ offset }}'
 ;
 ```
 </TabItem>
@@ -186,12 +210,10 @@ Create a new org connection between the current org and a target org.
 
 ```sql
 INSERT INTO datadog.organization.connections (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -199,18 +221,25 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: connections
   props:
-    - name: region
-      value: string
-      description: Required parameter for the connections resource.
     - name: data
-      value: object
       description: |
         Org connection creation data.
-```
+      value:
+        attributes:
+          connection_types:
+            - "{{ connection_types }}"
+        relationships:
+          sink_org:
+            data:
+              id: "{{ id }}"
+              name: "{{ name }}"
+              type: "{{ type }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -230,11 +259,10 @@ Update an existing org connection.
 ```sql
 UPDATE datadog.organization.connections
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 connection_id = '{{ connection_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -257,7 +285,6 @@ Delete an existing org connection.
 ```sql
 DELETE FROM datadog.organization.connections
 WHERE connection_id = '{{ connection_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

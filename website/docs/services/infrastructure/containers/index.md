@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>containers</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>containers</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="containers" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.infrastructure.containers" /></td></tr>
 </tbody></table>
@@ -48,6 +49,26 @@ The following fields are returned by `SELECT` queries:
     </tr>
 </thead>
 <tbody>
+<tr>
+    <td><CopyableCode code="id" /></td>
+    <td><code>string</code></td>
+    <td>Container ID.</td>
+</tr>
+<tr>
+    <td><CopyableCode code="attributes" /></td>
+    <td><code>object</code></td>
+    <td>Attributes for a container.</td>
+</tr>
+<tr>
+    <td><CopyableCode code="relationships" /></td>
+    <td><code>object</code></td>
+    <td>Relationships to containers inside a container group.</td>
+</tr>
+<tr>
+    <td><CopyableCode code="type" /></td>
+    <td><code>string</code></td>
+    <td>Type of container. (container) (default: container, example: container)</td>
+</tr>
 </tbody>
 </table>
 </TabItem>
@@ -71,7 +92,7 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_containers"><CopyableCode code="list_containers" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-filter[tags]"><code>filter[tags]</code></a>, <a href="#parameter-group_by"><code>group_by</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-page[cursor]"><code>page[cursor]</code></a></td>
     <td>Get all containers for your organization.</td>
 </tr>
@@ -91,10 +112,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter[tags]">
     <td><CopyableCode code="filter[tags]" /></td>
@@ -138,10 +159,12 @@ Get all containers for your organization.
 
 ```sql
 SELECT
-*
+id,
+attributes,
+relationships,
+type
 FROM datadog.infrastructure.containers
-WHERE region = '{{ region }}' -- required
-AND filter[tags] = '{{ filter[tags] }}'
+WHERE filter[tags] = '{{ filter[tags] }}'
 AND group_by = '{{ group_by }}'
 AND sort = '{{ sort }}'
 AND page[size] = '{{ page[size] }}'

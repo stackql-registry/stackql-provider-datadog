@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>config_policies</code> resource
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>config_policies</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="config_policies" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.monitoring.config_policies" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Monitor configuration policy resource type. (default: monitor-config-policy, example: monitor-config-policy)</td>
+    <td>Monitor configuration policy resource type. (monitor-config-policy) (default: monitor-config-policy, example: monitor-config-policy)</td>
 </tr>
 </tbody>
 </table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Monitor configuration policy resource type. (default: monitor-config-policy, example: monitor-config-policy)</td>
+    <td>Monitor configuration policy resource type. (monitor-config-policy) (default: monitor-config-policy, example: monitor-config-policy)</td>
 </tr>
 </tbody>
 </table>
@@ -116,35 +117,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_monitor_config_policy"><CopyableCode code="get_monitor_config_policy" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-policy_id"><code>policy_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-policy_id"><code>policy_id</code></a></td>
     <td></td>
     <td>Get a monitor configuration policy by `policy_id`.</td>
 </tr>
 <tr>
     <td><a href="#list_monitor_config_policies"><CopyableCode code="list_monitor_config_policies" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Get all monitor configuration policies.</td>
 </tr>
 <tr>
     <td><a href="#create_monitor_config_policy"><CopyableCode code="create_monitor_config_policy" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Create a monitor configuration policy.</td>
 </tr>
 <tr>
     <td><a href="#update_monitor_config_policy"><CopyableCode code="update_monitor_config_policy" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-policy_id"><code>policy_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-policy_id"><code>policy_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Edit a monitor configuration policy.</td>
 </tr>
 <tr>
     <td><a href="#delete_monitor_config_policy"><CopyableCode code="delete_monitor_config_policy" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-policy_id"><code>policy_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-policy_id"><code>policy_id</code></a></td>
     <td></td>
     <td>Delete a monitor configuration policy.</td>
 </tr>
@@ -169,10 +170,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>ID of the monitor configuration policy.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -197,7 +198,6 @@ attributes,
 type
 FROM datadog.monitoring.config_policies
 WHERE policy_id = '{{ policy_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -211,7 +211,6 @@ id,
 attributes,
 type
 FROM datadog.monitoring.config_policies
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -233,12 +232,10 @@ Create a monitor configuration policy.
 
 ```sql
 INSERT INTO datadog.monitoring.config_policies (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -246,18 +243,23 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: config_policies
   props:
-    - name: region
-      value: string
-      description: Required parameter for the config_policies resource.
     - name: data
-      value: object
       description: |
         A monitor configuration policy data.
-```
+      value:
+        attributes:
+          policy:
+            tag_key: "{{ tag_key }}"
+            tag_key_required: {{ tag_key_required }}
+            valid_tag_values:
+              - "{{ valid_tag_values }}"
+          policy_type: "{{ policy_type }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -277,11 +279,10 @@ Edit a monitor configuration policy.
 ```sql
 UPDATE datadog.monitoring.config_policies
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 policy_id = '{{ policy_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -304,7 +305,6 @@ Delete a monitor configuration policy.
 ```sql
 DELETE FROM datadog.monitoring.config_policies
 WHERE policy_id = '{{ policy_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

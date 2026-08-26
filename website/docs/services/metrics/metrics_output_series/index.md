@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>metrics_output_series</code> re
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>metrics_output_series</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="metrics_output_series" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.metrics.metrics_output_series" /></td></tr>
 </tbody></table>
@@ -61,7 +62,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The metric estimate resource type. (default: metric_cardinality_estimate, example: metric_cardinality_estimate)</td>
+    <td>The metric estimate resource type. (metric_cardinality_estimate) (default: metric_cardinality_estimate, example: metric_cardinality_estimate)</td>
 </tr>
 </tbody>
 </table>
@@ -86,8 +87,8 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#estimate_metrics_output_series"><CopyableCode code="estimate_metrics_output_series" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-metric_name"><code>metric_name</code></a>, <a href="#parameter-region"><code>region</code></a></td>
-    <td><a href="#parameter-filter[groups]"><code>filter[groups]</code></a>, <a href="#parameter-filter[hours_ago]"><code>filter[hours_ago]</code></a>, <a href="#parameter-filter[num_aggregations]"><code>filter[num_aggregations]</code></a>, <a href="#parameter-filter[pct]"><code>filter[pct]</code></a>, <a href="#parameter-filter[timespan_h]"><code>filter[timespan_h]</code></a></td>
+    <td><a href="#parameter-metric_name"><code>metric_name</code></a></td>
+    <td><a href="#parameter-filter[groups]"><code>filter[groups]</code></a>, <a href="#parameter-filter[exclude_tags_mode]"><code>filter[exclude_tags_mode]</code></a>, <a href="#parameter-filter[hours_ago]"><code>filter[hours_ago]</code></a>, <a href="#parameter-filter[num_aggregations]"><code>filter[num_aggregations]</code></a>, <a href="#parameter-filter[pct]"><code>filter[pct]</code></a>, <a href="#parameter-filter[timespan_h]"><code>filter[timespan_h]</code></a></td>
     <td>Returns the estimated cardinality for a metric with a given tag, percentile and number of aggregations configuration using Metrics without Limits&trade;.</td>
 </tr>
 </tbody>
@@ -111,15 +112,20 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The name of the metric. (example: dist.http.endpoint.request)</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
+</tr>
+<tr id="parameter-filter[exclude_tags_mode]">
+    <td><CopyableCode code="filter[exclude_tags_mode]" /></td>
+    <td><code>boolean</code></td>
+    <td>When `true`, `filter&#91;groups&#93;` is treated as an exclude list instead of an include list. Defaults to `false`. (example: false)</td>
 </tr>
 <tr id="parameter-filter[groups]">
     <td><CopyableCode code="filter[groups]" /></td>
     <td><code>string</code></td>
-    <td>Filtered tag keys that the metric is configured to query with. (example: app,host)</td>
+    <td>Comma-separated list of tag keys that the metric is configured to query with. For example: `filter&#91;groups&#93;=app,host`. (example: app,host)</td>
 </tr>
 <tr id="parameter-filter[hours_ago]">
     <td><CopyableCode code="filter[hours_ago]" /></td>
@@ -134,7 +140,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-filter[pct]">
     <td><CopyableCode code="filter[pct]" /></td>
     <td><code>boolean</code></td>
-    <td>A boolean, for distribution metrics only, to estimate cardinality if the metric includes additional percentile aggregators. (example: true)</td>
+    <td>Deprecated. This query parameter has no effect on the estimate. (example: true)</td>
 </tr>
 <tr id="parameter-filter[timespan_h]">
     <td><CopyableCode code="filter[timespan_h]" /></td>
@@ -163,8 +169,8 @@ attributes,
 type
 FROM datadog.metrics.metrics_output_series
 WHERE metric_name = '{{ metric_name }}' -- required
-AND region = '{{ region }}' -- required
 AND filter[groups] = '{{ filter[groups] }}'
+AND filter[exclude_tags_mode] = '{{ filter[exclude_tags_mode] }}'
 AND filter[hours_ago] = '{{ filter[hours_ago] }}'
 AND filter[num_aggregations] = '{{ filter[num_aggregations] }}'
 AND filter[pct] = '{{ filter[pct] }}'

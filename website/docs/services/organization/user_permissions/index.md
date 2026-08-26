@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>user_permissions</code> resourc
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>user_permissions</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="user_permissions" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.organization.user_permissions" /></td></tr>
 </tbody></table>
@@ -61,7 +62,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Permissions resource type. (default: permissions, example: permissions)</td>
+    <td>Permissions resource type. (permissions) (default: permissions, example: permissions)</td>
 </tr>
 </tbody>
 </table>
@@ -86,9 +87,9 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_user_permissions"><CopyableCode code="list_user_permissions" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-user_id"><code>user_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-user_id"><code>user_id</code></a></td>
     <td></td>
-    <td>Get a user permission set. Returns a list of the user’s permissions<br />granted by the associated user's roles.</td>
+    <td>Get a user permission set. Returns a list of the user’s permissions&lt;br /&gt;granted by the associated user's roles.</td>
 </tr>
 </tbody>
 </table>
@@ -106,10 +107,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-user_id">
     <td><CopyableCode code="user_id" /></td>
@@ -129,7 +130,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 >
 <TabItem value="list_user_permissions">
 
-Get a user permission set. Returns a list of the user’s permissions<br />granted by the associated user's roles.
+Get a user permission set. Returns a list of the user’s permissions&lt;br /&gt;granted by the associated user's roles.
 
 ```sql
 SELECT
@@ -138,7 +139,6 @@ attributes,
 type
 FROM datadog.organization.user_permissions
 WHERE user_id = '{{ user_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>

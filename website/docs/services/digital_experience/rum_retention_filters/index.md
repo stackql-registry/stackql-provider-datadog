@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>rum_retention_filters</code> re
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>rum_retention_filters</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="rum_retention_filters" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.digital_experience.rum_retention_filters" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of the resource. The value should always be retention_filters. (default: retention_filters, example: retention_filters)</td>
+    <td>The type of the resource. The value should always be retention_filters. (retention_filters) (default: retention_filters, example: retention_filters)</td>
 </tr>
 </tbody>
 </table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of the resource. The value should always be retention_filters. (default: retention_filters, example: retention_filters)</td>
+    <td>The type of the resource. The value should always be retention_filters. (retention_filters) (default: retention_filters, example: retention_filters)</td>
 </tr>
 </tbody>
 </table>
@@ -116,44 +117,44 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_retention_filter"><CopyableCode code="get_retention_filter" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-app_id"><code>app_id</code></a>, <a href="#parameter-rf_id"><code>rf_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-app_id"><code>app_id</code></a>, <a href="#parameter-rf_id"><code>rf_id</code></a></td>
     <td></td>
     <td>Get a RUM retention filter for a RUM application.</td>
 </tr>
 <tr>
     <td><a href="#list_retention_filters"><CopyableCode code="list_retention_filters" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-app_id"><code>app_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-app_id"><code>app_id</code></a></td>
     <td></td>
     <td>Get the list of RUM retention filters for a RUM application.</td>
 </tr>
 <tr>
     <td><a href="#create_retention_filter"><CopyableCode code="create_retention_filter" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-app_id"><code>app_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-app_id"><code>app_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
-    <td>Create a RUM retention filter for a RUM application.<br />Returns RUM retention filter objects from the request body when the request is successful.</td>
+    <td>Create a RUM retention filter for a RUM application.&lt;br /&gt;Returns RUM retention filter objects from the request body when the request is successful.</td>
 </tr>
 <tr>
     <td><a href="#update_retention_filter"><CopyableCode code="update_retention_filter" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-app_id"><code>app_id</code></a>, <a href="#parameter-rf_id"><code>rf_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-app_id"><code>app_id</code></a>, <a href="#parameter-rf_id"><code>rf_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
-    <td>Update a RUM retention filter for a RUM application.<br />Returns RUM retention filter objects from the request body when the request is successful.</td>
+    <td>Update a RUM retention filter for a RUM application.&lt;br /&gt;Returns RUM retention filter objects from the request body when the request is successful.</td>
 </tr>
 <tr>
     <td><a href="#delete_retention_filter"><CopyableCode code="delete_retention_filter" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-app_id"><code>app_id</code></a>, <a href="#parameter-rf_id"><code>rf_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-app_id"><code>app_id</code></a>, <a href="#parameter-rf_id"><code>rf_id</code></a></td>
     <td></td>
     <td>Delete a RUM retention filter for a RUM application.</td>
 </tr>
 <tr>
     <td><a href="#order_retention_filters"><CopyableCode code="order_retention_filters" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-app_id"><code>app_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-app_id"><code>app_id</code></a></td>
     <td></td>
-    <td>Order RUM retention filters for a RUM application.<br />Returns RUM retention filter objects without attributes from the request body when the request is successful.</td>
+    <td>Order RUM retention filters for a RUM application.&lt;br /&gt;Returns RUM retention filter objects without attributes from the request body when the request is successful.</td>
 </tr>
 </tbody>
 </table>
@@ -176,15 +177,15 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>RUM application ID.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
-    <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
-</tr>
 <tr id="parameter-rf_id">
     <td><CopyableCode code="rf_id" /></td>
     <td><code>string</code></td>
     <td>Retention filter ID.</td>
+</tr>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
+    <td><code>string</code></td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -210,7 +211,6 @@ type
 FROM datadog.digital_experience.rum_retention_filters
 WHERE app_id = '{{ app_id }}' -- required
 AND rf_id = '{{ rf_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -225,7 +225,6 @@ attributes,
 type
 FROM datadog.digital_experience.rum_retention_filters
 WHERE app_id = '{{ app_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -243,18 +242,16 @@ AND region = '{{ region }}' -- required
 >
 <TabItem value="create_retention_filter">
 
-Create a RUM retention filter for a RUM application.<br />Returns RUM retention filter objects from the request body when the request is successful.
+Create a RUM retention filter for a RUM application.&lt;br /&gt;Returns RUM retention filter objects from the request body when the request is successful.
 
 ```sql
 INSERT INTO datadog.digital_experience.rum_retention_filters (
-data__data,
-app_id,
-region
+data,
+app_id
 )
 SELECT 
 '{{ data }}' /* required */,
-'{{ app_id }}',
-'{{ region }}'
+'{{ app_id }}'
 RETURNING
 data
 ;
@@ -262,21 +259,28 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: rum_retention_filters
   props:
     - name: app_id
-      value: string
-      description: Required parameter for the rum_retention_filters resource.
-    - name: region
-      value: string
+      value: "{{ app_id }}"
       description: Required parameter for the rum_retention_filters resource.
     - name: data
-      value: object
       description: |
         The new RUM retention filter properties to create.
-```
+      value:
+        attributes:
+          cross_product_sampling:
+            trace_enabled: {{ trace_enabled }}
+            trace_sample_rate: {{ trace_sample_rate }}
+          enabled: {{ enabled }}
+          event_type: "{{ event_type }}"
+          name: "{{ name }}"
+          query: "{{ query }}"
+          sample_rate: {{ sample_rate }}
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -291,17 +295,16 @@ data
 >
 <TabItem value="update_retention_filter">
 
-Update a RUM retention filter for a RUM application.<br />Returns RUM retention filter objects from the request body when the request is successful.
+Update a RUM retention filter for a RUM application.&lt;br /&gt;Returns RUM retention filter objects from the request body when the request is successful.
 
 ```sql
 UPDATE datadog.digital_experience.rum_retention_filters
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 app_id = '{{ app_id }}' --required
 AND rf_id = '{{ rf_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -325,7 +328,6 @@ Delete a RUM retention filter for a RUM application.
 DELETE FROM datadog.digital_experience.rum_retention_filters
 WHERE app_id = '{{ app_id }}' --required
 AND rf_id = '{{ rf_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>
@@ -333,6 +335,8 @@ AND region = '{{ region }}' --required
 
 
 ## Lifecycle Methods
+
+EXEC variables use wire (API) names.
 
 <Tabs
     defaultValue="order_retention_filters"
@@ -342,12 +346,11 @@ AND region = '{{ region }}' --required
 >
 <TabItem value="order_retention_filters">
 
-Order RUM retention filters for a RUM application.<br />Returns RUM retention filter objects without attributes from the request body when the request is successful.
+Order RUM retention filters for a RUM application.&lt;br /&gt;Returns RUM retention filter objects without attributes from the request body when the request is successful.
 
 ```sql
 EXEC datadog.digital_experience.rum_retention_filters.order_retention_filters 
 @app_id='{{ app_id }}' --required, 
-@region='{{ region }}' --required 
 @@json=
 '{
 "data": "{{ data }}"

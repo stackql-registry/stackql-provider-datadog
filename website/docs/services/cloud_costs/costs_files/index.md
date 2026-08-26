@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>costs_files</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>costs_files</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="costs_files" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.cloud_costs.costs_files" /></td></tr>
 </tbody></table>
@@ -116,28 +117,28 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_custom_costs_file"><CopyableCode code="get_custom_costs_file" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-file_id"><code>file_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-file_id"><code>file_id</code></a></td>
     <td></td>
     <td>Fetch the specified Custom Costs file.</td>
 </tr>
 <tr>
     <td><a href="#list_custom_costs_files"><CopyableCode code="list_custom_costs_files" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
-    <td><a href="#parameter-page[number]"><code>page[number]</code></a>, <a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-filter[status]"><code>filter[status]</code></a>, <a href="#parameter-sort"><code>sort</code></a></td>
+    <td></td>
+    <td><a href="#parameter-page[number]"><code>page[number]</code></a>, <a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-filter[status]"><code>filter[status]</code></a>, <a href="#parameter-filter[name]"><code>filter[name]</code></a>, <a href="#parameter-filter[provider]"><code>filter[provider]</code></a>, <a href="#parameter-sort"><code>sort</code></a></td>
     <td>List the Custom Costs files.</td>
 </tr>
 <tr>
     <td><a href="#delete_custom_costs_file"><CopyableCode code="delete_custom_costs_file" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-file_id"><code>file_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-file_id"><code>file_id</code></a></td>
     <td></td>
     <td>Delete the specified Custom Costs file.</td>
 </tr>
 <tr>
     <td><a href="#upload_custom_costs_file"><CopyableCode code="upload_custom_costs_file" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Upload a Custom Costs file.</td>
 </tr>
@@ -162,10 +163,20 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>File ID.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
+</tr>
+<tr id="parameter-filter[name]">
+    <td><CopyableCode code="filter[name]" /></td>
+    <td><code>string</code></td>
+    <td>Filter files by name with case-insensitive substring matching.</td>
+</tr>
+<tr id="parameter-filter[provider]">
+    <td><CopyableCode code="filter[provider]" /></td>
+    <td><code>array</code></td>
+    <td>Filter by provider.</td>
 </tr>
 <tr id="parameter-filter[status]">
     <td><CopyableCode code="filter[status]" /></td>
@@ -210,7 +221,6 @@ attributes,
 type
 FROM datadog.cloud_costs.costs_files
 WHERE file_id = '{{ file_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -224,10 +234,11 @@ id,
 attributes,
 type
 FROM datadog.cloud_costs.costs_files
-WHERE region = '{{ region }}' -- required
-AND page[number] = '{{ page[number] }}'
+WHERE page[number] = '{{ page[number] }}'
 AND page[size] = '{{ page[size] }}'
 AND filter[status] = '{{ filter[status] }}'
+AND filter[name] = '{{ filter[name] }}'
+AND filter[provider] = '{{ filter[provider] }}'
 AND sort = '{{ sort }}'
 ;
 ```
@@ -250,7 +261,6 @@ Delete the specified Custom Costs file.
 ```sql
 DELETE FROM datadog.cloud_costs.costs_files
 WHERE file_id = '{{ file_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>
@@ -258,6 +268,8 @@ AND region = '{{ region }}' --required
 
 
 ## Lifecycle Methods
+
+EXEC variables use wire (API) names.
 
 <Tabs
     defaultValue="upload_custom_costs_file"
@@ -271,7 +283,6 @@ Upload a Custom Costs file.
 
 ```sql
 EXEC datadog.cloud_costs.costs_files.upload_custom_costs_file 
-@region='{{ region }}' --required
 ;
 ```
 </TabItem>

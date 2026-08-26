@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>devices</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>devices</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="devices" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.infrastructure.devices" /></td></tr>
 </tbody></table>
@@ -116,14 +117,14 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_device"><CopyableCode code="get_device" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-device_id"><code>device_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-device_id"><code>device_id</code></a></td>
     <td></td>
     <td>Get the device details.</td>
 </tr>
 <tr>
     <td><a href="#list_devices"><CopyableCode code="list_devices" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-page[number]"><code>page[number]</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-filter[tag]"><code>filter[tag]</code></a></td>
     <td>Get the list of devices.</td>
 </tr>
@@ -148,10 +149,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The id of the device to fetch. (example: example:1.2.3.4)</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter[tag]">
     <td><CopyableCode code="filter[tag]" /></td>
@@ -161,17 +162,17 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-page[number]">
     <td><CopyableCode code="page[number]" /></td>
     <td><code>integer (int64)</code></td>
-    <td>Specific page number to return.</td>
+    <td>Specific page number to return. Defaults to 0.</td>
 </tr>
 <tr id="parameter-page[size]">
     <td><CopyableCode code="page[size]" /></td>
     <td><code>integer (int64)</code></td>
-    <td>Size for a given page. The maximum allowed value is 100.</td>
+    <td>Size for a given page. The maximum allowed value is 500. Defaults to 50.</td>
 </tr>
 <tr id="parameter-sort">
     <td><CopyableCode code="sort" /></td>
     <td><code>string</code></td>
-    <td>The field to sort the devices by. (example: status)</td>
+    <td>The field to sort the devices by. Defaults to `name`. (example: status)</td>
 </tr>
 </tbody>
 </table>
@@ -196,7 +197,6 @@ attributes,
 type
 FROM datadog.infrastructure.devices
 WHERE device_id = '{{ device_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -210,8 +210,7 @@ id,
 attributes,
 type
 FROM datadog.infrastructure.devices
-WHERE region = '{{ region }}' -- required
-AND page[size] = '{{ page[size] }}'
+WHERE page[size] = '{{ page[size] }}'
 AND page[number] = '{{ page[number] }}'
 AND sort = '{{ sort }}'
 AND filter[tag] = '{{ filter[tag] }}'

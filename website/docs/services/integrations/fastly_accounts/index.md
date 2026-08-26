@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>fastly_accounts</code> resource
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>fastly_accounts</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="fastly_accounts" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.integrations.fastly_accounts" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The JSON:API type for this API. Should always be `fastly-accounts`. (default: fastly-accounts, example: fastly-accounts)</td>
+    <td>The JSON:API type for this API. Should always be `fastly-accounts`. (fastly-accounts) (default: fastly-accounts, example: fastly-accounts)</td>
 </tr>
 </tbody>
 </table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The JSON:API type for this API. Should always be `fastly-accounts`. (default: fastly-accounts, example: fastly-accounts)</td>
+    <td>The JSON:API type for this API. Should always be `fastly-accounts`. (fastly-accounts) (default: fastly-accounts, example: fastly-accounts)</td>
 </tr>
 </tbody>
 </table>
@@ -116,35 +117,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_fastly_account"><CopyableCode code="get_fastly_account" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-account_id"><code>account_id</code></a></td>
     <td></td>
     <td>Get a Fastly account.</td>
 </tr>
 <tr>
     <td><a href="#list_fastly_accounts"><CopyableCode code="list_fastly_accounts" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>List Fastly accounts.</td>
 </tr>
 <tr>
     <td><a href="#create_fastly_account"><CopyableCode code="create_fastly_account" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Create a Fastly account.</td>
 </tr>
 <tr>
     <td><a href="#update_fastly_account"><CopyableCode code="update_fastly_account" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Update a Fastly account.</td>
 </tr>
 <tr>
     <td><a href="#delete_fastly_account"><CopyableCode code="delete_fastly_account" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-account_id"><code>account_id</code></a></td>
     <td></td>
     <td>Delete a Fastly account.</td>
 </tr>
@@ -169,10 +170,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>Fastly Account id.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -197,7 +198,6 @@ attributes,
 type
 FROM datadog.integrations.fastly_accounts
 WHERE account_id = '{{ account_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -211,7 +211,6 @@ id,
 attributes,
 type
 FROM datadog.integrations.fastly_accounts
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -233,12 +232,10 @@ Create a Fastly account.
 
 ```sql
 INSERT INTO datadog.integrations.fastly_accounts (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -246,18 +243,22 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: fastly_accounts
   props:
-    - name: region
-      value: string
-      description: Required parameter for the fastly_accounts resource.
     - name: data
-      value: object
       description: |
         Data object for creating a Fastly account.
-```
+      value:
+        attributes:
+          api_key: "{{ api_key }}"
+          name: "{{ name }}"
+          services:
+            - id: "{{ id }}"
+              tags: "{{ tags }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -277,11 +278,10 @@ Update a Fastly account.
 ```sql
 UPDATE datadog.integrations.fastly_accounts
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 account_id = '{{ account_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -304,7 +304,6 @@ Delete a Fastly account.
 ```sql
 DELETE FROM datadog.integrations.fastly_accounts
 WHERE account_id = '{{ account_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

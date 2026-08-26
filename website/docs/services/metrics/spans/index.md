@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>spans</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>spans</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="spans" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.metrics.spans" /></td></tr>
 </tbody></table>
@@ -61,7 +62,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Type of the span. (default: spans, example: spans)</td>
+    <td>Type of the span. (spans) (default: spans, example: spans)</td>
 </tr>
 </tbody>
 </table>
@@ -86,23 +87,23 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_spans_get"><CopyableCode code="list_spans_get" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-filter[query]"><code>filter[query]</code></a>, <a href="#parameter-filter[from]"><code>filter[from]</code></a>, <a href="#parameter-filter[to]"><code>filter[to]</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-page[cursor]"><code>page[cursor]</code></a>, <a href="#parameter-page[limit]"><code>page[limit]</code></a></td>
-    <td>List endpoint returns spans that match a span search query.<br />[Results are paginated][1].<br /><br />Use this endpoint to see your latest spans.<br />This endpoint is rate limited to `300` requests per hour.<br /><br />[1]: /logs/guide/collect-multiple-logs-with-pagination?tab=v2api</td>
+    <td>List endpoint returns spans that match a span search query.&lt;br /&gt;&#91;Results are paginated&#93;&#91;1&#93;.&lt;br /&gt;&lt;br /&gt;Use this endpoint to see your latest spans.&lt;br /&gt;This endpoint is rate limited to `300` requests per hour.&lt;br /&gt;&lt;br /&gt;&#91;1&#93;: /logs/guide/collect-multiple-logs-with-pagination?tab=v2api</td>
 </tr>
 <tr>
     <td><a href="#list_spans"><CopyableCode code="list_spans" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
     <td></td>
-    <td>List endpoint returns spans that match a span search query.<br />[Results are paginated][1].<br /><br />Use this endpoint to build complex spans filtering and search.<br />This endpoint is rate limited to `300` requests per hour.<br /><br />[1]: /logs/guide/collect-multiple-logs-with-pagination?tab=v2api</td>
+    <td></td>
+    <td>List endpoint returns spans that match a span search query.&lt;br /&gt;&#91;Results are paginated&#93;&#91;1&#93;.&lt;br /&gt;&lt;br /&gt;Use this endpoint to build complex spans filtering and search.&lt;br /&gt;This endpoint is rate limited to `300` requests per hour.&lt;br /&gt;&lt;br /&gt;&#91;1&#93;: /logs/guide/collect-multiple-logs-with-pagination?tab=v2api</td>
 </tr>
 <tr>
     <td><a href="#aggregate_spans"><CopyableCode code="aggregate_spans" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
     <td></td>
-    <td>The API endpoint to aggregate spans into buckets and compute metrics and timeseries.<br />This endpoint is rate limited to `300` requests per hour.</td>
+    <td></td>
+    <td>The API endpoint to aggregate spans into buckets and compute metrics and timeseries.&lt;br /&gt;This endpoint is rate limited to `300` requests per hour.</td>
 </tr>
 </tbody>
 </table>
@@ -120,10 +121,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter[from]">
     <td><CopyableCode code="filter[from]" /></td>
@@ -168,7 +169,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 >
 <TabItem value="list_spans_get">
 
-List endpoint returns spans that match a span search query.<br />[Results are paginated][1].<br /><br />Use this endpoint to see your latest spans.<br />This endpoint is rate limited to `300` requests per hour.<br /><br />[1]: /logs/guide/collect-multiple-logs-with-pagination?tab=v2api
+List endpoint returns spans that match a span search query.&lt;br /&gt;&#91;Results are paginated&#93;&#91;1&#93;.&lt;br /&gt;&lt;br /&gt;Use this endpoint to see your latest spans.&lt;br /&gt;This endpoint is rate limited to `300` requests per hour.&lt;br /&gt;&lt;br /&gt;&#91;1&#93;: /logs/guide/collect-multiple-logs-with-pagination?tab=v2api
 
 ```sql
 SELECT
@@ -176,8 +177,7 @@ id,
 attributes,
 type
 FROM datadog.metrics.spans
-WHERE region = '{{ region }}' -- required
-AND filter[query] = '{{ filter[query] }}'
+WHERE filter[query] = '{{ filter[query] }}'
 AND filter[from] = '{{ filter[from] }}'
 AND filter[to] = '{{ filter[to] }}'
 AND sort = '{{ sort }}'
@@ -200,16 +200,14 @@ AND page[limit] = '{{ page[limit] }}'
 >
 <TabItem value="list_spans">
 
-List endpoint returns spans that match a span search query.<br />[Results are paginated][1].<br /><br />Use this endpoint to build complex spans filtering and search.<br />This endpoint is rate limited to `300` requests per hour.<br /><br />[1]: /logs/guide/collect-multiple-logs-with-pagination?tab=v2api
+List endpoint returns spans that match a span search query.&lt;br /&gt;&#91;Results are paginated&#93;&#91;1&#93;.&lt;br /&gt;&lt;br /&gt;Use this endpoint to build complex spans filtering and search.&lt;br /&gt;This endpoint is rate limited to `300` requests per hour.&lt;br /&gt;&lt;br /&gt;&#91;1&#93;: /logs/guide/collect-multiple-logs-with-pagination?tab=v2api
 
 ```sql
 INSERT INTO datadog.metrics.spans (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}',
-'{{ region }}'
+'{{ data }}'
 RETURNING
 data,
 links,
@@ -219,23 +217,35 @@ meta
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: spans
   props:
-    - name: region
-      value: string
-      description: Required parameter for the spans resource.
     - name: data
-      value: object
       description: |
         The object containing the query content.
-```
+      value:
+        attributes:
+          filter:
+            from: "{{ from }}"
+            query: "{{ query }}"
+            to: "{{ to }}"
+          options:
+            timeOffset: {{ timeOffset }}
+            timezone: "{{ timezone }}"
+          page:
+            cursor: "{{ cursor }}"
+            limit: {{ limit }}
+          sort: "{{ sort }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
 
 ## Lifecycle Methods
+
+EXEC variables use wire (API) names.
 
 <Tabs
     defaultValue="aggregate_spans"
@@ -245,11 +255,10 @@ meta
 >
 <TabItem value="aggregate_spans">
 
-The API endpoint to aggregate spans into buckets and compute metrics and timeseries.<br />This endpoint is rate limited to `300` requests per hour.
+The API endpoint to aggregate spans into buckets and compute metrics and timeseries.&lt;br /&gt;This endpoint is rate limited to `300` requests per hour.
 
 ```sql
 EXEC datadog.metrics.spans.aggregate_spans 
-@region='{{ region }}' --required 
 @@json=
 '{
 "data": "{{ data }}"

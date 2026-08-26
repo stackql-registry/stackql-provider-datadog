@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>monthly_cost_attribution</code>
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>monthly_cost_attribution</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="monthly_cost_attribution" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.cloud_costs.monthly_cost_attribution" /></td></tr>
 </tbody></table>
@@ -61,7 +62,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Type of cost attribution data. (default: cost_by_tag, example: cost_by_tag)</td>
+    <td>Type of cost attribution data. (cost_by_tag) (default: cost_by_tag, example: cost_by_tag)</td>
 </tr>
 </tbody>
 </table>
@@ -86,9 +87,9 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_monthly_cost_attribution"><CopyableCode code="get_monthly_cost_attribution" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-start_month"><code>start_month</code></a>, <a href="#parameter-fields"><code>fields</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-start_month"><code>start_month</code></a>, <a href="#parameter-fields"><code>fields</code></a></td>
     <td><a href="#parameter-end_month"><code>end_month</code></a>, <a href="#parameter-sort_direction"><code>sort_direction</code></a>, <a href="#parameter-sort_name"><code>sort_name</code></a>, <a href="#parameter-tag_breakdown_keys"><code>tag_breakdown_keys</code></a>, <a href="#parameter-next_record_id"><code>next_record_id</code></a>, <a href="#parameter-include_descendants"><code>include_descendants</code></a></td>
-    <td>Get monthly cost attribution by tag across multi-org and single root-org accounts.<br />Cost Attribution data for a given month becomes available no later than the 19th of the following month.<br />This API endpoint is paginated. To make sure you receive all records, check if the value of `next_record_id` is<br />set in the response. If it is, make another request and pass `next_record_id` as a parameter.<br />Pseudo code example:<br />```<br />response := GetMonthlyCostAttribution(start_month, end_month)<br />cursor := response.metadata.pagination.next_record_id<br />WHILE cursor != null BEGIN<br />  sleep(5 seconds)  # Avoid running into rate limit<br />  response := GetMonthlyCostAttribution(start_month, end_month, next_record_id=cursor)<br />  cursor := response.metadata.pagination.next_record_id<br />END<br />```<br /><br />This endpoint is only accessible for [parent-level organizations](https://docs.datadoghq.com/account_management/multi_organization/). This endpoint is not available in the Government (US1-FED) site.</td>
+    <td>Get monthly cost attribution by tag across multi-org and single root-org accounts.&lt;br /&gt;Cost Attribution data for a given month becomes available no later than the 19th of the following month.&lt;br /&gt;This API endpoint is paginated. To make sure you receive all records, check if the value of `next_record_id` is&lt;br /&gt;set in the response. If it is, make another request and pass `next_record_id` as a parameter.&lt;br /&gt;Pseudo code example:&lt;br /&gt;```&lt;br /&gt;response := GetMonthlyCostAttribution(start_month, end_month)&lt;br /&gt;cursor := response.metadata.pagination.next_record_id&lt;br /&gt;WHILE cursor != null BEGIN&lt;br /&gt;  sleep(5 seconds)  # Avoid running into rate limit&lt;br /&gt;  response := GetMonthlyCostAttribution(start_month, end_month, next_record_id=cursor)&lt;br /&gt;  cursor := response.metadata.pagination.next_record_id&lt;br /&gt;END&lt;br /&gt;```&lt;br /&gt;&lt;br /&gt;This endpoint is only accessible for &#91;parent-level organizations&#93;(https:​//docs.datadoghq.com/account_management/multi_organization/). This endpoint is not available in the Government (US1-FED) site.</td>
 </tr>
 </tbody>
 </table>
@@ -109,22 +110,22 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-fields">
     <td><CopyableCode code="fields" /></td>
     <td><code>string</code></td>
-    <td>Comma-separated list specifying cost types (e.g., `<billing_dimension>_on_demand_cost`, `<billing_dimension>_committed_cost`, `<billing_dimension>_total_cost`) and the proportions (`<billing_dimension>_percentage_in_org`, `<billing_dimension>_percentage_in_account`). Use `*` to retrieve all fields. Example: `infra_host_on_demand_cost,infra_host_percentage_in_account` To obtain the complete list of active billing dimensions that can be used to replace `<billing_dimension>` in the field names, make a request to the [Get active billing dimensions API](https://docs.datadoghq.com/api/latest/usage-metering/#get-active-billing-dimensions-for-cost-attribution).</td>
+    <td>Comma-separated list specifying cost types (e.g., `&lt;billing_dimension&gt;_on_demand_cost`, `&lt;billing_dimension&gt;_committed_cost`, `&lt;billing_dimension&gt;_total_cost`) and the proportions (`&lt;billing_dimension&gt;_percentage_in_org`, `&lt;billing_dimension&gt;_percentage_in_account`). Use `*` to retrieve all fields. Example: `infra_host_on_demand_cost,infra_host_percentage_in_account` To obtain the complete list of active billing dimensions that can be used to replace <code>&lt;billing_dimension&gt;</code> in the field names, make a request to the &#91;Get active billing dimensions API&#93;(https:​//docs.datadoghq.com/api/latest/usage-metering/#get-active-billing-dimensions-for-cost-attribution).</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-start_month">
     <td><CopyableCode code="start_month" /></td>
     <td><code>string (date-time)</code></td>
-    <td>Datetime in ISO-8601 format, UTC, precise to month: `[YYYY-MM]` for cost beginning in this month.</td>
+    <td>Datetime in ISO-8601 format, UTC, precise to month: `&#91;YYYY-MM&#93;` for cost beginning in this month.</td>
 </tr>
 <tr id="parameter-end_month">
     <td><CopyableCode code="end_month" /></td>
     <td><code>string (date-time)</code></td>
-    <td>Datetime in ISO-8601 format, UTC, precise to month: `[YYYY-MM]` for cost ending this month.</td>
+    <td>Datetime in ISO-8601 format, UTC, precise to month: `&#91;YYYY-MM&#93;` for cost ending this month.</td>
 </tr>
 <tr id="parameter-include_descendants">
     <td><CopyableCode code="include_descendants" /></td>
@@ -139,7 +140,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-sort_direction">
     <td><CopyableCode code="sort_direction" /></td>
     <td><code>string</code></td>
-    <td>The direction to sort by: `[desc, asc]`.</td>
+    <td>The direction to sort by: `&#91;desc, asc&#93;`.</td>
 </tr>
 <tr id="parameter-sort_name">
     <td><CopyableCode code="sort_name" /></td>
@@ -164,7 +165,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 >
 <TabItem value="get_monthly_cost_attribution">
 
-Get monthly cost attribution by tag across multi-org and single root-org accounts.<br />Cost Attribution data for a given month becomes available no later than the 19th of the following month.<br />This API endpoint is paginated. To make sure you receive all records, check if the value of `next_record_id` is<br />set in the response. If it is, make another request and pass `next_record_id` as a parameter.<br />Pseudo code example:<br />```<br />response := GetMonthlyCostAttribution(start_month, end_month)<br />cursor := response.metadata.pagination.next_record_id<br />WHILE cursor != null BEGIN<br />  sleep(5 seconds)  # Avoid running into rate limit<br />  response := GetMonthlyCostAttribution(start_month, end_month, next_record_id=cursor)<br />  cursor := response.metadata.pagination.next_record_id<br />END<br />```<br /><br />This endpoint is only accessible for [parent-level organizations](https://docs.datadoghq.com/account_management/multi_organization/). This endpoint is not available in the Government (US1-FED) site.
+Get monthly cost attribution by tag across multi-org and single root-org accounts.&lt;br /&gt;Cost Attribution data for a given month becomes available no later than the 19th of the following month.&lt;br /&gt;This API endpoint is paginated. To make sure you receive all records, check if the value of `next_record_id` is&lt;br /&gt;set in the response. If it is, make another request and pass `next_record_id` as a parameter.&lt;br /&gt;Pseudo code example:&lt;br /&gt;```&lt;br /&gt;response := GetMonthlyCostAttribution(start_month, end_month)&lt;br /&gt;cursor := response.metadata.pagination.next_record_id&lt;br /&gt;WHILE cursor != null BEGIN&lt;br /&gt;  sleep(5 seconds)  # Avoid running into rate limit&lt;br /&gt;  response := GetMonthlyCostAttribution(start_month, end_month, next_record_id=cursor)&lt;br /&gt;  cursor := response.metadata.pagination.next_record_id&lt;br /&gt;END&lt;br /&gt;```&lt;br /&gt;&lt;br /&gt;This endpoint is only accessible for &#91;parent-level organizations&#93;(https:​//docs.datadoghq.com/account_management/multi_organization/). This endpoint is not available in the Government (US1-FED) site.
 
 ```sql
 SELECT
@@ -174,7 +175,6 @@ type
 FROM datadog.cloud_costs.monthly_cost_attribution
 WHERE start_month = '{{ start_month }}' -- required
 AND fields = '{{ fields }}' -- required
-AND region = '{{ region }}' -- required
 AND end_month = '{{ end_month }}'
 AND sort_direction = '{{ sort_direction }}'
 AND sort_name = '{{ sort_name }}'

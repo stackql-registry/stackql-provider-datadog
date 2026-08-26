@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>ms_teams_tenant_based_handles</
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>ms_teams_tenant_based_handles</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="ms_teams_tenant_based_handles" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.integrations.ms_teams_tenant_based_handles" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Specifies the tenant-based handle resource type. (default: tenant-based-handle, example: tenant-based-handle)</td>
+    <td>Specifies the tenant-based handle resource type. (tenant-based-handle) (default: tenant-based-handle, example: tenant-based-handle)</td>
 </tr>
 </tbody>
 </table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Tenant-based handle resource type. (default: ms-teams-tenant-based-handle-info, example: ms-teams-tenant-based-handle-info)</td>
+    <td>Tenant-based handle resource type. (ms-teams-tenant-based-handle-info) (default: ms-teams-tenant-based-handle-info, example: ms-teams-tenant-based-handle-info)</td>
 </tr>
 </tbody>
 </table>
@@ -116,35 +117,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_tenant_based_handle"><CopyableCode code="get_tenant_based_handle" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-handle_id"><code>handle_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-handle_id"><code>handle_id</code></a></td>
     <td></td>
     <td>Get the tenant, team, and channel information of a tenant-based handle from the Datadog Microsoft Teams integration.</td>
 </tr>
 <tr>
     <td><a href="#list_tenant_based_handles"><CopyableCode code="list_tenant_based_handles" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-tenant_id"><code>tenant_id</code></a>, <a href="#parameter-name"><code>name</code></a></td>
     <td>Get a list of all tenant-based handles from the Datadog Microsoft Teams integration.</td>
 </tr>
 <tr>
     <td><a href="#create_tenant_based_handle"><CopyableCode code="create_tenant_based_handle" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Create a tenant-based handle in the Datadog Microsoft Teams integration.</td>
 </tr>
 <tr>
     <td><a href="#update_tenant_based_handle"><CopyableCode code="update_tenant_based_handle" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-handle_id"><code>handle_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-handle_id"><code>handle_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Update a tenant-based handle from the Datadog Microsoft Teams integration.</td>
 </tr>
 <tr>
     <td><a href="#delete_tenant_based_handle"><CopyableCode code="delete_tenant_based_handle" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-handle_id"><code>handle_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-handle_id"><code>handle_id</code></a></td>
     <td></td>
     <td>Delete a tenant-based handle from the Datadog Microsoft Teams integration.</td>
 </tr>
@@ -169,10 +170,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>Your tenant-based handle id.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-name">
     <td><CopyableCode code="name" /></td>
@@ -207,7 +208,6 @@ attributes,
 type
 FROM datadog.integrations.ms_teams_tenant_based_handles
 WHERE handle_id = '{{ handle_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -221,8 +221,7 @@ id,
 attributes,
 type
 FROM datadog.integrations.ms_teams_tenant_based_handles
-WHERE region = '{{ region }}' -- required
-AND tenant_id = '{{ tenant_id }}'
+WHERE tenant_id = '{{ tenant_id }}'
 AND name = '{{ name }}'
 ;
 ```
@@ -245,12 +244,10 @@ Create a tenant-based handle in the Datadog Microsoft Teams integration.
 
 ```sql
 INSERT INTO datadog.integrations.ms_teams_tenant_based_handles (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -258,18 +255,21 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: ms_teams_tenant_based_handles
   props:
-    - name: region
-      value: string
-      description: Required parameter for the ms_teams_tenant_based_handles resource.
     - name: data
-      value: object
       description: |
         Tenant-based handle data from a response.
-```
+      value:
+        attributes:
+          channel_id: "{{ channel_id }}"
+          name: "{{ name }}"
+          team_id: "{{ team_id }}"
+          tenant_id: "{{ tenant_id }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -289,11 +289,10 @@ Update a tenant-based handle from the Datadog Microsoft Teams integration.
 ```sql
 UPDATE datadog.integrations.ms_teams_tenant_based_handles
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 handle_id = '{{ handle_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -316,7 +315,6 @@ Delete a tenant-based handle from the Datadog Microsoft Teams integration.
 ```sql
 DELETE FROM datadog.integrations.ms_teams_tenant_based_handles
 WHERE handle_id = '{{ handle_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

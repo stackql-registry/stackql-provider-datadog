@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>roles</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>roles</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="roles" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.organization.roles" /></td></tr>
 </tbody></table>
@@ -67,7 +68,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Roles type. (default: roles, example: roles)</td>
+    <td>Roles type. (roles) (default: roles, example: roles)</td>
 </tr>
 </tbody>
 </table>
@@ -101,7 +102,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Roles type. (default: roles, example: roles)</td>
+    <td>Roles type. (roles) (default: roles, example: roles)</td>
 </tr>
 </tbody>
 </table>
@@ -126,42 +127,42 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_role"><CopyableCode code="get_role" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-role_id"><code>role_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-role_id"><code>role_id</code></a></td>
     <td></td>
     <td>Get a role in the organization specified by the role’s `role_id`.</td>
 </tr>
 <tr>
     <td><a href="#list_roles"><CopyableCode code="list_roles" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-page[number]"><code>page[number]</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-filter"><code>filter</code></a>, <a href="#parameter-filter[id]"><code>filter[id]</code></a></td>
     <td>Returns all roles, including their names and their unique identifiers.</td>
 </tr>
 <tr>
     <td><a href="#create_role"><CopyableCode code="create_role" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
-    <td>Create a new role for your organization.</td>
+    <td>Create a new role for your organization.&lt;br /&gt;&lt;br /&gt;The following read permissions are automatically added to every new role, even if they are not included in the request:&lt;br /&gt;&lt;br /&gt;- Dashboards Read&lt;br /&gt;- Notebooks Read&lt;br /&gt;- Monitors Read&lt;br /&gt;- APM Read&lt;br /&gt;- Vulnerability Management Read&lt;br /&gt;- RUM Apps Read&lt;br /&gt;- Incidents Read&lt;br /&gt;- SLOs Read&lt;br /&gt;- CI Visibility Read&lt;br /&gt;- CD Visibility Read</td>
 </tr>
 <tr>
     <td><a href="#update_role"><CopyableCode code="update_role" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-role_id"><code>role_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-role_id"><code>role_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Edit a role. Can only be used with application keys belonging to administrators.</td>
 </tr>
 <tr>
     <td><a href="#delete_role"><CopyableCode code="delete_role" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-role_id"><code>role_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-role_id"><code>role_id</code></a></td>
     <td></td>
     <td>Disables a role.</td>
 </tr>
 <tr>
     <td><a href="#clone_role"><CopyableCode code="clone_role" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-role_id"><code>role_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data"><code>data</code></a></td>
+    <td><a href="#parameter-role_id"><code>role_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Clone an existing role</td>
 </tr>
@@ -181,15 +182,15 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
-    <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
-</tr>
 <tr id="parameter-role_id">
     <td><CopyableCode code="role_id" /></td>
     <td><code>string</code></td>
     <td>The unique identifier of the role.</td>
+</tr>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
+    <td><code>string</code></td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter">
     <td><CopyableCode code="filter" /></td>
@@ -209,7 +210,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-page[size]">
     <td><CopyableCode code="page[size]" /></td>
     <td><code>integer (int64)</code></td>
-    <td>Size for a given page. The maximum allowed value is 100.</td>
+    <td>Number of items to return per page. The maximum allowed value is 100.</td>
 </tr>
 <tr id="parameter-sort">
     <td><CopyableCode code="sort" /></td>
@@ -240,7 +241,6 @@ relationships,
 type
 FROM datadog.organization.roles
 WHERE role_id = '{{ role_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -255,8 +255,7 @@ attributes,
 relationships,
 type
 FROM datadog.organization.roles
-WHERE region = '{{ region }}' -- required
-AND page[size] = '{{ page[size] }}'
+WHERE page[size] = '{{ page[size] }}'
 AND page[number] = '{{ page[number] }}'
 AND sort = '{{ sort }}'
 AND filter = '{{ filter }}'
@@ -278,16 +277,14 @@ AND filter[id] = '{{ filter[id] }}'
 >
 <TabItem value="create_role">
 
-Create a new role for your organization.
+Create a new role for your organization.&lt;br /&gt;&lt;br /&gt;The following read permissions are automatically added to every new role, even if they are not included in the request:&lt;br /&gt;&lt;br /&gt;- Dashboards Read&lt;br /&gt;- Notebooks Read&lt;br /&gt;- Monitors Read&lt;br /&gt;- APM Read&lt;br /&gt;- Vulnerability Management Read&lt;br /&gt;- RUM Apps Read&lt;br /&gt;- Incidents Read&lt;br /&gt;- SLOs Read&lt;br /&gt;- CI Visibility Read&lt;br /&gt;- CD Visibility Read
 
 ```sql
 INSERT INTO datadog.organization.roles (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -295,18 +292,27 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: roles
   props:
-    - name: region
-      value: string
-      description: Required parameter for the roles resource.
     - name: data
-      value: object
       description: |
         Data related to the creation of a role.
-```
+      value:
+        attributes:
+          created_at: "{{ created_at }}"
+          modified_at: "{{ modified_at }}"
+          name: "{{ name }}"
+          receives_permissions_from:
+            - "{{ receives_permissions_from }}"
+        relationships:
+          permissions:
+            data:
+              - id: "{{ id }}"
+                type: "{{ type }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -326,11 +332,10 @@ Edit a role. Can only be used with application keys belonging to administrators.
 ```sql
 UPDATE datadog.organization.roles
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 role_id = '{{ role_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -353,7 +358,6 @@ Disables a role.
 ```sql
 DELETE FROM datadog.organization.roles
 WHERE role_id = '{{ role_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>
@@ -361,6 +365,8 @@ AND region = '{{ region }}' --required
 
 
 ## Lifecycle Methods
+
+EXEC variables use wire (API) names.
 
 <Tabs
     defaultValue="clone_role"
@@ -375,7 +381,6 @@ Clone an existing role
 ```sql
 EXEC datadog.organization.roles.clone_role 
 @role_id='{{ role_id }}' --required, 
-@region='{{ region }}' --required 
 @@json=
 '{
 "data": "{{ data }}"

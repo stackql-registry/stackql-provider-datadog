@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>monitoring_suppressions</code> 
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>monitoring_suppressions</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="monitoring_suppressions" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.security.monitoring_suppressions" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of the resource. The value should always be `suppressions`. (default: suppressions, example: suppressions)</td>
+    <td>The type of the resource. The value should always be `suppressions`. (suppressions) (default: suppressions, example: suppressions)</td>
 </tr>
 </tbody>
 </table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of the resource. The value should always be `suppressions`. (default: suppressions, example: suppressions)</td>
+    <td>The type of the resource. The value should always be `suppressions`. (suppressions) (default: suppressions, example: suppressions)</td>
 </tr>
 </tbody>
 </table>
@@ -116,42 +117,42 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_security_monitoring_suppression"><CopyableCode code="get_security_monitoring_suppression" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-suppression_id"><code>suppression_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-suppression_id"><code>suppression_id</code></a></td>
     <td></td>
     <td>Get the details of a specific suppression rule.</td>
 </tr>
 <tr>
     <td><a href="#list_security_monitoring_suppressions"><CopyableCode code="list_security_monitoring_suppressions" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
     <td></td>
+    <td><a href="#parameter-query"><code>query</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-page[number]"><code>page[number]</code></a></td>
     <td>Get the list of all suppression rules.</td>
 </tr>
 <tr>
     <td><a href="#create_security_monitoring_suppression"><CopyableCode code="create_security_monitoring_suppression" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Create a new suppression rule.</td>
 </tr>
 <tr>
     <td><a href="#update_security_monitoring_suppression"><CopyableCode code="update_security_monitoring_suppression" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-suppression_id"><code>suppression_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-suppression_id"><code>suppression_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Update a specific suppression rule.</td>
 </tr>
 <tr>
     <td><a href="#delete_security_monitoring_suppression"><CopyableCode code="delete_security_monitoring_suppression" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-suppression_id"><code>suppression_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-suppression_id"><code>suppression_id</code></a></td>
     <td></td>
     <td>Delete a specific suppression rule.</td>
 </tr>
 <tr>
     <td><a href="#validate_security_monitoring_suppression"><CopyableCode code="validate_security_monitoring_suppression" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data"><code>data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Validate a suppression rule.</td>
 </tr>
@@ -171,15 +172,35 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-suppression_id">
     <td><CopyableCode code="suppression_id" /></td>
     <td><code>string</code></td>
     <td>The ID of the suppression rule</td>
+</tr>
+<tr id="parameter-page[number]">
+    <td><CopyableCode code="page[number]" /></td>
+    <td><code>integer (int64)</code></td>
+    <td>Specific page number to return.</td>
+</tr>
+<tr id="parameter-page[size]">
+    <td><CopyableCode code="page[size]" /></td>
+    <td><code>integer (int64)</code></td>
+    <td>Size for a given page. Use `-1` to return all items.</td>
+</tr>
+<tr id="parameter-query">
+    <td><CopyableCode code="query" /></td>
+    <td><code>string</code></td>
+    <td>Query string.</td>
+</tr>
+<tr id="parameter-sort">
+    <td><CopyableCode code="sort" /></td>
+    <td><code>string</code></td>
+    <td>Attribute used to sort the list of suppression rules. Prefix with `-` to sort in descending order.</td>
 </tr>
 </tbody>
 </table>
@@ -204,7 +225,6 @@ attributes,
 type
 FROM datadog.security.monitoring_suppressions
 WHERE suppression_id = '{{ suppression_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -218,7 +238,10 @@ id,
 attributes,
 type
 FROM datadog.security.monitoring_suppressions
-WHERE region = '{{ region }}' -- required
+WHERE query = '{{ query }}'
+AND sort = '{{ sort }}'
+AND page[size] = '{{ page[size] }}'
+AND page[number] = '{{ page[number] }}'
 ;
 ```
 </TabItem>
@@ -240,12 +263,10 @@ Create a new suppression rule.
 
 ```sql
 INSERT INTO datadog.security.monitoring_suppressions (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -253,18 +274,27 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: monitoring_suppressions
   props:
-    - name: region
-      value: string
-      description: Required parameter for the monitoring_suppressions resource.
     - name: data
-      value: object
       description: |
         Object for a single suppression rule.
-```
+      value:
+        attributes:
+          data_exclusion_query: "{{ data_exclusion_query }}"
+          description: "{{ description }}"
+          enabled: {{ enabled }}
+          expiration_date: {{ expiration_date }}
+          name: "{{ name }}"
+          rule_query: "{{ rule_query }}"
+          start_date: {{ start_date }}
+          suppression_query: "{{ suppression_query }}"
+          tags:
+            - "{{ tags }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -284,11 +314,10 @@ Update a specific suppression rule.
 ```sql
 UPDATE datadog.security.monitoring_suppressions
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 suppression_id = '{{ suppression_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -311,7 +340,6 @@ Delete a specific suppression rule.
 ```sql
 DELETE FROM datadog.security.monitoring_suppressions
 WHERE suppression_id = '{{ suppression_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>
@@ -319,6 +347,8 @@ AND region = '{{ region }}' --required
 
 
 ## Lifecycle Methods
+
+EXEC variables use wire (API) names.
 
 <Tabs
     defaultValue="validate_security_monitoring_suppression"
@@ -332,7 +362,6 @@ Validate a suppression rule.
 
 ```sql
 EXEC datadog.security.monitoring_suppressions.validate_security_monitoring_suppression 
-@region='{{ region }}' --required 
 @@json=
 '{
 "data": "{{ data }}"

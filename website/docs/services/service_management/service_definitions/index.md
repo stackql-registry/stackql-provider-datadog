@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>service_definitions</code> reso
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>service_definitions</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="service_definitions" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.service_management.service_definitions" /></td></tr>
 </tbody></table>
@@ -116,28 +117,28 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_service_definition"><CopyableCode code="get_service_definition" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-service_name"><code>service_name</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-service_name"><code>service_name</code></a></td>
     <td><a href="#parameter-schema_version"><code>schema_version</code></a></td>
     <td>Get a single service definition from the Datadog Service Catalog.</td>
 </tr>
 <tr>
     <td><a href="#list_service_definitions"><CopyableCode code="list_service_definitions" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-page[number]"><code>page[number]</code></a>, <a href="#parameter-schema_version"><code>schema_version</code></a></td>
     <td>Get a list of all service definitions from the Datadog Service Catalog.</td>
 </tr>
 <tr>
     <td><a href="#create_or_update_service_definitions"><CopyableCode code="create_or_update_service_definitions" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__schema-version"><code>data__schema-version</code></a>, <a href="#parameter-data__dd-service"><code>data__dd-service</code></a></td>
+    <td><a href="#parameter-schema-version"><code>schema-version</code></a>, <a href="#parameter-dd-service"><code>dd-service</code></a></td>
     <td></td>
     <td>Create or update service definition in the Datadog Service Catalog.</td>
 </tr>
 <tr>
     <td><a href="#delete_service_definition"><CopyableCode code="delete_service_definition" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-service_name"><code>service_name</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-service_name"><code>service_name</code></a></td>
     <td></td>
     <td>Delete a single service definition in the Datadog Service Catalog.</td>
 </tr>
@@ -157,15 +158,15 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
-    <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
-</tr>
 <tr id="parameter-service_name">
     <td><CopyableCode code="service_name" /></td>
     <td><code>string</code></td>
     <td>The name of the service.</td>
+</tr>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
+    <td><code>string</code></td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-page[number]">
     <td><CopyableCode code="page[number]" /></td>
@@ -175,7 +176,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-page[size]">
     <td><CopyableCode code="page[size]" /></td>
     <td><code>integer (int64)</code></td>
-    <td>Size for a given page. The maximum allowed value is 100.</td>
+    <td>Number of items to return per page. The maximum allowed value is 100.</td>
 </tr>
 <tr id="parameter-schema_version">
     <td><CopyableCode code="schema_version" /></td>
@@ -205,7 +206,6 @@ attributes,
 type
 FROM datadog.service_management.service_definitions
 WHERE service_name = '{{ service_name }}' -- required
-AND region = '{{ region }}' -- required
 AND schema_version = '{{ schema_version }}'
 ;
 ```
@@ -220,8 +220,7 @@ id,
 attributes,
 type
 FROM datadog.service_management.service_definitions
-WHERE region = '{{ region }}' -- required
-AND page[size] = '{{ page[size] }}'
+WHERE page[size] = '{{ page[size] }}'
 AND page[number] = '{{ page[number] }}'
 AND schema_version = '{{ schema_version }}'
 ;
@@ -245,22 +244,24 @@ Create or update service definition in the Datadog Service Catalog.
 
 ```sql
 INSERT INTO datadog.service_management.service_definitions (
-data__application,
-data__ci-pipeline-fingerprints,
-data__contacts,
-data__dd-service,
-data__description,
-data__extensions,
-data__integrations,
-data__languages,
-data__lifecycle,
-data__links,
-data__schema-version,
-data__tags,
-data__team,
-data__tier,
-data__type,
-region
+application,
+ci-pipeline-fingerprints,
+contacts,
+dd-service,
+description,
+extensions,
+integrations,
+languages,
+lifecycle,
+links,
+schema-version,
+tags,
+team,
+tier,
+type,
+dd-team,
+docs,
+repos
 )
 SELECT 
 '{{ application }}',
@@ -278,7 +279,9 @@ SELECT
 '{{ team }}',
 '{{ tier }}',
 '{{ type }}',
-'{{ region }}'
+'{{ dd-team }}',
+'{{ docs }}',
+'{{ repos }}'
 RETURNING
 data
 ;
@@ -286,76 +289,106 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: service_definitions
   props:
-    - name: region
-      value: string
-      description: Required parameter for the service_definitions resource.
     - name: application
-      value: string
+      value: "{{ application }}"
       description: |
         Identifier for a group of related services serving a product feature, which the service is a part of.
     - name: ci-pipeline-fingerprints
-      value: array
+      value:
+        - "{{ ci-pipeline-fingerprints }}"
       description: |
         A set of CI fingerprints.
     - name: contacts
-      value: array
       description: |
         A list of contacts related to the services.
+      value:
+        - contact: "{{ contact }}"
+          name: "{{ name }}"
+          type: "{{ type }}"
     - name: dd-service
-      value: string
+      value: "{{ dd-service }}"
       description: |
         Unique identifier of the service. Must be unique across all services and is used to match with a service in Datadog.
     - name: description
-      value: string
+      value: "{{ description }}"
       description: |
         A short description of the service.
     - name: extensions
-      value: object
+      value: "{{ extensions }}"
       description: |
         Extensions to v2.2 schema.
     - name: integrations
-      value: object
       description: |
         Third party integrations that Datadog supports.
+      value:
+        opsgenie:
+          region: "{{ region }}"
+          service-url: "{{ service-url }}"
+        pagerduty:
+          service-url: "{{ service-url }}"
     - name: languages
-      value: array
+      value:
+        - "{{ languages }}"
       description: |
-        The service's programming language. Datadog recognizes the following languages: `dotnet`, `go`, `java`, `js`, `php`, `python`, `ruby`, and `c++`.
+        The service's programming language. Datadog recognizes the following languages: \`dotnet\`, \`go\`, \`java\`, \`js\`, \`php\`, \`python\`, \`ruby\`, and \`c++\`.
     - name: lifecycle
-      value: string
+      value: "{{ lifecycle }}"
       description: |
         The current life cycle phase of the service.
     - name: links
-      value: array
       description: |
         A list of links related to the services.
+      value:
+        - name: "{{ name }}"
+          provider: "{{ provider }}"
+          type: "{{ type }}"
+          url: "{{ url }}"
     - name: schema-version
-      value: string
+      value: "{{ schema-version }}"
       description: |
         Schema version being used.
       valid_values: ['v2.2']
       default: v2.2
     - name: tags
-      value: array
+      value:
+        - "{{ tags }}"
       description: |
         A set of custom tags.
     - name: team
-      value: string
+      value: "{{ team }}"
       description: |
         Team that owns the service. It is used to locate a team defined in Datadog Teams if it exists.
     - name: tier
-      value: string
+      value: "{{ tier }}"
       description: |
         Importance of the service.
     - name: type
-      value: string
+      value: "{{ type }}"
       description: |
         The type of service.
-```
+    - name: dd-team
+      value: "{{ dd-team }}"
+      description: |
+        Experimental feature. A Team handle that matches a Team in the Datadog Teams product.
+    - name: docs
+      description: |
+        A list of documentation related to the services.
+      value:
+        - name: "{{ name }}"
+          provider: "{{ provider }}"
+          url: "{{ url }}"
+    - name: repos
+      description: |
+        A list of code repositories related to the services.
+      value:
+        - name: "{{ name }}"
+          provider: "{{ provider }}"
+          url: "{{ url }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -375,7 +408,6 @@ Delete a single service definition in the Datadog Service Catalog.
 ```sql
 DELETE FROM datadog.service_management.service_definitions
 WHERE service_name = '{{ service_name }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

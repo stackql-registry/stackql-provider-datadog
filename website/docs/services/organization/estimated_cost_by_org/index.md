@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>estimated_cost_by_org</code> r
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>estimated_cost_by_org</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="estimated_cost_by_org" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.organization.estimated_cost_by_org" /></td></tr>
 </tbody></table>
@@ -61,7 +62,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Type of cost data. (default: cost_by_org, example: cost_by_org)</td>
+    <td>Type of cost data. (cost_by_org) (default: cost_by_org, example: cost_by_org)</td>
 </tr>
 </tbody>
 </table>
@@ -86,9 +87,9 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_estimated_cost_by_org"><CopyableCode code="get_estimated_cost_by_org" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
-    <td><a href="#parameter-view"><code>view</code></a>, <a href="#parameter-start_month"><code>start_month</code></a>, <a href="#parameter-end_month"><code>end_month</code></a>, <a href="#parameter-start_date"><code>start_date</code></a>, <a href="#parameter-end_date"><code>end_date</code></a>, <a href="#parameter-include_connected_accounts"><code>include_connected_accounts</code></a></td>
-    <td>Get estimated cost across multi-org and single root-org accounts.<br />Estimated cost data is only available for the current month and previous month<br />and is delayed by up to 72 hours from when it was incurred.<br />To access historical costs prior to this, use the `/historical_cost` endpoint.<br /><br />This endpoint is only accessible for [parent-level organizations](https://docs.datadoghq.com/account_management/multi_organization/).</td>
+    <td></td>
+    <td><a href="#parameter-view"><code>view</code></a>, <a href="#parameter-start_month"><code>start_month</code></a>, <a href="#parameter-end_month"><code>end_month</code></a>, <a href="#parameter-start_date"><code>start_date</code></a>, <a href="#parameter-end_date"><code>end_date</code></a>, <a href="#parameter-cost_aggregation"><code>cost_aggregation</code></a>, <a href="#parameter-include_connected_accounts"><code>include_connected_accounts</code></a></td>
+    <td>Get estimated cost across multi-org and single root-org accounts.&lt;br /&gt;Estimated cost data is only available for the current month and previous month&lt;br /&gt;and is delayed by up to 72 hours from when it was incurred.&lt;br /&gt;To access historical costs prior to this, use the `/historical_cost` endpoint.&lt;br /&gt;&lt;br /&gt;This endpoint is only accessible for &#91;parent-level organizations&#93;(https:​//docs.datadoghq.com/account_management/multi_organization/).</td>
 </tr>
 </tbody>
 </table>
@@ -106,35 +107,40 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
+</tr>
+<tr id="parameter-cost_aggregation">
+    <td><CopyableCode code="cost_aggregation" /></td>
+    <td><code>string</code></td>
+    <td>Controls how costs are aggregated when using `start_date`. The `cumulative` option returns month-to-date running totals.</td>
 </tr>
 <tr id="parameter-end_date">
     <td><CopyableCode code="end_date" /></td>
     <td><code>string (date-time)</code></td>
-    <td>Datetime in ISO-8601 format, UTC, precise to day: `[YYYY-MM-DD]` for cost ending this day.</td>
+    <td>Datetime in ISO-8601 format, UTC, precise to day: `&#91;YYYY-MM-DD&#93;` for cost ending this day.</td>
 </tr>
 <tr id="parameter-end_month">
     <td><CopyableCode code="end_month" /></td>
     <td><code>string (date-time)</code></td>
-    <td>Datetime in ISO-8601 format, UTC, precise to month: `[YYYY-MM]` for cost ending this month.</td>
+    <td>Datetime in ISO-8601 format, UTC, precise to month: `&#91;YYYY-MM&#93;` for cost ending this month.</td>
 </tr>
 <tr id="parameter-include_connected_accounts">
     <td><CopyableCode code="include_connected_accounts" /></td>
     <td><code>boolean</code></td>
-    <td>Boolean to specify whether to include accounts connected to the current account as partner customers in the Datadog partner network program. Defaults to `false`. </td>
+    <td>Boolean to specify whether to include accounts connected to the current account as partner customers in the Datadog partner network program. Defaults to `false`.</td>
 </tr>
 <tr id="parameter-start_date">
     <td><CopyableCode code="start_date" /></td>
     <td><code>string (date-time)</code></td>
-    <td>Datetime in ISO-8601 format, UTC, precise to day: `[YYYY-MM-DD]` for cost beginning this day. **Either start_month or start_date should be specified, but not both.** (start_date cannot go beyond two months in the past). Provide an `end_date` to view day-over-day cumulative cost.</td>
+    <td>Datetime in ISO-8601 format, UTC, precise to day: `&#91;YYYY-MM-DD&#93;` for cost beginning this day. **Either start_month or start_date should be specified, but not both.** (start_date cannot go beyond two months in the past). Provide an `end_date` to view day-over-day cumulative cost.</td>
 </tr>
 <tr id="parameter-start_month">
     <td><CopyableCode code="start_month" /></td>
     <td><code>string (date-time)</code></td>
-    <td>Datetime in ISO-8601 format, UTC, precise to month: `[YYYY-MM]` for cost beginning this month. **Either start_month or start_date should be specified, but not both.** (start_month cannot go beyond two months in the past). Provide an `end_month` to view month-over-month cost.</td>
+    <td>Datetime in ISO-8601 format, UTC, precise to month: `&#91;YYYY-MM&#93;` for cost beginning this month. **Either start_month or start_date should be specified, but not both.** (start_month cannot go beyond two months in the past). Provide an `end_month` to view month-over-month cost.</td>
 </tr>
 <tr id="parameter-view">
     <td><CopyableCode code="view" /></td>
@@ -154,7 +160,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 >
 <TabItem value="get_estimated_cost_by_org">
 
-Get estimated cost across multi-org and single root-org accounts.<br />Estimated cost data is only available for the current month and previous month<br />and is delayed by up to 72 hours from when it was incurred.<br />To access historical costs prior to this, use the `/historical_cost` endpoint.<br /><br />This endpoint is only accessible for [parent-level organizations](https://docs.datadoghq.com/account_management/multi_organization/).
+Get estimated cost across multi-org and single root-org accounts.&lt;br /&gt;Estimated cost data is only available for the current month and previous month&lt;br /&gt;and is delayed by up to 72 hours from when it was incurred.&lt;br /&gt;To access historical costs prior to this, use the `/historical_cost` endpoint.&lt;br /&gt;&lt;br /&gt;This endpoint is only accessible for &#91;parent-level organizations&#93;(https:​//docs.datadoghq.com/account_management/multi_organization/).
 
 ```sql
 SELECT
@@ -162,12 +168,12 @@ id,
 attributes,
 type
 FROM datadog.organization.estimated_cost_by_org
-WHERE region = '{{ region }}' -- required
-AND view = '{{ view }}'
+WHERE view = '{{ view }}'
 AND start_month = '{{ start_month }}'
 AND end_month = '{{ end_month }}'
 AND start_date = '{{ start_date }}'
 AND end_date = '{{ end_date }}'
+AND cost_aggregation = '{{ cost_aggregation }}'
 AND include_connected_accounts = '{{ include_connected_accounts }}'
 ;
 ```

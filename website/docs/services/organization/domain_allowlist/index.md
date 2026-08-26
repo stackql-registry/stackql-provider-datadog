@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>domain_allowlist</code> resourc
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>domain_allowlist</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="domain_allowlist" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.organization.domain_allowlist" /></td></tr>
 </tbody></table>
@@ -61,7 +62,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Email domain allowlist allowlist type. (default: domain_allowlist, example: domain_allowlist)</td>
+    <td>Email domain allowlist allowlist type. (domain_allowlist) (default: domain_allowlist, example: domain_allowlist)</td>
 </tr>
 </tbody>
 </table>
@@ -86,14 +87,14 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_domain_allowlist"><CopyableCode code="get_domain_allowlist" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Get the domain allowlist for an organization.</td>
 </tr>
 <tr>
     <td><a href="#patch_domain_allowlist"><CopyableCode code="patch_domain_allowlist" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Update the domain allowlist for an organization.</td>
 </tr>
@@ -113,10 +114,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -139,7 +140,6 @@ id,
 attributes,
 type
 FROM datadog.organization.domain_allowlist
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -161,10 +161,9 @@ Update the domain allowlist for an organization.
 ```sql
 UPDATE datadog.organization.domain_allowlist
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
-region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+data = '{{ data }}' --required
 RETURNING
 data;
 ```

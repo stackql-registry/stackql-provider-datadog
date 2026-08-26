@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>team_links</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>team_links</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="team_links" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.organization.team_links" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Team link type (default: team_links, example: team_links)</td>
+    <td>Team link type (team_links) (default: team_links, example: team_links)</td>
 </tr>
 </tbody>
 </table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Team link type (default: team_links, example: team_links)</td>
+    <td>Team link type (team_links) (default: team_links, example: team_links)</td>
 </tr>
 </tbody>
 </table>
@@ -116,35 +117,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_team_link"><CopyableCode code="get_team_link" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-team_id"><code>team_id</code></a>, <a href="#parameter-link_id"><code>link_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-team_id"><code>team_id</code></a>, <a href="#parameter-link_id"><code>link_id</code></a></td>
     <td></td>
     <td>Get a single link for a team.</td>
 </tr>
 <tr>
     <td><a href="#get_team_links"><CopyableCode code="get_team_links" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-team_id"><code>team_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-team_id"><code>team_id</code></a></td>
     <td></td>
     <td>Get all links for a given team.</td>
 </tr>
 <tr>
     <td><a href="#create_team_link"><CopyableCode code="create_team_link" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-team_id"><code>team_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-team_id"><code>team_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Add a new link to a team.</td>
 </tr>
 <tr>
     <td><a href="#update_team_link"><CopyableCode code="update_team_link" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-team_id"><code>team_id</code></a>, <a href="#parameter-link_id"><code>link_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-team_id"><code>team_id</code></a>, <a href="#parameter-link_id"><code>link_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Update a team link.</td>
 </tr>
 <tr>
     <td><a href="#delete_team_link"><CopyableCode code="delete_team_link" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-team_id"><code>team_id</code></a>, <a href="#parameter-link_id"><code>link_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-team_id"><code>team_id</code></a>, <a href="#parameter-link_id"><code>link_id</code></a></td>
     <td></td>
     <td>Remove a link from a team.</td>
 </tr>
@@ -169,10 +170,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>None</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-team_id">
     <td><CopyableCode code="team_id" /></td>
@@ -203,7 +204,6 @@ type
 FROM datadog.organization.team_links
 WHERE team_id = '{{ team_id }}' -- required
 AND link_id = '{{ link_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -218,7 +218,6 @@ attributes,
 type
 FROM datadog.organization.team_links
 WHERE team_id = '{{ team_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -240,14 +239,12 @@ Add a new link to a team.
 
 ```sql
 INSERT INTO datadog.organization.team_links (
-data__data,
-team_id,
-region
+data,
+team_id
 )
 SELECT 
 '{{ data }}' /* required */,
-'{{ team_id }}',
-'{{ region }}'
+'{{ team_id }}'
 RETURNING
 data
 ;
@@ -255,21 +252,24 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: team_links
   props:
     - name: team_id
-      value: string
-      description: Required parameter for the team_links resource.
-    - name: region
-      value: string
+      value: "{{ team_id }}"
       description: Required parameter for the team_links resource.
     - name: data
-      value: object
       description: |
         Team link create
-```
+      value:
+        attributes:
+          label: "{{ label }}"
+          position: {{ position }}
+          team_id: "{{ team_id }}"
+          url: "{{ url }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -289,12 +289,11 @@ Update a team link.
 ```sql
 UPDATE datadog.organization.team_links
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 team_id = '{{ team_id }}' --required
 AND link_id = '{{ link_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -318,7 +317,6 @@ Remove a link from a team.
 DELETE FROM datadog.organization.team_links
 WHERE team_id = '{{ team_id }}' --required
 AND link_id = '{{ link_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

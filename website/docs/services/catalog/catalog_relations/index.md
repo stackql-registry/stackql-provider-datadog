@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>catalog_relations</code> resour
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>catalog_relations</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="catalog_relations" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.catalog.catalog_relations" /></td></tr>
 </tbody></table>
@@ -76,7 +77,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Relation type.</td>
+    <td>Relation type. (relation)</td>
 </tr>
 </tbody>
 </table>
@@ -101,8 +102,8 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_catalog_relation"><CopyableCode code="list_catalog_relation" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
-    <td><a href="#parameter-page[offset]"><code>page[offset]</code></a>, <a href="#parameter-page[limit]"><code>page[limit]</code></a>, <a href="#parameter-filter[type]"><code>filter[type]</code></a>, <a href="#parameter-filter[from_ref]"><code>filter[from_ref]</code></a>, <a href="#parameter-filter[to_ref]"><code>filter[to_ref]</code></a>, <a href="#parameter-include"><code>include</code></a></td>
+    <td></td>
+    <td><a href="#parameter-page[offset]"><code>page[offset]</code></a>, <a href="#parameter-page[limit]"><code>page[limit]</code></a>, <a href="#parameter-filter[type]"><code>filter[type]</code></a>, <a href="#parameter-filter[from_ref]"><code>filter[from_ref]</code></a>, <a href="#parameter-filter[to_ref]"><code>filter[to_ref]</code></a>, <a href="#parameter-include"><code>include</code></a>, <a href="#parameter-include_discovered"><code>include_discovered</code></a></td>
     <td>Get a list of entity relations from Software Catalog.</td>
 </tr>
 </tbody>
@@ -121,10 +122,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter[from_ref]">
     <td><CopyableCode code="filter[from_ref]" /></td>
@@ -145,6 +146,11 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><CopyableCode code="include" /></td>
     <td><code>string</code></td>
     <td>Include relationship data.</td>
+</tr>
+<tr id="parameter-include_discovered">
+    <td><CopyableCode code="include_discovered" /></td>
+    <td><code>boolean</code></td>
+    <td>If true, includes relationships discovered by APM and USM. (wire: includeDiscovered)</td>
 </tr>
 <tr id="parameter-page[limit]">
     <td><CopyableCode code="page[limit]" /></td>
@@ -180,13 +186,13 @@ relationships,
 subtype,
 type
 FROM datadog.catalog.catalog_relations
-WHERE region = '{{ region }}' -- required
-AND page[offset] = '{{ page[offset] }}'
+WHERE page[offset] = '{{ page[offset] }}'
 AND page[limit] = '{{ page[limit] }}'
 AND filter[type] = '{{ filter[type] }}'
 AND filter[from_ref] = '{{ filter[from_ref] }}'
 AND filter[to_ref] = '{{ filter[to_ref] }}'
 AND include = '{{ include }}'
+AND include_discovered = '{{ include_discovered }}'
 ;
 ```
 </TabItem>

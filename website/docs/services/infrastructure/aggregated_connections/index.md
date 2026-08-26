@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>aggregated_connections</code> 
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>aggregated_connections</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="aggregated_connections" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.infrastructure.aggregated_connections" /></td></tr>
 </tbody></table>
@@ -61,7 +62,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Aggregated connection resource type. (default: aggregated_connection)</td>
+    <td>Aggregated connection resource type. (aggregated_connection) (default: aggregated_connection)</td>
 </tr>
 </tbody>
 </table>
@@ -86,8 +87,8 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_aggregated_connections"><CopyableCode code="get_aggregated_connections" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
-    <td><a href="#parameter-from"><code>from</code></a>, <a href="#parameter-to"><code>to</code></a>, <a href="#parameter-group_by"><code>group_by</code></a>, <a href="#parameter-tags"><code>tags</code></a>, <a href="#parameter-limit"><code>limit</code></a></td>
+    <td></td>
+    <td><a href="#parameter-from"><code>from</code></a>, <a href="#parameter-to"><code>to</code></a>, <a href="#parameter-group_by"><code>group_by</code></a>, <a href="#parameter-tags"><code>tags</code></a>, <a href="#parameter-query"><code>query</code></a>, <a href="#parameter-limit"><code>limit</code></a></td>
     <td>Get all aggregated connections.</td>
 </tr>
 </tbody>
@@ -106,15 +107,15 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-from">
     <td><CopyableCode code="from" /></td>
     <td><code>integer (int64)</code></td>
-    <td>Unix timestamp (number of seconds since epoch) of the start of the query window. If not provided, the start of the query window is 15 minutes before the `to` timestamp. If neither `from` nor `to` are provided, the query window is `[now - 15m, now]`.</td>
+    <td>Unix timestamp (number of seconds since epoch) of the start of the query window. If not provided, the start of the query window is 15 minutes before the `to` timestamp. If neither `from` nor `to` are provided, the query window is `&#91;now - 15m, now&#93;`.</td>
 </tr>
 <tr id="parameter-group_by">
     <td><CopyableCode code="group_by" /></td>
@@ -126,6 +127,11 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>integer (int32)</code></td>
     <td>The number of connections to be returned. The maximum value is 7500. The default is 100.</td>
 </tr>
+<tr id="parameter-query">
+    <td><CopyableCode code="query" /></td>
+    <td><code>string</code></td>
+    <td>Free-form search query using AND/OR/NOT operators, wildcards, and parentheses. When provided, takes precedence over the `tags` parameter. (example: (client_team:networks OR client_team:platform) AND server_service:hucklebuck)</td>
+</tr>
 <tr id="parameter-tags">
     <td><CopyableCode code="tags" /></td>
     <td><code>string</code></td>
@@ -134,7 +140,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-to">
     <td><CopyableCode code="to" /></td>
     <td><code>integer (int64)</code></td>
-    <td>Unix timestamp (number of seconds since epoch) of the end of the query window. If not provided, the end of the query window is the current time. If neither `from` nor `to` are provided, the query window is `[now - 15m, now]`.</td>
+    <td>Unix timestamp (number of seconds since epoch) of the end of the query window. If not provided, the end of the query window is the current time. If neither `from` nor `to` are provided, the query window is `&#91;now - 15m, now&#93;`.</td>
 </tr>
 </tbody>
 </table>
@@ -157,11 +163,11 @@ id,
 attributes,
 type
 FROM datadog.infrastructure.aggregated_connections
-WHERE region = '{{ region }}' -- required
-AND from = '{{ from }}'
+WHERE from = '{{ from }}'
 AND to = '{{ to }}'
 AND group_by = '{{ group_by }}'
 AND tags = '{{ tags }}'
+AND query = '{{ query }}'
 AND limit = '{{ limit }}'
 ;
 ```

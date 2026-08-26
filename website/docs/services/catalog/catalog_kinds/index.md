@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>catalog_kinds</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>catalog_kinds</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="catalog_kinds" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.catalog.catalog_kinds" /></td></tr>
 </tbody></table>
@@ -91,21 +92,21 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_catalog_kind"><CopyableCode code="list_catalog_kind" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-page[offset]"><code>page[offset]</code></a>, <a href="#parameter-page[limit]"><code>page[limit]</code></a>, <a href="#parameter-filter[id]"><code>filter[id]</code></a>, <a href="#parameter-filter[name]"><code>filter[name]</code></a></td>
     <td>Get a list of entity kinds from Software Catalog.</td>
 </tr>
 <tr>
     <td><a href="#upsert_catalog_kind"><CopyableCode code="upsert_catalog_kind" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__kind"><code>data__kind</code></a></td>
+    <td><a href="#parameter-kind"><code>kind</code></a></td>
     <td></td>
     <td>Create or update kinds in Software Catalog.</td>
 </tr>
 <tr>
     <td><a href="#delete_catalog_kind"><CopyableCode code="delete_catalog_kind" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-kind_id"><code>kind_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-kind_id"><code>kind_id</code></a></td>
     <td></td>
     <td>Delete a single kind in Software Catalog.</td>
 </tr>
@@ -130,10 +131,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>Entity kind.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter[id]">
     <td><CopyableCode code="filter[id]" /></td>
@@ -177,8 +178,7 @@ attributes,
 meta,
 type
 FROM datadog.catalog.catalog_kinds
-WHERE region = '{{ region }}' -- required
-AND page[offset] = '{{ page[offset] }}'
+WHERE page[offset] = '{{ page[offset] }}'
 AND page[limit] = '{{ page[limit] }}'
 AND filter[id] = '{{ filter[id] }}'
 AND filter[name] = '{{ filter[name] }}'
@@ -203,16 +203,14 @@ Create or update kinds in Software Catalog.
 
 ```sql
 INSERT INTO datadog.catalog.catalog_kinds (
-data__description,
-data__displayName,
-data__kind,
-region
+description,
+display_name,
+kind
 )
 SELECT 
 '{{ description }}',
-'{{ displayName }}',
-'{{ kind }}' /* required */,
-'{{ region }}'
+'{{ display_name }}',
+'{{ kind }}' /* required */
 RETURNING
 data,
 meta
@@ -221,26 +219,23 @@ meta
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: catalog_kinds
   props:
-    - name: region
-      value: string
-      description: Required parameter for the catalog_kinds resource.
     - name: description
-      value: string
+      value: "{{ description }}"
       description: |
         Short description of the kind.
-    - name: displayName
-      value: string
+    - name: display_name
+      value: "{{ display_name }}"
       description: |
         The display name of the kind. Automatically generated if not provided.
     - name: kind
-      value: string
+      value: "{{ kind }}"
       description: |
         The name of the kind to create or update. This must be in kebab-case format.
-```
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -260,7 +255,6 @@ Delete a single kind in Software Catalog.
 ```sql
 DELETE FROM datadog.catalog.catalog_kinds
 WHERE kind_id = '{{ kind_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>on_call_escalation_policies</c
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>on_call_escalation_policies</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="on_call_escalation_policies" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.service_management.on_call_escalation_policies" /></td></tr>
 </tbody></table>
@@ -66,7 +67,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Indicates that the resource is of type `policies`. (default: policies, example: policies)</td>
+    <td>Indicates that the resource is of type `policies`. (policies) (default: policies, example: policies)</td>
 </tr>
 </tbody>
 </table>
@@ -91,28 +92,28 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_on_call_escalation_policy"><CopyableCode code="get_on_call_escalation_policy" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-policy_id"><code>policy_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-policy_id"><code>policy_id</code></a></td>
     <td><a href="#parameter-include"><code>include</code></a></td>
     <td>Get an On-Call escalation policy</td>
 </tr>
 <tr>
     <td><a href="#create_on_call_escalation_policy"><CopyableCode code="create_on_call_escalation_policy" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td><a href="#parameter-include"><code>include</code></a></td>
     <td>Create a new On-Call escalation policy</td>
 </tr>
 <tr>
     <td><a href="#update_on_call_escalation_policy"><CopyableCode code="update_on_call_escalation_policy" /></a></td>
     <td><CopyableCode code="replace" /></td>
-    <td><a href="#parameter-policy_id"><code>policy_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-policy_id"><code>policy_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td><a href="#parameter-include"><code>include</code></a></td>
     <td>Update an On-Call escalation policy</td>
 </tr>
 <tr>
     <td><a href="#delete_on_call_escalation_policy"><CopyableCode code="delete_on_call_escalation_policy" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-policy_id"><code>policy_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-policy_id"><code>policy_id</code></a></td>
     <td></td>
     <td>Delete an On-Call escalation policy</td>
 </tr>
@@ -137,10 +138,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The ID of the escalation policy</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-include">
     <td><CopyableCode code="include" /></td>
@@ -170,7 +171,6 @@ relationships,
 type
 FROM datadog.service_management.on_call_escalation_policies
 WHERE policy_id = '{{ policy_id }}' -- required
-AND region = '{{ region }}' -- required
 AND include = '{{ include }}'
 ;
 ```
@@ -193,13 +193,11 @@ Create a new On-Call escalation policy
 
 ```sql
 INSERT INTO datadog.service_management.on_call_escalation_policies (
-data__data,
-region,
+data,
 include
 )
 SELECT 
 '{{ data }}' /* required */,
-'{{ region }}',
 '{{ include }}'
 RETURNING
 data,
@@ -209,21 +207,33 @@ included
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: on_call_escalation_policies
   props:
-    - name: region
-      value: string
-      description: Required parameter for the on_call_escalation_policies resource.
     - name: data
-      value: object
       description: |
         Represents the data for creating an escalation policy, including its attributes, relationships, and resource type.
+      value:
+        attributes:
+          name: "{{ name }}"
+          resolve_page_on_policy_end: {{ resolve_page_on_policy_end }}
+          retries: {{ retries }}
+          steps:
+            - assignment: "{{ assignment }}"
+              escalate_after_seconds: {{ escalate_after_seconds }}
+              targets: "{{ targets }}"
+        relationships:
+          teams:
+            data:
+              - id: "{{ id }}"
+                type: "{{ type }}"
+        type: "{{ type }}"
     - name: include
-      value: string
-      description: Comma-separated list of included relationships to be returned. Allowed values: `teams`, `steps`, `steps.targets`.
-```
+      value: "{{ include }}"
+      description: Comma-separated list of included relationships to be returned. Allowed values: \`teams\`, \`steps\`, \`steps.targets\`.
+      description: Comma-separated list of included relationships to be returned. Allowed values: \`teams\`, \`steps\`, \`steps.targets\`.
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -243,11 +253,10 @@ Update an On-Call escalation policy
 ```sql
 REPLACE datadog.service_management.on_call_escalation_policies
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 policy_id = '{{ policy_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 AND include = '{{ include}}'
 RETURNING
 data,
@@ -272,7 +281,6 @@ Delete an On-Call escalation policy
 ```sql
 DELETE FROM datadog.service_management.on_call_escalation_policies
 WHERE policy_id = '{{ policy_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

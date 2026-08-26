@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>incident_types</code> resource
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>incident_types</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="incident_types" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.service_management.incident_types" /></td></tr>
 </tbody></table>
@@ -67,7 +68,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Incident type resource type. (default: incident_types, example: incident_types)</td>
+    <td>Incident type resource type. (incident_types) (default: incident_types, example: incident_types)</td>
 </tr>
 </tbody>
 </table>
@@ -101,7 +102,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Incident type resource type. (default: incident_types, example: incident_types)</td>
+    <td>Incident type resource type. (incident_types) (default: incident_types, example: incident_types)</td>
 </tr>
 </tbody>
 </table>
@@ -126,35 +127,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_incident_type"><CopyableCode code="get_incident_type" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-incident_type_id"><code>incident_type_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-incident_type_id"><code>incident_type_id</code></a></td>
     <td></td>
     <td>Get incident type details.</td>
 </tr>
 <tr>
     <td><a href="#list_incident_types"><CopyableCode code="list_incident_types" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-include_deleted"><code>include_deleted</code></a></td>
     <td>Get all incident types.</td>
 </tr>
 <tr>
     <td><a href="#create_incident_type"><CopyableCode code="create_incident_type" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Create an incident type.</td>
 </tr>
 <tr>
     <td><a href="#update_incident_type"><CopyableCode code="update_incident_type" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-incident_type_id"><code>incident_type_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-incident_type_id"><code>incident_type_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Update an incident type.</td>
 </tr>
 <tr>
     <td><a href="#delete_incident_type"><CopyableCode code="delete_incident_type" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-incident_type_id"><code>incident_type_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-incident_type_id"><code>incident_type_id</code></a></td>
     <td></td>
     <td>Delete an incident type.</td>
 </tr>
@@ -179,10 +180,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The UUID of the incident type.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-include_deleted">
     <td><CopyableCode code="include_deleted" /></td>
@@ -213,7 +214,6 @@ relationships,
 type
 FROM datadog.service_management.incident_types
 WHERE incident_type_id = '{{ incident_type_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -228,8 +228,7 @@ attributes,
 relationships,
 type
 FROM datadog.service_management.incident_types
-WHERE region = '{{ region }}' -- required
-AND include_deleted = '{{ include_deleted }}'
+WHERE include_deleted = '{{ include_deleted }}'
 ;
 ```
 </TabItem>
@@ -251,12 +250,10 @@ Create an incident type.
 
 ```sql
 INSERT INTO datadog.service_management.incident_types (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -264,18 +261,34 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: incident_types
   props:
-    - name: region
-      value: string
-      description: Required parameter for the incident_types resource.
     - name: data
-      value: object
       description: |
         Incident type data for a create request.
-```
+      value:
+        attributes:
+          configuration:
+            allow_incident_deletion: {{ allow_incident_deletion }}
+            allow_workflows: {{ allow_workflows }}
+            create_message: "{{ create_message }}"
+            editable_timestamps: {{ editable_timestamps }}
+            private_incidents: {{ private_incidents }}
+            private_incidents_by_default: {{ private_incidents_by_default }}
+            slug_source: "{{ slug_source }}"
+            test_incidents: {{ test_incidents }}
+          createdAt: "{{ createdAt }}"
+          createdBy: "{{ createdBy }}"
+          description: "{{ description }}"
+          is_default: {{ is_default }}
+          lastModifiedBy: "{{ lastModifiedBy }}"
+          modifiedAt: "{{ modifiedAt }}"
+          name: "{{ name }}"
+          prefix: "{{ prefix }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -295,11 +308,10 @@ Update an incident type.
 ```sql
 UPDATE datadog.service_management.incident_types
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 incident_type_id = '{{ incident_type_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -322,7 +334,6 @@ Delete an incident type.
 ```sql
 DELETE FROM datadog.service_management.incident_types
 WHERE incident_type_id = '{{ incident_type_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

@@ -1,0 +1,15 @@
+{
+  "auth": {
+    "type": "custom",
+    "location": "header",
+    "name": "DD-API-KEY",
+    "credentialsenvvar": "DD_API_KEY",
+    "successor": {
+      "type": "custom",
+      "location": "header",
+      "name": "DD-APPLICATION-KEY",
+      "credentialsenvvar": "DD_APP_KEY"
+    }
+  },
+  "snake_case_aliases": true
+}

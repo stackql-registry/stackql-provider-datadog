@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>confluent_resources</code> reso
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>confluent_resources</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="confluent_resources" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.integrations.confluent_resources" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The JSON:API type for this request. (default: confluent-cloud-resources, example: confluent-cloud-resources)</td>
+    <td>The JSON:API type for this request. (confluent-cloud-resources) (default: confluent-cloud-resources, example: confluent-cloud-resources)</td>
 </tr>
 </tbody>
 </table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The JSON:API type for this request. (default: confluent-cloud-resources, example: confluent-cloud-resources)</td>
+    <td>The JSON:API type for this request. (confluent-cloud-resources) (default: confluent-cloud-resources, example: confluent-cloud-resources)</td>
 </tr>
 </tbody>
 </table>
@@ -116,35 +117,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_confluent_resource"><CopyableCode code="get_confluent_resource" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-resource_id"><code>resource_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-resource_id"><code>resource_id</code></a></td>
     <td></td>
     <td>Get a Confluent resource with the provided resource id for the account associated with the provided account ID.</td>
 </tr>
 <tr>
     <td><a href="#list_confluent_resource"><CopyableCode code="list_confluent_resource" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-account_id"><code>account_id</code></a></td>
     <td></td>
     <td>Get a Confluent resource for the account associated with the provided ID.</td>
 </tr>
 <tr>
     <td><a href="#create_confluent_resource"><CopyableCode code="create_confluent_resource" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Create a Confluent resource for the account associated with the provided ID.</td>
 </tr>
 <tr>
     <td><a href="#update_confluent_resource"><CopyableCode code="update_confluent_resource" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-resource_id"><code>resource_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-resource_id"><code>resource_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Update a Confluent resource with the provided resource id for the account associated with the provided account ID.</td>
 </tr>
 <tr>
     <td><a href="#delete_confluent_resource"><CopyableCode code="delete_confluent_resource" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-resource_id"><code>resource_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-resource_id"><code>resource_id</code></a></td>
     <td></td>
     <td>Delete a Confluent resource with the provided resource id for the account associated with the provided account ID.</td>
 </tr>
@@ -169,15 +170,15 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>Confluent Account ID.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
-    <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
-</tr>
 <tr id="parameter-resource_id">
     <td><CopyableCode code="resource_id" /></td>
     <td><code>string</code></td>
     <td>Confluent Account Resource ID.</td>
+</tr>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
+    <td><code>string</code></td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -203,7 +204,6 @@ type
 FROM datadog.integrations.confluent_resources
 WHERE account_id = '{{ account_id }}' -- required
 AND resource_id = '{{ resource_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -218,7 +218,6 @@ attributes,
 type
 FROM datadog.integrations.confluent_resources
 WHERE account_id = '{{ account_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -240,14 +239,12 @@ Create a Confluent resource for the account associated with the provided ID.
 
 ```sql
 INSERT INTO datadog.integrations.confluent_resources (
-data__data,
-account_id,
-region
+data,
+account_id
 )
 SELECT 
 '{{ data }}' /* required */,
-'{{ account_id }}',
-'{{ region }}'
+'{{ account_id }}'
 RETURNING
 data
 ;
@@ -255,21 +252,25 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: confluent_resources
   props:
     - name: account_id
-      value: string
-      description: Required parameter for the confluent_resources resource.
-    - name: region
-      value: string
+      value: "{{ account_id }}"
       description: Required parameter for the confluent_resources resource.
     - name: data
-      value: object
       description: |
         JSON:API request for updating a Confluent resource.
-```
+      value:
+        attributes:
+          enable_custom_metrics: {{ enable_custom_metrics }}
+          resource_type: "{{ resource_type }}"
+          tags:
+            - "{{ tags }}"
+        id: "{{ id }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -289,12 +290,11 @@ Update a Confluent resource with the provided resource id for the account associ
 ```sql
 UPDATE datadog.integrations.confluent_resources
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 account_id = '{{ account_id }}' --required
 AND resource_id = '{{ resource_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -318,7 +318,6 @@ Delete a Confluent resource with the provided resource id for the account associ
 DELETE FROM datadog.integrations.confluent_resources
 WHERE account_id = '{{ account_id }}' --required
 AND resource_id = '{{ resource_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>metrics</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>metrics</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="metrics" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.logs.metrics" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of the resource. The value should always be logs_metrics. (default: logs_metrics, example: logs_metrics)</td>
+    <td>The type of the resource. The value should always be logs_metrics. (logs_metrics) (default: logs_metrics, example: logs_metrics)</td>
 </tr>
 </tbody>
 </table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of the resource. The value should always be logs_metrics. (default: logs_metrics, example: logs_metrics)</td>
+    <td>The type of the resource. The value should always be logs_metrics. (logs_metrics) (default: logs_metrics, example: logs_metrics)</td>
 </tr>
 </tbody>
 </table>
@@ -116,35 +117,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_logs_metric"><CopyableCode code="get_logs_metric" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-metric_id"><code>metric_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-metric_id"><code>metric_id</code></a></td>
     <td></td>
     <td>Get a specific log-based metric from your organization.</td>
 </tr>
 <tr>
     <td><a href="#list_logs_metrics"><CopyableCode code="list_logs_metrics" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Get the list of configured log-based metrics with their definitions.</td>
 </tr>
 <tr>
     <td><a href="#create_logs_metric"><CopyableCode code="create_logs_metric" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
-    <td>Create a metric based on your ingested logs in your organization.<br />Returns the log-based metric object from the request body when the request is successful.</td>
+    <td>Create a metric based on your ingested logs in your organization.&lt;br /&gt;Returns the log-based metric object from the request body when the request is successful.</td>
 </tr>
 <tr>
     <td><a href="#update_logs_metric"><CopyableCode code="update_logs_metric" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-metric_id"><code>metric_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-metric_id"><code>metric_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
-    <td>Update a specific log-based metric from your organization.<br />Returns the log-based metric object from the request body when the request is successful.</td>
+    <td>Update a specific log-based metric from your organization.&lt;br /&gt;Returns the log-based metric object from the request body when the request is successful.</td>
 </tr>
 <tr>
     <td><a href="#delete_logs_metric"><CopyableCode code="delete_logs_metric" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-metric_id"><code>metric_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-metric_id"><code>metric_id</code></a></td>
     <td></td>
     <td>Delete a specific log-based metric from your organization.</td>
 </tr>
@@ -169,10 +170,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The name of the log-based metric.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -197,7 +198,6 @@ attributes,
 type
 FROM datadog.logs.metrics
 WHERE metric_id = '{{ metric_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -211,7 +211,6 @@ id,
 attributes,
 type
 FROM datadog.logs.metrics
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -229,16 +228,14 @@ WHERE region = '{{ region }}' -- required
 >
 <TabItem value="create_logs_metric">
 
-Create a metric based on your ingested logs in your organization.<br />Returns the log-based metric object from the request body when the request is successful.
+Create a metric based on your ingested logs in your organization.&lt;br /&gt;Returns the log-based metric object from the request body when the request is successful.
 
 ```sql
 INSERT INTO datadog.logs.metrics (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -246,18 +243,27 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: metrics
   props:
-    - name: region
-      value: string
-      description: Required parameter for the metrics resource.
     - name: data
-      value: object
       description: |
         The new log-based metric properties.
-```
+      value:
+        attributes:
+          compute:
+            aggregation_type: "{{ aggregation_type }}"
+            include_percentiles: {{ include_percentiles }}
+            path: "{{ path }}"
+          filter:
+            query: "{{ query }}"
+          group_by:
+            - path: "{{ path }}"
+              tag_name: "{{ tag_name }}"
+        id: "{{ id }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -272,16 +278,15 @@ data
 >
 <TabItem value="update_logs_metric">
 
-Update a specific log-based metric from your organization.<br />Returns the log-based metric object from the request body when the request is successful.
+Update a specific log-based metric from your organization.&lt;br /&gt;Returns the log-based metric object from the request body when the request is successful.
 
 ```sql
 UPDATE datadog.logs.metrics
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 metric_id = '{{ metric_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -304,7 +309,6 @@ Delete a specific log-based metric from your organization.
 ```sql
 DELETE FROM datadog.logs.metrics
 WHERE metric_id = '{{ metric_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

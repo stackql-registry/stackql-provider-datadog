@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>ci_app_test_events</code> resou
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>ci_app_test_events</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="ci_app_test_events" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.software_delivery.ci_app_test_events" /></td></tr>
 </tbody></table>
@@ -61,7 +62,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Type of the event. (example: citest)</td>
+    <td>Type of the event. (citest) (example: citest)</td>
 </tr>
 </tbody>
 </table>
@@ -86,21 +87,21 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_ciapp_test_events"><CopyableCode code="list_ciapp_test_events" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-filter[query]"><code>filter[query]</code></a>, <a href="#parameter-filter[from]"><code>filter[from]</code></a>, <a href="#parameter-filter[to]"><code>filter[to]</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-page[cursor]"><code>page[cursor]</code></a>, <a href="#parameter-page[limit]"><code>page[limit]</code></a></td>
-    <td>List endpoint returns CI Visibility test events that match a [search query](https://docs.datadoghq.com/continuous_integration/explorer/search_syntax/).<br />[Results are paginated similarly to logs](https://docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).<br /><br />Use this endpoint to see your latest test events.</td>
+    <td>List endpoint returns CI Visibility test events that match a &#91;search query&#93;(https:​//docs.datadoghq.com/continuous_integration/explorer/search_syntax/).&lt;br /&gt;&#91;Results are paginated similarly to logs&#93;(https:​//docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).&lt;br /&gt;&lt;br /&gt;Use this endpoint to see your latest test events.</td>
 </tr>
 <tr>
     <td><a href="#search_ciapp_test_events"><CopyableCode code="search_ciapp_test_events" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
     <td></td>
-    <td>List endpoint returns CI Visibility test events that match a [search query](https://docs.datadoghq.com/continuous_integration/explorer/search_syntax/).<br />[Results are paginated similarly to logs](https://docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).<br /><br />Use this endpoint to build complex events filtering and search.</td>
+    <td></td>
+    <td>List endpoint returns CI Visibility test events that match a &#91;search query&#93;(https:​//docs.datadoghq.com/continuous_integration/explorer/search_syntax/).&lt;br /&gt;&#91;Results are paginated similarly to logs&#93;(https:​//docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).&lt;br /&gt;&lt;br /&gt;Use this endpoint to build complex events filtering and search.</td>
 </tr>
 <tr>
     <td><a href="#aggregate_ciapp_test_events"><CopyableCode code="aggregate_ciapp_test_events" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>The API endpoint to aggregate CI Visibility test events into buckets of computed metrics and timeseries.</td>
 </tr>
@@ -120,10 +121,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter[from]">
     <td><CopyableCode code="filter[from]" /></td>
@@ -168,7 +169,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 >
 <TabItem value="list_ciapp_test_events">
 
-List endpoint returns CI Visibility test events that match a [search query](https://docs.datadoghq.com/continuous_integration/explorer/search_syntax/).<br />[Results are paginated similarly to logs](https://docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).<br /><br />Use this endpoint to see your latest test events.
+List endpoint returns CI Visibility test events that match a &#91;search query&#93;(https:​//docs.datadoghq.com/continuous_integration/explorer/search_syntax/).&lt;br /&gt;&#91;Results are paginated similarly to logs&#93;(https:​//docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).&lt;br /&gt;&lt;br /&gt;Use this endpoint to see your latest test events.
 
 ```sql
 SELECT
@@ -176,8 +177,7 @@ id,
 attributes,
 type
 FROM datadog.software_delivery.ci_app_test_events
-WHERE region = '{{ region }}' -- required
-AND filter[query] = '{{ filter[query] }}'
+WHERE filter[query] = '{{ filter[query] }}'
 AND filter[from] = '{{ filter[from] }}'
 AND filter[to] = '{{ filter[to] }}'
 AND sort = '{{ sort }}'
@@ -200,22 +200,20 @@ AND page[limit] = '{{ page[limit] }}'
 >
 <TabItem value="search_ciapp_test_events">
 
-List endpoint returns CI Visibility test events that match a [search query](https://docs.datadoghq.com/continuous_integration/explorer/search_syntax/).<br />[Results are paginated similarly to logs](https://docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).<br /><br />Use this endpoint to build complex events filtering and search.
+List endpoint returns CI Visibility test events that match a &#91;search query&#93;(https:​//docs.datadoghq.com/continuous_integration/explorer/search_syntax/).&lt;br /&gt;&#91;Results are paginated similarly to logs&#93;(https:​//docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).&lt;br /&gt;&lt;br /&gt;Use this endpoint to build complex events filtering and search.
 
 ```sql
 INSERT INTO datadog.software_delivery.ci_app_test_events (
-data__filter,
-data__options,
-data__page,
-data__sort,
-region
+filter,
+options,
+page,
+sort
 )
 SELECT 
 '{{ filter }}',
 '{{ options }}',
 '{{ page }}',
-'{{ sort }}',
-'{{ region }}'
+'{{ sort }}'
 RETURNING
 data,
 links,
@@ -225,37 +223,43 @@ meta
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: ci_app_test_events
   props:
-    - name: region
-      value: string
-      description: Required parameter for the ci_app_test_events resource.
     - name: filter
-      value: object
       description: |
         The search and filter query settings.
+      value:
+        from: "{{ from }}"
+        query: "{{ query }}"
+        to: "{{ to }}"
     - name: options
-      value: object
       description: |
         Global query options that are used during the query.
         Only supply timezone or time offset, not both. Otherwise, the query fails.
+      value:
+        time_offset: {{ time_offset }}
+        timezone: "{{ timezone }}"
     - name: page
-      value: object
       description: |
         Paging attributes for listing events.
+      value:
+        cursor: "{{ cursor }}"
+        limit: {{ limit }}
     - name: sort
-      value: string
+      value: "{{ sort }}"
       description: |
         Sort parameters when querying events.
       valid_values: ['timestamp', '-timestamp']
-```
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
 
 ## Lifecycle Methods
+
+EXEC variables use wire (API) names.
 
 <Tabs
     defaultValue="aggregate_ciapp_test_events"
@@ -269,7 +273,6 @@ The API endpoint to aggregate CI Visibility test events into buckets of computed
 
 ```sql
 EXEC datadog.software_delivery.ci_app_test_events.aggregate_ciapp_test_events 
-@region='{{ region }}' --required 
 @@json=
 '{
 "compute": "{{ compute }}", 

@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>logs</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>logs</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="logs" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.logs.logs" /></td></tr>
 </tbody></table>
@@ -61,7 +62,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Type of the event. (default: log, example: log)</td>
+    <td>Type of the event. (log) (default: log, example: log)</td>
 </tr>
 </tbody>
 </table>
@@ -86,30 +87,30 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_logs_get"><CopyableCode code="list_logs_get" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-filter[query]"><code>filter[query]</code></a>, <a href="#parameter-filter[indexes]"><code>filter[indexes]</code></a>, <a href="#parameter-filter[from]"><code>filter[from]</code></a>, <a href="#parameter-filter[to]"><code>filter[to]</code></a>, <a href="#parameter-filter[storage_tier]"><code>filter[storage_tier]</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-page[cursor]"><code>page[cursor]</code></a>, <a href="#parameter-page[limit]"><code>page[limit]</code></a></td>
-    <td>List endpoint returns logs that match a log search query.<br />[Results are paginated][1].<br /><br />Use this endpoint to search and filter your logs.<br /><br />**If you are considering archiving logs for your organization,<br />consider use of the Datadog archive capabilities instead of the log list API.<br />See [Datadog Logs Archive documentation][2].**<br /><br />[1]: /logs/guide/collect-multiple-logs-with-pagination<br />[2]: https://docs.datadoghq.com/logs/archives</td>
+    <td>List endpoint returns logs that match a log search query.&lt;br /&gt;&#91;Results are paginated&#93;&#91;1&#93;.&lt;br /&gt;&lt;br /&gt;Use this endpoint to search and filter your logs.&lt;br /&gt;&lt;br /&gt;**If you are considering archiving logs for your organization,&lt;br /&gt;consider use of the Datadog archive capabilities instead of the log list API.&lt;br /&gt;See &#91;Datadog Logs Archive documentation&#93;&#91;2&#93;.**&lt;br /&gt;&lt;br /&gt;&#91;1&#93;: /logs/guide/collect-multiple-logs-with-pagination&lt;br /&gt;&#91;2&#93;: https:​//docs.datadoghq.com/logs/archives</td>
 </tr>
 <tr>
     <td><a href="#submit_log"><CopyableCode code="submit_log" /></a></td>
-    <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
-    <td><a href="#parameter-Content-Encoding"><code>Content-Encoding</code></a>, <a href="#parameter-ddtags"><code>ddtags</code></a></td>
-    <td>Send your logs to your Datadog platform over HTTP. Limits per HTTP request are:<br /><br />- Maximum content size per payload (uncompressed): 5MB<br />- Maximum size for a single log: 1MB<br />- Maximum array size if sending multiple logs in an array: 1000 entries<br /><br />Any log exceeding 1MB is accepted and truncated by Datadog:<br />- For a single log request, the API truncates the log at 1MB and returns a 2xx.<br />- For a multi-logs request, the API processes all logs, truncates only logs larger than 1MB, and returns a 2xx.<br /><br />Datadog recommends sending your logs compressed.<br />Add the `Content-Encoding: gzip` header to the request when sending compressed logs.<br />Log events can be submitted with a timestamp that is up to 18 hours in the past.<br /><br />The status codes answered by the HTTP API are:<br />- 202: Accepted: the request has been accepted for processing<br />- 400: Bad request (likely an issue in the payload formatting)<br />- 401: Unauthorized (likely a missing API Key)<br />- 403: Permission issue (likely using an invalid API Key)<br />- 408: Request Timeout, request should be retried after some time<br />- 413: Payload too large (batch is above 5MB uncompressed)<br />- 429: Too Many Requests, request should be retried after some time<br />- 500: Internal Server Error, the server encountered an unexpected condition that prevented it from fulfilling the request, request should be retried after some time<br />- 503: Service Unavailable, the server is not ready to handle the request probably because it is overloaded, request should be retried after some time</td>
-</tr>
-<tr>
-    <td><a href="#list_logs"><CopyableCode code="list_logs" /></a></td>
-    <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td><CopyableCode code="exec" /></td>
     <td></td>
-    <td>List endpoint returns logs that match a log search query.<br />[Results are paginated][1].<br /><br />Use this endpoint to search and filter your logs.<br /><br />**If you are considering archiving logs for your organization,<br />consider use of the Datadog archive capabilities instead of the log list API.<br />See [Datadog Logs Archive documentation][2].**<br /><br />[1]: /logs/guide/collect-multiple-logs-with-pagination<br />[2]: https://docs.datadoghq.com/logs/archives</td>
+    <td><a href="#parameter-Content-Encoding"><code>Content-Encoding</code></a>, <a href="#parameter-ddtags"><code>ddtags</code></a></td>
+    <td>Send your logs to your Datadog platform over HTTP. Limits per HTTP request are:&lt;br /&gt;&lt;br /&gt;- Maximum content size per payload (uncompressed): 5MB&lt;br /&gt;- Maximum size for a single log: 1MB&lt;br /&gt;- Maximum array size if sending multiple logs in an array: 1000 entries&lt;br /&gt;&lt;br /&gt;Any log exceeding 1MB is accepted and truncated by Datadog:&lt;br /&gt;- For a single log request, the API truncates the log at 1MB and returns a 2xx.&lt;br /&gt;- For a multi-logs request, the API processes all logs, truncates only logs larger than 1MB, and returns a 2xx.&lt;br /&gt;&lt;br /&gt;Datadog recommends sending your logs compressed.&lt;br /&gt;Add the `Content-Encoding: gzip` header to the request when sending compressed logs.&lt;br /&gt;Log events can be submitted with a timestamp that is up to 18 hours in the past.&lt;br /&gt;&lt;br /&gt;The status codes answered by the HTTP API are:&lt;br /&gt;- 202: Accepted: the request has been accepted for processing&lt;br /&gt;- 400: Bad request (likely an issue in the payload formatting)&lt;br /&gt;- 401: Unauthorized (likely a missing API Key)&lt;br /&gt;- 403: Permission issue (likely using an invalid API Key)&lt;br /&gt;- 408: Request Timeout, request should be retried after some time&lt;br /&gt;- 413: Payload too large (batch is above 5MB uncompressed)&lt;br /&gt;- 429: Too Many Requests, request should be retried after some time&lt;br /&gt;- 500: Internal Server Error, the server encountered an unexpected condition that prevented it from fulfilling the request, request should be retried after some time&lt;br /&gt;- 503: Service Unavailable, the server is not ready to handle the request probably because it is overloaded, request should be retried after some time</td>
 </tr>
 <tr>
     <td><a href="#aggregate_logs"><CopyableCode code="aggregate_logs" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>The API endpoint to aggregate events into buckets and compute metrics and timeseries.</td>
+</tr>
+<tr>
+    <td><a href="#list_logs"><CopyableCode code="list_logs" /></a></td>
+    <td><CopyableCode code="exec" /></td>
+    <td></td>
+    <td></td>
+    <td>List endpoint returns logs that match a log search query.&lt;br /&gt;&#91;Results are paginated&#93;&#91;1&#93;.&lt;br /&gt;&lt;br /&gt;Use this endpoint to search and filter your logs.&lt;br /&gt;&lt;br /&gt;**If you are considering archiving logs for your organization,&lt;br /&gt;consider use of the Datadog archive capabilities instead of the log list API.&lt;br /&gt;See &#91;Datadog Logs Archive documentation&#93;&#91;2&#93;.**&lt;br /&gt;&lt;br /&gt;&#91;1&#93;: /logs/guide/collect-multiple-logs-with-pagination&lt;br /&gt;&#91;2&#93;: https:​//docs.datadoghq.com/logs/archives</td>
 </tr>
 </tbody>
 </table>
@@ -127,10 +128,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-Content-Encoding">
     <td><CopyableCode code="Content-Encoding" /></td>
@@ -150,7 +151,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-filter[indexes]">
     <td><CopyableCode code="filter[indexes]" /></td>
     <td><code>array</code></td>
-    <td>For customers with multiple indexes, the indexes to search. Defaults to '*' which means all indexes (example: [main, web])</td>
+    <td>For customers with multiple indexes, the indexes to search. Defaults to '*' which means all indexes (example: &#91;main, web&#93;)</td>
 </tr>
 <tr id="parameter-filter[query]">
     <td><CopyableCode code="filter[query]" /></td>
@@ -195,7 +196,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 >
 <TabItem value="list_logs_get">
 
-List endpoint returns logs that match a log search query.<br />[Results are paginated][1].<br /><br />Use this endpoint to search and filter your logs.<br /><br />**If you are considering archiving logs for your organization,<br />consider use of the Datadog archive capabilities instead of the log list API.<br />See [Datadog Logs Archive documentation][2].**<br /><br />[1]: /logs/guide/collect-multiple-logs-with-pagination<br />[2]: https://docs.datadoghq.com/logs/archives
+List endpoint returns logs that match a log search query.&lt;br /&gt;&#91;Results are paginated&#93;&#91;1&#93;.&lt;br /&gt;&lt;br /&gt;Use this endpoint to search and filter your logs.&lt;br /&gt;&lt;br /&gt;**If you are considering archiving logs for your organization,&lt;br /&gt;consider use of the Datadog archive capabilities instead of the log list API.&lt;br /&gt;See &#91;Datadog Logs Archive documentation&#93;&#91;2&#93;.**&lt;br /&gt;&lt;br /&gt;&#91;1&#93;: /logs/guide/collect-multiple-logs-with-pagination&lt;br /&gt;&#91;2&#93;: https:​//docs.datadoghq.com/logs/archives
 
 ```sql
 SELECT
@@ -203,8 +204,7 @@ id,
 attributes,
 type
 FROM datadog.logs.logs
-WHERE region = '{{ region }}' -- required
-AND filter[query] = '{{ filter[query] }}'
+WHERE filter[query] = '{{ filter[query] }}'
 AND filter[indexes] = '{{ filter[indexes] }}'
 AND filter[from] = '{{ filter[from] }}'
 AND filter[to] = '{{ filter[to] }}'
@@ -218,111 +218,35 @@ AND page[limit] = '{{ page[limit] }}'
 </Tabs>
 
 
-## `INSERT` examples
+## Lifecycle Methods
+
+EXEC variables use wire (API) names.
 
 <Tabs
     defaultValue="submit_log"
     values={[
         { label: 'submit_log', value: 'submit_log' },
-        { label: 'list_logs', value: 'list_logs' },
-        { label: 'Manifest', value: 'manifest' }
+        { label: 'aggregate_logs', value: 'aggregate_logs' },
+        { label: 'list_logs', value: 'list_logs' }
     ]}
 >
 <TabItem value="submit_log">
 
-Send your logs to your Datadog platform over HTTP. Limits per HTTP request are:<br /><br />- Maximum content size per payload (uncompressed): 5MB<br />- Maximum size for a single log: 1MB<br />- Maximum array size if sending multiple logs in an array: 1000 entries<br /><br />Any log exceeding 1MB is accepted and truncated by Datadog:<br />- For a single log request, the API truncates the log at 1MB and returns a 2xx.<br />- For a multi-logs request, the API processes all logs, truncates only logs larger than 1MB, and returns a 2xx.<br /><br />Datadog recommends sending your logs compressed.<br />Add the `Content-Encoding: gzip` header to the request when sending compressed logs.<br />Log events can be submitted with a timestamp that is up to 18 hours in the past.<br /><br />The status codes answered by the HTTP API are:<br />- 202: Accepted: the request has been accepted for processing<br />- 400: Bad request (likely an issue in the payload formatting)<br />- 401: Unauthorized (likely a missing API Key)<br />- 403: Permission issue (likely using an invalid API Key)<br />- 408: Request Timeout, request should be retried after some time<br />- 413: Payload too large (batch is above 5MB uncompressed)<br />- 429: Too Many Requests, request should be retried after some time<br />- 500: Internal Server Error, the server encountered an unexpected condition that prevented it from fulfilling the request, request should be retried after some time<br />- 503: Service Unavailable, the server is not ready to handle the request probably because it is overloaded, request should be retried after some time
+Send your logs to your Datadog platform over HTTP. Limits per HTTP request are:&lt;br /&gt;&lt;br /&gt;- Maximum content size per payload (uncompressed): 5MB&lt;br /&gt;- Maximum size for a single log: 1MB&lt;br /&gt;- Maximum array size if sending multiple logs in an array: 1000 entries&lt;br /&gt;&lt;br /&gt;Any log exceeding 1MB is accepted and truncated by Datadog:&lt;br /&gt;- For a single log request, the API truncates the log at 1MB and returns a 2xx.&lt;br /&gt;- For a multi-logs request, the API processes all logs, truncates only logs larger than 1MB, and returns a 2xx.&lt;br /&gt;&lt;br /&gt;Datadog recommends sending your logs compressed.&lt;br /&gt;Add the `Content-Encoding: gzip` header to the request when sending compressed logs.&lt;br /&gt;Log events can be submitted with a timestamp that is up to 18 hours in the past.&lt;br /&gt;&lt;br /&gt;The status codes answered by the HTTP API are:&lt;br /&gt;- 202: Accepted: the request has been accepted for processing&lt;br /&gt;- 400: Bad request (likely an issue in the payload formatting)&lt;br /&gt;- 401: Unauthorized (likely a missing API Key)&lt;br /&gt;- 403: Permission issue (likely using an invalid API Key)&lt;br /&gt;- 408: Request Timeout, request should be retried after some time&lt;br /&gt;- 413: Payload too large (batch is above 5MB uncompressed)&lt;br /&gt;- 429: Too Many Requests, request should be retried after some time&lt;br /&gt;- 500: Internal Server Error, the server encountered an unexpected condition that prevented it from fulfilling the request, request should be retried after some time&lt;br /&gt;- 503: Service Unavailable, the server is not ready to handle the request probably because it is overloaded, request should be retried after some time
 
 ```sql
-INSERT INTO datadog.logs.logs (
-region,
-Content-Encoding,
-ddtags
-)
-SELECT 
-'{{ region }}',
-'{{ Content-Encoding }}',
-'{{ ddtags }}'
+EXEC datadog.logs.logs.submit_log 
+@Content-Encoding='{{ Content-Encoding }}', 
+@ddtags='{{ ddtags }}'
 ;
 ```
 </TabItem>
-<TabItem value="list_logs">
-
-List endpoint returns logs that match a log search query.<br />[Results are paginated][1].<br /><br />Use this endpoint to search and filter your logs.<br /><br />**If you are considering archiving logs for your organization,<br />consider use of the Datadog archive capabilities instead of the log list API.<br />See [Datadog Logs Archive documentation][2].**<br /><br />[1]: /logs/guide/collect-multiple-logs-with-pagination<br />[2]: https://docs.datadoghq.com/logs/archives
-
-```sql
-INSERT INTO datadog.logs.logs (
-data__filter,
-data__options,
-data__page,
-data__sort,
-region
-)
-SELECT 
-'{{ filter }}',
-'{{ options }}',
-'{{ page }}',
-'{{ sort }}',
-'{{ region }}'
-RETURNING
-data,
-links,
-meta
-;
-```
-</TabItem>
-<TabItem value="manifest">
-
-```yaml
-# Description fields are for documentation purposes
-- name: logs
-  props:
-    - name: region
-      value: string
-      description: Required parameter for the logs resource.
-    - name: filter
-      value: object
-      description: |
-        The search and filter query settings
-    - name: options
-      value: object
-      description: |
-        Global query options that are used during the query.
-        Note: These fields are currently deprecated and do not affect the query results.
-    - name: page
-      value: object
-      description: |
-        Paging attributes for listing logs.
-    - name: sort
-      value: string
-      description: |
-        Sort parameters when querying logs.
-      valid_values: ['timestamp', '-timestamp']
-    - name: Content-Encoding
-      value: string
-      description: HTTP header used to compress the media-type.
-    - name: ddtags
-      value: string
-      description: Log tags can be passed as query parameters with `text/plain` content type. (example: env:prod,user:my-user)
-```
-</TabItem>
-</Tabs>
-
-
-## Lifecycle Methods
-
-<Tabs
-    defaultValue="aggregate_logs"
-    values={[
-        { label: 'aggregate_logs', value: 'aggregate_logs' }
-    ]}
->
 <TabItem value="aggregate_logs">
 
 The API endpoint to aggregate events into buckets and compute metrics and timeseries.
 
 ```sql
 EXEC datadog.logs.logs.aggregate_logs 
-@region='{{ region }}' --required 
 @@json=
 '{
 "compute": "{{ compute }}", 
@@ -330,6 +254,22 @@ EXEC datadog.logs.logs.aggregate_logs
 "group_by": "{{ group_by }}", 
 "options": "{{ options }}", 
 "page": "{{ page }}"
+}'
+;
+```
+</TabItem>
+<TabItem value="list_logs">
+
+List endpoint returns logs that match a log search query.&lt;br /&gt;&#91;Results are paginated&#93;&#91;1&#93;.&lt;br /&gt;&lt;br /&gt;Use this endpoint to search and filter your logs.&lt;br /&gt;&lt;br /&gt;**If you are considering archiving logs for your organization,&lt;br /&gt;consider use of the Datadog archive capabilities instead of the log list API.&lt;br /&gt;See &#91;Datadog Logs Archive documentation&#93;&#91;2&#93;.**&lt;br /&gt;&lt;br /&gt;&#91;1&#93;: /logs/guide/collect-multiple-logs-with-pagination&lt;br /&gt;&#91;2&#93;: https:​//docs.datadoghq.com/logs/archives
+
+```sql
+EXEC datadog.logs.logs.list_logs 
+@@json=
+'{
+"filter": "{{ filter }}", 
+"options": "{{ options }}", 
+"page": "{{ page }}", 
+"sort": "{{ sort }}"
 }'
 ;
 ```

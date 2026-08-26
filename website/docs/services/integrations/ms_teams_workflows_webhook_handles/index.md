@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>ms_teams_workflows_webhook_hand
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>ms_teams_workflows_webhook_handles</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="ms_teams_workflows_webhook_handles" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.integrations.ms_teams_workflows_webhook_handles" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Specifies the Workflows webhook handle resource type. (default: workflows-webhook-handle, example: workflows-webhook-handle)</td>
+    <td>Specifies the Workflows webhook handle resource type. (workflows-webhook-handle) (default: workflows-webhook-handle, example: workflows-webhook-handle)</td>
 </tr>
 </tbody>
 </table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Specifies the Workflows webhook handle resource type. (default: workflows-webhook-handle, example: workflows-webhook-handle)</td>
+    <td>Specifies the Workflows webhook handle resource type. (workflows-webhook-handle) (default: workflows-webhook-handle, example: workflows-webhook-handle)</td>
 </tr>
 </tbody>
 </table>
@@ -116,35 +117,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_workflows_webhook_handle"><CopyableCode code="get_workflows_webhook_handle" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-handle_id"><code>handle_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-handle_id"><code>handle_id</code></a></td>
     <td></td>
     <td>Get the name of a Workflows webhook handle from the Datadog Microsoft Teams integration.</td>
 </tr>
 <tr>
     <td><a href="#list_workflows_webhook_handles"><CopyableCode code="list_workflows_webhook_handles" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-name"><code>name</code></a></td>
     <td>Get a list of all Workflows webhook handles from the Datadog Microsoft Teams integration.</td>
 </tr>
 <tr>
     <td><a href="#create_workflows_webhook_handle"><CopyableCode code="create_workflows_webhook_handle" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Create a Workflows webhook handle in the Datadog Microsoft Teams integration.</td>
 </tr>
 <tr>
     <td><a href="#update_workflows_webhook_handle"><CopyableCode code="update_workflows_webhook_handle" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-handle_id"><code>handle_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-handle_id"><code>handle_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Update a Workflows webhook handle from the Datadog Microsoft Teams integration.</td>
 </tr>
 <tr>
     <td><a href="#delete_workflows_webhook_handle"><CopyableCode code="delete_workflows_webhook_handle" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-handle_id"><code>handle_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-handle_id"><code>handle_id</code></a></td>
     <td></td>
     <td>Delete a Workflows webhook handle from the Datadog Microsoft Teams integration.</td>
 </tr>
@@ -169,10 +170,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>Your Workflows webhook handle id.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-name">
     <td><CopyableCode code="name" /></td>
@@ -202,7 +203,6 @@ attributes,
 type
 FROM datadog.integrations.ms_teams_workflows_webhook_handles
 WHERE handle_id = '{{ handle_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -216,8 +216,7 @@ id,
 attributes,
 type
 FROM datadog.integrations.ms_teams_workflows_webhook_handles
-WHERE region = '{{ region }}' -- required
-AND name = '{{ name }}'
+WHERE name = '{{ name }}'
 ;
 ```
 </TabItem>
@@ -239,12 +238,10 @@ Create a Workflows webhook handle in the Datadog Microsoft Teams integration.
 
 ```sql
 INSERT INTO datadog.integrations.ms_teams_workflows_webhook_handles (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -252,18 +249,19 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: ms_teams_workflows_webhook_handles
   props:
-    - name: region
-      value: string
-      description: Required parameter for the ms_teams_workflows_webhook_handles resource.
     - name: data
-      value: object
       description: |
         Workflows Webhook handle data from a response.
-```
+      value:
+        attributes:
+          name: "{{ name }}"
+          url: "{{ url }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -283,11 +281,10 @@ Update a Workflows webhook handle from the Datadog Microsoft Teams integration.
 ```sql
 UPDATE datadog.integrations.ms_teams_workflows_webhook_handles
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 handle_id = '{{ handle_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -310,7 +307,6 @@ Delete a Workflows webhook handle from the Datadog Microsoft Teams integration.
 ```sql
 DELETE FROM datadog.integrations.ms_teams_workflows_webhook_handles
 WHERE handle_id = '{{ handle_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

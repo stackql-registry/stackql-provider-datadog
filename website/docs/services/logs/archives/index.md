@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>archives</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>archives</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="archives" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.logs.archives" /></td></tr>
 </tbody></table>
@@ -116,35 +117,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_logs_archive"><CopyableCode code="get_logs_archive" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-archive_id"><code>archive_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-archive_id"><code>archive_id</code></a></td>
     <td></td>
     <td>Get a specific archive from your organization.</td>
 </tr>
 <tr>
     <td><a href="#list_logs_archives"><CopyableCode code="list_logs_archives" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Get the list of configured logs archives with their definitions.</td>
 </tr>
 <tr>
     <td><a href="#create_logs_archive"><CopyableCode code="create_logs_archive" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Create an archive in your organization.</td>
 </tr>
 <tr>
     <td><a href="#update_logs_archive"><CopyableCode code="update_logs_archive" /></a></td>
     <td><CopyableCode code="replace" /></td>
-    <td><a href="#parameter-archive_id"><code>archive_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-archive_id"><code>archive_id</code></a></td>
     <td></td>
-    <td>Update a given archive configuration.<br /><br />**Note**: Using this method updates your archive configuration by **replacing**<br />your current configuration with the new one sent to your Datadog organization.</td>
+    <td>Update a given archive configuration.&lt;br /&gt;&lt;br /&gt;**Note**: Using this method updates your archive configuration by **replacing**&lt;br /&gt;your current configuration with the new one sent to your Datadog organization.</td>
 </tr>
 <tr>
     <td><a href="#delete_logs_archive"><CopyableCode code="delete_logs_archive" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-archive_id"><code>archive_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-archive_id"><code>archive_id</code></a></td>
     <td></td>
     <td>Delete a given archive from your organization.</td>
 </tr>
@@ -169,10 +170,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The ID of the archive.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -197,7 +198,6 @@ attributes,
 type
 FROM datadog.logs.archives
 WHERE archive_id = '{{ archive_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -211,7 +211,6 @@ id,
 attributes,
 type
 FROM datadog.logs.archives
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -233,12 +232,10 @@ Create an archive in your organization.
 
 ```sql
 INSERT INTO datadog.logs.archives (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}',
-'{{ region }}'
+'{{ data }}'
 RETURNING
 data
 ;
@@ -246,18 +243,42 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: archives
   props:
-    - name: region
-      value: string
-      description: Required parameter for the archives resource.
     - name: data
-      value: object
       description: |
         The definition of an archive.
-```
+      value:
+        attributes:
+          compression_method: "{{ compression_method }}"
+          destination:
+            container: "{{ container }}"
+            integration:
+              client_id: "{{ client_id }}"
+              tenant_id: "{{ tenant_id }}"
+            path: "{{ path }}"
+            region: "{{ region }}"
+            storage_account: "{{ storage_account }}"
+            type: "{{ type }}"
+            bucket: "{{ bucket }}"
+            encryption:
+              key: "{{ key }}"
+              type: "{{ type }}"
+            storage_class: "{{ storage_class }}"
+          include_tags: {{ include_tags }}
+          lookup_attributes:
+            - "{{ lookup_attributes }}"
+          name: "{{ name }}"
+          partitioning_attributes:
+            - "{{ partitioning_attributes }}"
+          query: "{{ query }}"
+          rehydration_max_scan_size_in_gb: {{ rehydration_max_scan_size_in_gb }}
+          rehydration_tags:
+            - "{{ rehydration_tags }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -272,15 +293,14 @@ data
 >
 <TabItem value="update_logs_archive">
 
-Update a given archive configuration.<br /><br />**Note**: Using this method updates your archive configuration by **replacing**<br />your current configuration with the new one sent to your Datadog organization.
+Update a given archive configuration.&lt;br /&gt;&lt;br /&gt;**Note**: Using this method updates your archive configuration by **replacing**&lt;br /&gt;your current configuration with the new one sent to your Datadog organization.
 
 ```sql
 REPLACE datadog.logs.archives
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 archive_id = '{{ archive_id }}' --required
-AND region = '{{ region }}' --required
 RETURNING
 data;
 ```
@@ -303,7 +323,6 @@ Delete a given archive from your organization.
 ```sql
 DELETE FROM datadog.logs.archives
 WHERE archive_id = '{{ archive_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

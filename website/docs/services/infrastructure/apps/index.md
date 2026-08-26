@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>apps</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>apps</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="apps" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.infrastructure.apps" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The app definition type. (default: appDefinitions, example: appDefinitions)</td>
+    <td>The app definition type. (appDefinitions) (default: appDefinitions, example: appDefinitions)</td>
 </tr>
 </tbody>
 </table>
@@ -101,7 +102,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The app definition type. (default: appDefinitions, example: appDefinitions)</td>
+    <td>The app definition type. (appDefinitions) (default: appDefinitions, example: appDefinitions)</td>
 </tr>
 </tbody>
 </table>
@@ -126,58 +127,58 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_app"><CopyableCode code="get_app" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-app_id"><code>app_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-app_id"><code>app_id</code></a></td>
     <td><a href="#parameter-version"><code>version</code></a></td>
-    <td>Get the full definition of an app. This API requires a [registered application key](https://docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions [in the UI](https://docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
+    <td>Get the full definition of an app. This API requires a &#91;registered application key&#93;(https:​//docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions &#91;in the UI&#93;(https:​//docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
 </tr>
 <tr>
     <td><a href="#list_apps"><CopyableCode code="list_apps" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-limit"><code>limit</code></a>, <a href="#parameter-page"><code>page</code></a>, <a href="#parameter-filter[user_name]"><code>filter[user_name]</code></a>, <a href="#parameter-filter[user_uuid]"><code>filter[user_uuid]</code></a>, <a href="#parameter-filter[name]"><code>filter[name]</code></a>, <a href="#parameter-filter[query]"><code>filter[query]</code></a>, <a href="#parameter-filter[deployed]"><code>filter[deployed]</code></a>, <a href="#parameter-filter[tags]"><code>filter[tags]</code></a>, <a href="#parameter-filter[favorite]"><code>filter[favorite]</code></a>, <a href="#parameter-filter[self_service]"><code>filter[self_service]</code></a>, <a href="#parameter-sort"><code>sort</code></a></td>
-    <td>List all apps, with optional filters and sorting. This endpoint is paginated. Only basic app information such as the app ID, name, and description is returned by this endpoint. This API requires a [registered application key](https://docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions [in the UI](https://docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
+    <td>List all apps, with optional filters and sorting. This endpoint is paginated. Only basic app information such as the app ID, name, and description is returned by this endpoint. This API requires a &#91;registered application key&#93;(https:​//docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions &#91;in the UI&#93;(https:​//docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
 </tr>
 <tr>
     <td><a href="#create_app"><CopyableCode code="create_app" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
     <td></td>
-    <td>Create a new app, returning the app ID. This API requires a [registered application key](https://docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions [in the UI](https://docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
+    <td></td>
+    <td>Create a new app, returning the app ID. This API requires a &#91;registered application key&#93;(https:​//docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions &#91;in the UI&#93;(https:​//docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
 </tr>
 <tr>
     <td><a href="#update_app"><CopyableCode code="update_app" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-app_id"><code>app_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-app_id"><code>app_id</code></a></td>
     <td></td>
-    <td>Update an existing app. This creates a new version of the app. This API requires a [registered application key](https://docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions [in the UI](https://docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
+    <td>Update an existing app. This creates a new version of the app. This API requires a &#91;registered application key&#93;(https:​//docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions &#91;in the UI&#93;(https:​//docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
 </tr>
 <tr>
     <td><a href="#delete_app"><CopyableCode code="delete_app" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-app_id"><code>app_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-app_id"><code>app_id</code></a></td>
     <td></td>
-    <td>Delete a single app. This API requires a [registered application key](https://docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions [in the UI](https://docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
+    <td>Delete a single app. This API requires a &#91;registered application key&#93;(https:​//docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions &#91;in the UI&#93;(https:​//docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
 </tr>
 <tr>
     <td><a href="#delete_apps"><CopyableCode code="delete_apps" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
     <td></td>
-    <td>Delete multiple apps in a single request from a list of app IDs. This API requires a [registered application key](https://docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions [in the UI](https://docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
+    <td></td>
+    <td>Delete multiple apps in a single request from a list of app IDs. This API requires a &#91;registered application key&#93;(https:​//docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions &#91;in the UI&#93;(https:​//docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
 </tr>
 <tr>
     <td><a href="#unpublish_app"><CopyableCode code="unpublish_app" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-app_id"><code>app_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-app_id"><code>app_id</code></a></td>
     <td></td>
-    <td>Unpublish an app, removing the live version of the app. Unpublishing creates a new instance of a `deployment` object on the app, with a nil `app_version_id` (`00000000-0000-0000-0000-000000000000`). The app can still be updated and published again in the future. This API requires a [registered application key](https://docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions [in the UI](https://docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
+    <td>Unpublish an app, removing the live version of the app. Unpublishing creates a new instance of a `deployment` object on the app, with a nil `app_version_id` (`00000000-0000-0000-0000-000000000000`). The app can still be updated and published again in the future. This API requires a &#91;registered application key&#93;(https:​//docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions &#91;in the UI&#93;(https:​//docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
 </tr>
 <tr>
     <td><a href="#publish_app"><CopyableCode code="publish_app" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-app_id"><code>app_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-app_id"><code>app_id</code></a></td>
     <td></td>
-    <td>Publish an app for use by other users. To ensure the app is accessible to the correct users, you also need to set a [Restriction Policy](https://docs.datadoghq.com/api/latest/restriction-policies/) on the app if a policy does not yet exist. This API requires a [registered application key](https://docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions [in the UI](https://docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
+    <td>Publish an app for use by other users. To ensure the app is accessible to the correct users, you also need to set a &#91;Restriction Policy&#93;(https:​//docs.datadoghq.com/api/latest/restriction-policies/) on the app if a policy does not yet exist. This API requires a &#91;registered application key&#93;(https:​//docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions &#91;in the UI&#93;(https:​//docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
 </tr>
 </tbody>
 </table>
@@ -200,10 +201,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string (uuid)</code></td>
     <td>The ID of the app to publish. (example: 65bb1f25-52e1-4510-9f8d-22d1516ed693)</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter[deployed]">
     <td><CopyableCode code="filter[deployed]" /></td>
@@ -288,7 +289,6 @@ attributes,
 type
 FROM datadog.infrastructure.apps
 WHERE app_id = '{{ app_id }}' -- required
-AND region = '{{ region }}' -- required
 AND version = '{{ version }}'
 ;
 ```
@@ -305,8 +305,7 @@ meta,
 relationships,
 type
 FROM datadog.infrastructure.apps
-WHERE region = '{{ region }}' -- required
-AND limit = '{{ limit }}'
+WHERE limit = '{{ limit }}'
 AND page = '{{ page }}'
 AND filter[user_name] = '{{ filter[user_name] }}'
 AND filter[user_uuid] = '{{ filter[user_uuid] }}'
@@ -338,12 +337,10 @@ Create a new app, returning the app ID. This API requires a [registered applicat
 
 ```sql
 INSERT INTO datadog.infrastructure.apps (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}',
-'{{ region }}'
+'{{ data }}'
 RETURNING
 data
 ;
@@ -351,18 +348,53 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: apps
   props:
-    - name: region
-      value: string
-      description: Required parameter for the apps resource.
     - name: data
-      value: object
       description: |
         The data object containing the app definition.
-```
+      value:
+        attributes:
+          components:
+            - events: "{{ events }}"
+              id: "{{ id }}"
+              name: "{{ name }}"
+              properties:
+                backgroundColor: "{{ backgroundColor }}"
+                children:
+                  - events: "{{ events }}"
+                    id: "{{ id }}"
+                    name: "{{ name }}"
+                    properties:
+                      children: "{{ children }}"
+                      isVisible: {{ isVisible }}
+                    type: "{{ type }}"
+                isVisible: "{{ isVisible }}"
+              type: "{{ type }}"
+          description: "{{ description }}"
+          name: "{{ name }}"
+          queries:
+            - events: "{{ events }}"
+              id: "{{ id }}"
+              name: "{{ name }}"
+              properties:
+                condition: {{ condition }}
+                debounceInMs: {{ debounceInMs }}
+                mockedOutputs: "{{ mockedOutputs }}"
+                onlyTriggerManually: {{ onlyTriggerManually }}
+                outputs: "{{ outputs }}"
+                pollingIntervalInMs: {{ pollingIntervalInMs }}
+                requiresConfirmation: {{ requiresConfirmation }}
+                showToastOnError: {{ showToastOnError }}
+                spec: "{{ spec }}"
+              type: "{{ type }}"
+          rootInstanceName: "{{ rootInstanceName }}"
+          tags:
+            - "{{ tags }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -382,10 +414,9 @@ Update an existing app. This creates a new version of the app. This API requires
 ```sql
 UPDATE datadog.infrastructure.apps
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 app_id = '{{ app_id }}' --required
-AND region = '{{ region }}' --required
 RETURNING
 data,
 included,
@@ -412,7 +443,6 @@ Delete a single app. This API requires a [registered application key](https://do
 ```sql
 DELETE FROM datadog.infrastructure.apps
 WHERE app_id = '{{ app_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>
@@ -422,7 +452,6 @@ Delete multiple apps in a single request from a list of app IDs. This API requir
 
 ```sql
 DELETE FROM datadog.infrastructure.apps
-WHERE region = '{{ region }}' --required
 ;
 ```
 </TabItem>
@@ -430,6 +459,8 @@ WHERE region = '{{ region }}' --required
 
 
 ## Lifecycle Methods
+
+EXEC variables use wire (API) names.
 
 <Tabs
     defaultValue="unpublish_app"
@@ -444,8 +475,7 @@ Unpublish an app, removing the live version of the app. Unpublishing creates a n
 
 ```sql
 EXEC datadog.infrastructure.apps.unpublish_app 
-@app_id='{{ app_id }}' --required, 
-@region='{{ region }}' --required
+@app_id='{{ app_id }}' --required 
 ;
 ```
 </TabItem>
@@ -455,8 +485,7 @@ Publish an app for use by other users. To ensure the app is accessible to the co
 
 ```sql
 EXEC datadog.infrastructure.apps.publish_app 
-@app_id='{{ app_id }}' --required, 
-@region='{{ region }}' --required
+@app_id='{{ app_id }}' --required 
 ;
 ```
 </TabItem>

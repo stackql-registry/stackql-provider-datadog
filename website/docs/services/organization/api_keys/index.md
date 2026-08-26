@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>api_keys</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>api_keys</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="api_keys" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.organization.api_keys" /></td></tr>
 </tbody></table>
@@ -67,7 +68,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>API Keys resource type. (default: api_keys, example: api_keys)</td>
+    <td>API Keys resource type. (api_keys) (default: api_keys, example: api_keys)</td>
 </tr>
 </tbody>
 </table>
@@ -101,7 +102,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>API Keys resource type. (default: api_keys, example: api_keys)</td>
+    <td>API Keys resource type. (api_keys) (default: api_keys, example: api_keys)</td>
 </tr>
 </tbody>
 </table>
@@ -126,35 +127,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_apikey"><CopyableCode code="get_apikey" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-api_key_id"><code>api_key_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-api_key_id"><code>api_key_id</code></a></td>
     <td><a href="#parameter-include"><code>include</code></a></td>
     <td>Get an API key.</td>
 </tr>
 <tr>
     <td><a href="#list_apikeys"><CopyableCode code="list_apikeys" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-page[number]"><code>page[number]</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-filter"><code>filter</code></a>, <a href="#parameter-filter[created_at][start]"><code>filter[created_at][start]</code></a>, <a href="#parameter-filter[created_at][end]"><code>filter[created_at][end]</code></a>, <a href="#parameter-filter[modified_at][start]"><code>filter[modified_at][start]</code></a>, <a href="#parameter-filter[modified_at][end]"><code>filter[modified_at][end]</code></a>, <a href="#parameter-include"><code>include</code></a>, <a href="#parameter-filter[remote_config_read_enabled]"><code>filter[remote_config_read_enabled]</code></a>, <a href="#parameter-filter[category]"><code>filter[category]</code></a></td>
     <td>List all API keys available for your account.</td>
 </tr>
 <tr>
     <td><a href="#create_apikey"><CopyableCode code="create_apikey" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Create an API key.</td>
 </tr>
 <tr>
     <td><a href="#update_apikey"><CopyableCode code="update_apikey" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-api_key_id"><code>api_key_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-api_key_id"><code>api_key_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Update an API key.</td>
 </tr>
 <tr>
     <td><a href="#delete_apikey"><CopyableCode code="delete_apikey" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-api_key_id"><code>api_key_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-api_key_id"><code>api_key_id</code></a></td>
     <td></td>
     <td>Delete an API key.</td>
 </tr>
@@ -179,10 +180,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The ID of the API key.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter">
     <td><CopyableCode code="filter" /></td>
@@ -232,7 +233,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-page[size]">
     <td><CopyableCode code="page[size]" /></td>
     <td><code>integer (int64)</code></td>
-    <td>Size for a given page. The maximum allowed value is 100.</td>
+    <td>Number of items to return per page. The maximum allowed value is 100.</td>
 </tr>
 <tr id="parameter-sort">
     <td><CopyableCode code="sort" /></td>
@@ -263,7 +264,6 @@ relationships,
 type
 FROM datadog.organization.api_keys
 WHERE api_key_id = '{{ api_key_id }}' -- required
-AND region = '{{ region }}' -- required
 AND include = '{{ include }}'
 ;
 ```
@@ -279,8 +279,7 @@ attributes,
 relationships,
 type
 FROM datadog.organization.api_keys
-WHERE region = '{{ region }}' -- required
-AND page[size] = '{{ page[size] }}'
+WHERE page[size] = '{{ page[size] }}'
 AND page[number] = '{{ page[number] }}'
 AND sort = '{{ sort }}'
 AND filter = '{{ filter }}'
@@ -312,12 +311,10 @@ Create an API key.
 
 ```sql
 INSERT INTO datadog.organization.api_keys (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data,
 included
@@ -326,18 +323,20 @@ included
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: api_keys
   props:
-    - name: region
-      value: string
-      description: Required parameter for the api_keys resource.
     - name: data
-      value: object
       description: |
         Object used to create an API key.
-```
+      value:
+        attributes:
+          category: "{{ category }}"
+          name: "{{ name }}"
+          remote_config_read_enabled: {{ remote_config_read_enabled }}
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -357,11 +356,10 @@ Update an API key.
 ```sql
 UPDATE datadog.organization.api_keys
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 api_key_id = '{{ api_key_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data,
 included;
@@ -385,7 +383,6 @@ Delete an API key.
 ```sql
 DELETE FROM datadog.organization.api_keys
 WHERE api_key_id = '{{ api_key_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

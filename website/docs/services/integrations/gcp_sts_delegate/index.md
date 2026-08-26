@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>gcp_sts_delegate</code> resourc
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>gcp_sts_delegate</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="gcp_sts_delegate" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.integrations.gcp_sts_delegate" /></td></tr>
 </tbody></table>
@@ -61,7 +62,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of account. (default: gcp_sts_delegate, example: gcp_sts_delegate)</td>
+    <td>The type of account. (gcp_sts_delegate) (default: gcp_sts_delegate, example: gcp_sts_delegate)</td>
 </tr>
 </tbody>
 </table>
@@ -86,14 +87,14 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_gcpstsdelegate"><CopyableCode code="get_gcpstsdelegate" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>List your Datadog-GCP STS delegate account configured in your Datadog account.</td>
 </tr>
 <tr>
     <td><a href="#make_gcpstsdelegate"><CopyableCode code="make_gcpstsdelegate" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Create a Datadog GCP principal.</td>
 </tr>
@@ -113,10 +114,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -139,7 +140,6 @@ id,
 attributes,
 type
 FROM datadog.integrations.gcp_sts_delegate
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -147,6 +147,8 @@ WHERE region = '{{ region }}' -- required
 
 
 ## Lifecycle Methods
+
+EXEC variables use wire (API) names.
 
 <Tabs
     defaultValue="make_gcpstsdelegate"
@@ -160,7 +162,6 @@ Create a Datadog GCP principal.
 
 ```sql
 EXEC datadog.integrations.gcp_sts_delegate.make_gcpstsdelegate 
-@region='{{ region }}' --required
 ;
 ```
 </TabItem>

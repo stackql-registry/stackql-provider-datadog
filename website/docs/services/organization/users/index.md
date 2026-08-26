@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>users</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>users</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="users" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.organization.users" /></td></tr>
 </tbody></table>
@@ -67,7 +68,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Users resource type. (default: users, example: users)</td>
+    <td>Users resource type. (users) (default: users, example: users)</td>
 </tr>
 </tbody>
 </table>
@@ -101,7 +102,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Users resource type. (default: users, example: users)</td>
+    <td>Users resource type. (users) (default: users, example: users)</td>
 </tr>
 </tbody>
 </table>
@@ -126,37 +127,44 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_user"><CopyableCode code="get_user" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-user_id"><code>user_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-user_id"><code>user_id</code></a></td>
     <td></td>
     <td>Get a user in the organization specified by the user’s `user_id`.</td>
 </tr>
 <tr>
     <td><a href="#list_users"><CopyableCode code="list_users" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-page[number]"><code>page[number]</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-sort_dir"><code>sort_dir</code></a>, <a href="#parameter-filter"><code>filter</code></a>, <a href="#parameter-filter[status]"><code>filter[status]</code></a></td>
-    <td>Get the list of all users in the organization. This list includes<br />all users even if they are deactivated or unverified.</td>
+    <td>Get the list of all users in the organization. This list includes&lt;br /&gt;all users even if they are deactivated or unverified.</td>
 </tr>
 <tr>
     <td><a href="#create_user"><CopyableCode code="create_user" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Create a user for your organization.</td>
 </tr>
 <tr>
     <td><a href="#update_user"><CopyableCode code="update_user" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-user_id"><code>user_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-user_id"><code>user_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
-    <td>Edit a user. Can only be used with an application key belonging<br />to an administrator user.</td>
+    <td>Edit a user. Can only be used with an application key belonging&lt;br /&gt;to an administrator user.</td>
+</tr>
+<tr>
+    <td><a href="#anonymize_users"><CopyableCode code="anonymize_users" /></a></td>
+    <td><CopyableCode code="exec" /></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
+    <td></td>
+    <td>Anonymize a list of users, removing their personal data. This operation is irreversible.&lt;br /&gt;Requires the `user_access_manage` permission.</td>
 </tr>
 <tr>
     <td><a href="#disable_user"><CopyableCode code="disable_user" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-user_id"><code>user_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-user_id"><code>user_id</code></a></td>
     <td></td>
-    <td>Disable a user. Can only be used with an application key belonging<br />to an administrator user.</td>
+    <td>Disable a user. Can only be used with an application key belonging&lt;br /&gt;to an administrator user.</td>
 </tr>
 </tbody>
 </table>
@@ -174,10 +182,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-user_id">
     <td><CopyableCode code="user_id" /></td>
@@ -202,7 +210,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-page[size]">
     <td><CopyableCode code="page[size]" /></td>
     <td><code>integer (int64)</code></td>
-    <td>Size for a given page. The maximum allowed value is 100.</td>
+    <td>Number of items to return per page. The maximum allowed value is 100.</td>
 </tr>
 <tr id="parameter-sort">
     <td><CopyableCode code="sort" /></td>
@@ -238,13 +246,12 @@ relationships,
 type
 FROM datadog.organization.users
 WHERE user_id = '{{ user_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
 <TabItem value="list_users">
 
-Get the list of all users in the organization. This list includes<br />all users even if they are deactivated or unverified.
+Get the list of all users in the organization. This list includes&lt;br /&gt;all users even if they are deactivated or unverified.
 
 ```sql
 SELECT
@@ -253,8 +260,7 @@ attributes,
 relationships,
 type
 FROM datadog.organization.users
-WHERE region = '{{ region }}' -- required
-AND page[size] = '{{ page[size] }}'
+WHERE page[size] = '{{ page[size] }}'
 AND page[number] = '{{ page[number] }}'
 AND sort = '{{ sort }}'
 AND sort_dir = '{{ sort_dir }}'
@@ -281,12 +287,10 @@ Create a user for your organization.
 
 ```sql
 INSERT INTO datadog.organization.users (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data,
 included
@@ -295,18 +299,25 @@ included
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: users
   props:
-    - name: region
-      value: string
-      description: Required parameter for the users resource.
     - name: data
-      value: object
       description: |
         Object to create a user.
-```
+      value:
+        attributes:
+          email: "{{ email }}"
+          name: "{{ name }}"
+          title: "{{ title }}"
+        relationships:
+          roles:
+            data:
+              - id: "{{ id }}"
+                type: "{{ type }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -321,16 +332,15 @@ included
 >
 <TabItem value="update_user">
 
-Edit a user. Can only be used with an application key belonging<br />to an administrator user.
+Edit a user. Can only be used with an application key belonging&lt;br /&gt;to an administrator user.
 
 ```sql
 UPDATE datadog.organization.users
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 user_id = '{{ user_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data,
 included;
@@ -341,20 +351,35 @@ included;
 
 ## Lifecycle Methods
 
+EXEC variables use wire (API) names.
+
 <Tabs
-    defaultValue="disable_user"
+    defaultValue="anonymize_users"
     values={[
+        { label: 'anonymize_users', value: 'anonymize_users' },
         { label: 'disable_user', value: 'disable_user' }
     ]}
 >
+<TabItem value="anonymize_users">
+
+Anonymize a list of users, removing their personal data. This operation is irreversible.&lt;br /&gt;Requires the `user_access_manage` permission.
+
+```sql
+EXEC datadog.organization.users.anonymize_users 
+@@json=
+'{
+"data": "{{ data }}"
+}'
+;
+```
+</TabItem>
 <TabItem value="disable_user">
 
-Disable a user. Can only be used with an application key belonging<br />to an administrator user.
+Disable a user. Can only be used with an application key belonging&lt;br /&gt;to an administrator user.
 
 ```sql
 EXEC datadog.organization.users.disable_user 
-@user_id='{{ user_id }}' --required, 
-@region='{{ region }}' --required
+@user_id='{{ user_id }}' --required 
 ;
 ```
 </TabItem>

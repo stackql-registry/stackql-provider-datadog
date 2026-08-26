@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>notification_rules</code> resou
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>notification_rules</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="notification_rules" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.monitoring.notification_rules" /></td></tr>
 </tbody></table>
@@ -67,7 +68,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Monitor notification rule resource type. (default: monitor-notification-rule, example: monitor-notification-rule)</td>
+    <td>Monitor notification rule resource type. (monitor-notification-rule) (default: monitor-notification-rule, example: monitor-notification-rule)</td>
 </tr>
 </tbody>
 </table>
@@ -101,7 +102,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Monitor notification rule resource type. (default: monitor-notification-rule, example: monitor-notification-rule)</td>
+    <td>Monitor notification rule resource type. (monitor-notification-rule) (default: monitor-notification-rule, example: monitor-notification-rule)</td>
 </tr>
 </tbody>
 </table>
@@ -126,35 +127,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_monitor_notification_rule"><CopyableCode code="get_monitor_notification_rule" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-rule_id"><code>rule_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-rule_id"><code>rule_id</code></a></td>
     <td><a href="#parameter-include"><code>include</code></a></td>
     <td>Returns a monitor notification rule by `rule_id`.</td>
 </tr>
 <tr>
     <td><a href="#get_monitor_notification_rules"><CopyableCode code="get_monitor_notification_rules" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-page"><code>page</code></a>, <a href="#parameter-per_page"><code>per_page</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-filters"><code>filters</code></a>, <a href="#parameter-include"><code>include</code></a></td>
     <td>Returns a list of all monitor notification rules.</td>
 </tr>
 <tr>
     <td><a href="#create_monitor_notification_rule"><CopyableCode code="create_monitor_notification_rule" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Creates a monitor notification rule.</td>
 </tr>
 <tr>
     <td><a href="#update_monitor_notification_rule"><CopyableCode code="update_monitor_notification_rule" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-rule_id"><code>rule_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-rule_id"><code>rule_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Updates a monitor notification rule by `rule_id`.</td>
 </tr>
 <tr>
     <td><a href="#delete_monitor_notification_rule"><CopyableCode code="delete_monitor_notification_rule" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-rule_id"><code>rule_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-rule_id"><code>rule_id</code></a></td>
     <td></td>
     <td>Deletes a monitor notification rule by `rule_id`.</td>
 </tr>
@@ -174,20 +175,20 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
-    <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
-</tr>
 <tr id="parameter-rule_id">
     <td><CopyableCode code="rule_id" /></td>
     <td><code>string</code></td>
     <td>ID of the monitor notification rule to delete.</td>
 </tr>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
+    <td><code>string</code></td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
+</tr>
 <tr id="parameter-filters">
     <td><CopyableCode code="filters" /></td>
     <td><code>string</code></td>
-    <td>JSON-encoded filter object. Supported keys: * `text`: Free-text query matched against rule name, tags, and recipients. * `tags`: Array of strings. Return rules that have any of these tags. * `recipients`: Array of strings. Return rules that have any of these recipients. (example: &#123;"text":"error","tags":["env:prod","team:my-team"],"recipients":["slack-monitor-app","email@example.com"]&#125;)</td>
+    <td>JSON-encoded filter object. Supported keys: * `text`: Free-text query matched against rule name, tags, and recipients. * `tags`: Array of strings. Return rules that have any of these tags. * `recipients`: Array of strings. Return rules that have any of these recipients. (example: &#123;"text":"error","tags":&#91;"env:prod","team:my-team"&#93;,"recipients":&#91;"slack-monitor-app","email@example.com"&#93;&#125;)</td>
 </tr>
 <tr id="parameter-include">
     <td><CopyableCode code="include" /></td>
@@ -233,7 +234,6 @@ relationships,
 type
 FROM datadog.monitoring.notification_rules
 WHERE rule_id = '{{ rule_id }}' -- required
-AND region = '{{ region }}' -- required
 AND include = '{{ include }}'
 ;
 ```
@@ -249,8 +249,7 @@ attributes,
 relationships,
 type
 FROM datadog.monitoring.notification_rules
-WHERE region = '{{ region }}' -- required
-AND page = '{{ page }}'
+WHERE page = '{{ page }}'
 AND per_page = '{{ per_page }}'
 AND sort = '{{ sort }}'
 AND filters = '{{ filters }}'
@@ -276,12 +275,10 @@ Creates a monitor notification rule.
 
 ```sql
 INSERT INTO datadog.monitoring.notification_rules (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data,
 included
@@ -290,18 +287,32 @@ included
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: notification_rules
   props:
-    - name: region
-      value: string
-      description: Required parameter for the notification_rules resource.
     - name: data
-      value: object
       description: |
         Object to create a monitor notification rule.
-```
+      value:
+        attributes:
+          bundle_config:
+            duration: {{ duration }}
+          conditional_recipients:
+            conditions:
+              - recipients: "{{ recipients }}"
+                scope: "{{ scope }}"
+            fallback_recipients:
+              - "{{ fallback_recipients }}"
+          filter:
+            tags:
+              - "{{ tags }}"
+            scope: "{{ scope }}"
+          name: "{{ name }}"
+          recipients:
+            - "{{ recipients }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -321,11 +332,10 @@ Updates a monitor notification rule by `rule_id`.
 ```sql
 UPDATE datadog.monitoring.notification_rules
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 rule_id = '{{ rule_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data,
 included;
@@ -349,7 +359,6 @@ Deletes a monitor notification rule by `rule_id`.
 ```sql
 DELETE FROM datadog.monitoring.notification_rules
 WHERE rule_id = '{{ rule_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

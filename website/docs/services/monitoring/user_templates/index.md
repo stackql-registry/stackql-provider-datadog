@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>user_templates</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>user_templates</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="user_templates" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.monitoring.user_templates" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Monitor user template resource type. (default: monitor-user-template, example: monitor-user-template)</td>
+    <td>Monitor user template resource type. (monitor-user-template) (default: monitor-user-template, example: monitor-user-template)</td>
 </tr>
 </tbody>
 </table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Monitor user template resource type. (default: monitor-user-template, example: monitor-user-template)</td>
+    <td>Monitor user template resource type. (monitor-user-template) (default: monitor-user-template, example: monitor-user-template)</td>
 </tr>
 </tbody>
 </table>
@@ -116,49 +117,49 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_monitor_user_template"><CopyableCode code="get_monitor_user_template" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-template_id"><code>template_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-template_id"><code>template_id</code></a></td>
     <td><a href="#parameter-with_all_versions"><code>with_all_versions</code></a></td>
     <td>Retrieve a monitor user template by its ID.</td>
 </tr>
 <tr>
     <td><a href="#list_monitor_user_templates"><CopyableCode code="list_monitor_user_templates" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Retrieve all monitor user templates.</td>
 </tr>
 <tr>
     <td><a href="#create_monitor_user_template"><CopyableCode code="create_monitor_user_template" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Create a new monitor user template.</td>
 </tr>
 <tr>
     <td><a href="#update_monitor_user_template"><CopyableCode code="update_monitor_user_template" /></a></td>
     <td><CopyableCode code="replace" /></td>
-    <td><a href="#parameter-template_id"><code>template_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-template_id"><code>template_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Creates a new version of an existing monitor user template.</td>
 </tr>
 <tr>
     <td><a href="#delete_monitor_user_template"><CopyableCode code="delete_monitor_user_template" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-template_id"><code>template_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-template_id"><code>template_id</code></a></td>
     <td></td>
     <td>Delete an existing monitor user template by its ID.</td>
 </tr>
 <tr>
     <td><a href="#validate_monitor_user_template"><CopyableCode code="validate_monitor_user_template" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data"><code>data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Validate the structure and content of a monitor user template.</td>
 </tr>
 <tr>
     <td><a href="#validate_existing_monitor_user_template"><CopyableCode code="validate_existing_monitor_user_template" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-template_id"><code>template_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data"><code>data</code></a></td>
+    <td><a href="#parameter-template_id"><code>template_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Validate the structure and content of an existing monitor user template being updated to a new version.</td>
 </tr>
@@ -178,10 +179,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-template_id">
     <td><CopyableCode code="template_id" /></td>
@@ -216,7 +217,6 @@ attributes,
 type
 FROM datadog.monitoring.user_templates
 WHERE template_id = '{{ template_id }}' -- required
-AND region = '{{ region }}' -- required
 AND with_all_versions = '{{ with_all_versions }}'
 ;
 ```
@@ -231,7 +231,6 @@ id,
 attributes,
 type
 FROM datadog.monitoring.user_templates
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -253,12 +252,10 @@ Create a new monitor user template.
 
 ```sql
 INSERT INTO datadog.monitoring.user_templates (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -266,18 +263,27 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: user_templates
   props:
-    - name: region
-      value: string
-      description: Required parameter for the user_templates resource.
     - name: data
-      value: object
       description: |
         Monitor user template data.
-```
+      value:
+        attributes:
+          description: "{{ description }}"
+          monitor_definition: "{{ monitor_definition }}"
+          tags:
+            - "{{ tags }}"
+          template_variables:
+            - available_values: "{{ available_values }}"
+              defaults: "{{ defaults }}"
+              name: "{{ name }}"
+              tag_key: "{{ tag_key }}"
+          title: "{{ title }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -297,11 +303,10 @@ Creates a new version of an existing monitor user template.
 ```sql
 REPLACE datadog.monitoring.user_templates
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 template_id = '{{ template_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -324,7 +329,6 @@ Delete an existing monitor user template by its ID.
 ```sql
 DELETE FROM datadog.monitoring.user_templates
 WHERE template_id = '{{ template_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>
@@ -332,6 +336,8 @@ AND region = '{{ region }}' --required
 
 
 ## Lifecycle Methods
+
+EXEC variables use wire (API) names.
 
 <Tabs
     defaultValue="validate_monitor_user_template"
@@ -346,7 +352,6 @@ Validate the structure and content of a monitor user template.
 
 ```sql
 EXEC datadog.monitoring.user_templates.validate_monitor_user_template 
-@region='{{ region }}' --required 
 @@json=
 '{
 "data": "{{ data }}"
@@ -361,7 +366,6 @@ Validate the structure and content of an existing monitor user template being up
 ```sql
 EXEC datadog.monitoring.user_templates.validate_existing_monitor_user_template 
 @template_id='{{ template_id }}' --required, 
-@region='{{ region }}' --required 
 @@json=
 '{
 "data": "{{ data }}"

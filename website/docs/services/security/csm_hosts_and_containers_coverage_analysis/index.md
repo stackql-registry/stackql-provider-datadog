@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>csm_hosts_and_containers_covera
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>csm_hosts_and_containers_coverage_analysis</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="csm_hosts_and_containers_coverage_analysis" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.security.csm_hosts_and_containers_coverage_analysis" /></td></tr>
 </tbody></table>
@@ -86,9 +87,9 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_csmhosts_and_containers_coverage_analysis"><CopyableCode code="get_csmhosts_and_containers_coverage_analysis" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
     <td></td>
-    <td>Get the CSM Coverage Analysis of your Hosts and Containers.<br />This is calculated based on the number of agents running on your Hosts<br />and Containers with CSM feature(s) enabled.</td>
+    <td></td>
+    <td>Get the CSM Coverage Analysis of your Hosts and Containers.&lt;br /&gt;This is calculated based on the number of agents running on your Hosts&lt;br /&gt;and Containers with CSM feature(s) enabled.</td>
 </tr>
 </tbody>
 </table>
@@ -106,10 +107,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -124,7 +125,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 >
 <TabItem value="get_csmhosts_and_containers_coverage_analysis">
 
-Get the CSM Coverage Analysis of your Hosts and Containers.<br />This is calculated based on the number of agents running on your Hosts<br />and Containers with CSM feature(s) enabled.
+Get the CSM Coverage Analysis of your Hosts and Containers.&lt;br /&gt;This is calculated based on the number of agents running on your Hosts&lt;br /&gt;and Containers with CSM feature(s) enabled.
 
 ```sql
 SELECT
@@ -132,7 +133,6 @@ id,
 attributes,
 type
 FROM datadog.security.csm_hosts_and_containers_coverage_analysis
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>

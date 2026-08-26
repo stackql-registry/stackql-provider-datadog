@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>device_interfaces</code> resour
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>device_interfaces</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="device_interfaces" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.infrastructure.device_interfaces" /></td></tr>
 </tbody></table>
@@ -86,7 +87,7 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_interfaces"><CopyableCode code="get_interfaces" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-device_id"><code>device_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-device_id"><code>device_id</code></a></td>
     <td><a href="#parameter-get_ip_addresses"><code>get_ip_addresses</code></a></td>
     <td>Get the list of interfaces of the device.</td>
 </tr>
@@ -111,10 +112,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The ID of the device to get interfaces from. (example: example:1.2.3.4)</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-get_ip_addresses">
     <td><CopyableCode code="get_ip_addresses" /></td>
@@ -143,7 +144,6 @@ attributes,
 type
 FROM datadog.infrastructure.device_interfaces
 WHERE device_id = '{{ device_id }}' -- required
-AND region = '{{ region }}' -- required
 AND get_ip_addresses = '{{ get_ip_addresses }}'
 ;
 ```

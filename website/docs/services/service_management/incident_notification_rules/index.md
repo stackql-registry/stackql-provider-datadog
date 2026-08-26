@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>incident_notification_rules</c
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>incident_notification_rules</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="incident_notification_rules" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.service_management.incident_notification_rules" /></td></tr>
 </tbody></table>
@@ -67,7 +68,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Notification rules resource type. (example: incident_notification_rules)</td>
+    <td>Notification rules resource type. (incident_notification_rules) (example: incident_notification_rules)</td>
 </tr>
 </tbody>
 </table>
@@ -101,7 +102,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Notification rules resource type. (example: incident_notification_rules)</td>
+    <td>Notification rules resource type. (incident_notification_rules) (example: incident_notification_rules)</td>
 </tr>
 </tbody>
 </table>
@@ -126,35 +127,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_incident_notification_rule"><CopyableCode code="get_incident_notification_rule" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-id"><code>id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-id"><code>id</code></a></td>
     <td><a href="#parameter-include"><code>include</code></a></td>
     <td>Retrieves a specific notification rule by its ID.</td>
 </tr>
 <tr>
     <td><a href="#list_incident_notification_rules"><CopyableCode code="list_incident_notification_rules" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-include"><code>include</code></a></td>
     <td>Lists all notification rules for the organization. Optionally filter by incident type.</td>
 </tr>
 <tr>
     <td><a href="#create_incident_notification_rule"><CopyableCode code="create_incident_notification_rule" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Creates a new notification rule.</td>
 </tr>
 <tr>
     <td><a href="#update_incident_notification_rule"><CopyableCode code="update_incident_notification_rule" /></a></td>
     <td><CopyableCode code="replace" /></td>
-    <td><a href="#parameter-id"><code>id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-id"><code>id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td><a href="#parameter-include"><code>include</code></a></td>
     <td>Updates an existing notification rule with a complete replacement.</td>
 </tr>
 <tr>
     <td><a href="#delete_incident_notification_rule"><CopyableCode code="delete_incident_notification_rule" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-id"><code>id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-id"><code>id</code></a></td>
     <td><a href="#parameter-include"><code>include</code></a></td>
     <td>Deletes a notification rule by its ID.</td>
 </tr>
@@ -179,15 +180,15 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string (uuid)</code></td>
     <td>The ID of the notification rule.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-include">
     <td><CopyableCode code="include" /></td>
     <td><code>string</code></td>
-    <td>Comma-separated list of resources to include. Supported values: `created_by_user`, `last_modified_by_user`, `incident_type`, `notification_template` </td>
+    <td>Comma-separated list of resources to include. Supported values: `created_by_user`, `last_modified_by_user`, `incident_type`, `notification_template`</td>
 </tr>
 </tbody>
 </table>
@@ -213,7 +214,6 @@ relationships,
 type
 FROM datadog.service_management.incident_notification_rules
 WHERE id = '{{ id }}' -- required
-AND region = '{{ region }}' -- required
 AND include = '{{ include }}'
 ;
 ```
@@ -229,8 +229,7 @@ attributes,
 relationships,
 type
 FROM datadog.service_management.incident_notification_rules
-WHERE region = '{{ region }}' -- required
-AND include = '{{ include }}'
+WHERE include = '{{ include }}'
 ;
 ```
 </TabItem>
@@ -252,12 +251,10 @@ Creates a new notification rule.
 
 ```sql
 INSERT INTO datadog.service_management.incident_notification_rules (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data,
 included
@@ -266,18 +263,36 @@ included
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: incident_notification_rules
   props:
-    - name: region
-      value: string
-      description: Required parameter for the incident_notification_rules resource.
     - name: data
-      value: object
       description: |
         Notification rule data for a create request.
-```
+      value:
+        attributes:
+          conditions:
+            - field: "{{ field }}"
+              values: "{{ values }}"
+          enabled: {{ enabled }}
+          handles:
+            - "{{ handles }}"
+          renotify_on:
+            - "{{ renotify_on }}"
+          trigger: "{{ trigger }}"
+          visibility: "{{ visibility }}"
+        relationships:
+          incident_type:
+            data:
+              id: "{{ id }}"
+              type: "{{ type }}"
+          notification_template:
+            data:
+              id: "{{ id }}"
+              type: "{{ type }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -297,11 +312,10 @@ Updates an existing notification rule with a complete replacement.
 ```sql
 REPLACE datadog.service_management.incident_notification_rules
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 id = '{{ id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 AND include = '{{ include}}'
 RETURNING
 data,
@@ -326,7 +340,6 @@ Deletes a notification rule by its ID.
 ```sql
 DELETE FROM datadog.service_management.incident_notification_rules
 WHERE id = '{{ id }}' --required
-AND region = '{{ region }}' --required
 AND include = '{{ include }}'
 ;
 ```

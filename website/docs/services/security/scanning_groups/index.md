@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>scanning_groups</code> resource
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>scanning_groups</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="scanning_groups" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.security.scanning_groups" /></td></tr>
 </tbody></table>
@@ -66,7 +67,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Sensitive Data Scanner configuration type. (default: sensitive_data_scanner_configuration, example: sensitive_data_scanner_configuration)</td>
+    <td>Sensitive Data Scanner configuration type. (sensitive_data_scanner_configuration) (default: sensitive_data_scanner_configuration, example: sensitive_data_scanner_configuration)</td>
 </tr>
 </tbody>
 </table>
@@ -91,35 +92,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_scanning_groups"><CopyableCode code="list_scanning_groups" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>List all the Scanning groups in your organization.</td>
 </tr>
 <tr>
     <td><a href="#create_scanning_group"><CopyableCode code="create_scanning_group" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
     <td></td>
-    <td>Create a scanning group.<br />The request MAY include a configuration relationship.<br />A rules relationship can be omitted entirely, but if it is included it MUST be<br />null or an empty array (rules cannot be created at the same time).<br />The new group will be ordered last within the configuration.</td>
+    <td></td>
+    <td>Create a scanning group.&lt;br /&gt;The request MAY include a configuration relationship.&lt;br /&gt;A rules relationship can be omitted entirely, but if it is included it MUST be&lt;br /&gt;null or an empty array (rules cannot be created at the same time).&lt;br /&gt;The new group will be ordered last within the configuration.</td>
 </tr>
 <tr>
     <td><a href="#update_scanning_group"><CopyableCode code="update_scanning_group" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-group_id"><code>group_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a>, <a href="#parameter-data__meta"><code>data__meta</code></a></td>
+    <td><a href="#parameter-group_id"><code>group_id</code></a>, <a href="#parameter-data"><code>data</code></a>, <a href="#parameter-meta"><code>meta</code></a></td>
     <td></td>
-    <td>Update a group, including the order of the rules.<br />Rules within the group are reordered by including a rules relationship. If the rules<br />relationship is present, its data section MUST contain linkages for all of the rules<br />currently in the group, and MUST NOT contain any others.</td>
+    <td>Update a group, including the order of the rules.&lt;br /&gt;Rules within the group are reordered by including a rules relationship. If the rules&lt;br /&gt;relationship is present, its data section MUST contain linkages for all of the rules&lt;br /&gt;currently in the group, and MUST NOT contain any others.</td>
 </tr>
 <tr>
     <td><a href="#delete_scanning_group"><CopyableCode code="delete_scanning_group" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-group_id"><code>group_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-group_id"><code>group_id</code></a></td>
     <td></td>
     <td>Delete a given group.</td>
 </tr>
 <tr>
     <td><a href="#reorder_scanning_groups"><CopyableCode code="reorder_scanning_groups" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data"><code>data</code></a>, <a href="#parameter-meta"><code>meta</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a>, <a href="#parameter-meta"><code>meta</code></a></td>
     <td></td>
     <td>Reorder the list of groups.</td>
 </tr>
@@ -144,10 +145,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The ID of a group of rules.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -171,7 +172,6 @@ attributes,
 relationships,
 type
 FROM datadog.security.scanning_groups
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -189,18 +189,16 @@ WHERE region = '{{ region }}' -- required
 >
 <TabItem value="create_scanning_group">
 
-Create a scanning group.<br />The request MAY include a configuration relationship.<br />A rules relationship can be omitted entirely, but if it is included it MUST be<br />null or an empty array (rules cannot be created at the same time).<br />The new group will be ordered last within the configuration.
+Create a scanning group.&lt;br /&gt;The request MAY include a configuration relationship.&lt;br /&gt;A rules relationship can be omitted entirely, but if it is included it MUST be&lt;br /&gt;null or an empty array (rules cannot be created at the same time).&lt;br /&gt;The new group will be ordered last within the configuration.
 
 ```sql
 INSERT INTO datadog.security.scanning_groups (
-data__data,
-data__meta,
-region
+data,
+meta
 )
 SELECT 
 '{{ data }}',
-'{{ meta }}',
-'{{ region }}'
+'{{ meta }}'
 RETURNING
 data,
 meta
@@ -209,22 +207,41 @@ meta
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: scanning_groups
   props:
-    - name: region
-      value: string
-      description: Required parameter for the scanning_groups resource.
     - name: data
-      value: object
       description: |
         Data related to the creation of a group.
+      value:
+        attributes:
+          description: "{{ description }}"
+          filter:
+            query: "{{ query }}"
+          is_enabled: {{ is_enabled }}
+          name: "{{ name }}"
+          product_list:
+            - "{{ product_list }}"
+          samplings:
+            - product: "{{ product }}"
+              rate: {{ rate }}
+        relationships:
+          configuration:
+            data:
+              id: "{{ id }}"
+              type: "{{ type }}"
+          rules:
+            data:
+              - id: "{{ id }}"
+                type: "{{ type }}"
+        type: "{{ type }}"
     - name: meta
-      value: object
       description: |
         Meta payload containing information about the API.
-```
+      value:
+        version: {{ version }}
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -239,18 +256,17 @@ meta
 >
 <TabItem value="update_scanning_group">
 
-Update a group, including the order of the rules.<br />Rules within the group are reordered by including a rules relationship. If the rules<br />relationship is present, its data section MUST contain linkages for all of the rules<br />currently in the group, and MUST NOT contain any others.
+Update a group, including the order of the rules.&lt;br /&gt;Rules within the group are reordered by including a rules relationship. If the rules&lt;br /&gt;relationship is present, its data section MUST contain linkages for all of the rules&lt;br /&gt;currently in the group, and MUST NOT contain any others.
 
 ```sql
 UPDATE datadog.security.scanning_groups
 SET 
-data__data = '{{ data }}',
-data__meta = '{{ meta }}'
+data = '{{ data }}',
+meta = '{{ meta }}'
 WHERE 
 group_id = '{{ group_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
-AND data__meta = '{{ meta }}' --required
+AND data = '{{ data }}' --required
+AND meta = '{{ meta }}' --required
 RETURNING
 meta;
 ```
@@ -273,7 +289,6 @@ Delete a given group.
 ```sql
 DELETE FROM datadog.security.scanning_groups
 WHERE group_id = '{{ group_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>
@@ -281,6 +296,8 @@ AND region = '{{ region }}' --required
 
 
 ## Lifecycle Methods
+
+EXEC variables use wire (API) names.
 
 <Tabs
     defaultValue="reorder_scanning_groups"
@@ -294,7 +311,6 @@ Reorder the list of groups.
 
 ```sql
 EXEC datadog.security.scanning_groups.reorder_scanning_groups 
-@region='{{ region }}' --required 
 @@json=
 '{
 "data": "{{ data }}", 

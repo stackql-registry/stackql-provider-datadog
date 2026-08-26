@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>archive_read_roles</code> reso
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>archive_read_roles</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="archive_read_roles" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.logs.archive_read_roles" /></td></tr>
 </tbody></table>
@@ -66,7 +67,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Roles type. (default: roles, example: roles)</td>
+    <td>Roles type. (roles) (default: roles, example: roles)</td>
 </tr>
 </tbody>
 </table>
@@ -91,23 +92,23 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_archive_read_roles"><CopyableCode code="list_archive_read_roles" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-archive_id"><code>archive_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-archive_id"><code>archive_id</code></a></td>
     <td></td>
     <td>Returns all read roles a given archive is restricted to.</td>
 </tr>
 <tr>
     <td><a href="#add_read_role_to_archive"><CopyableCode code="add_read_role_to_archive" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-archive_id"><code>archive_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-archive_id"><code>archive_id</code></a></td>
     <td></td>
-    <td>Adds a read role to an archive. ([Roles API](https://docs.datadoghq.com/api/v2/roles/))</td>
+    <td>Adds a read role to an archive. (&#91;Roles API&#93;(https:​//docs.datadoghq.com/api/v2/roles/))</td>
 </tr>
 <tr>
     <td><a href="#remove_role_from_archive"><CopyableCode code="remove_role_from_archive" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-archive_id"><code>archive_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-archive_id"><code>archive_id</code></a></td>
     <td></td>
-    <td>Removes a role from an archive. ([Roles API](https://docs.datadoghq.com/api/v2/roles/))</td>
+    <td>Removes a role from an archive. (&#91;Roles API&#93;(https:​//docs.datadoghq.com/api/v2/roles/))</td>
 </tr>
 </tbody>
 </table>
@@ -130,10 +131,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The ID of the archive.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -158,7 +159,6 @@ relationships,
 type
 FROM datadog.logs.archive_read_roles
 WHERE archive_id = '{{ archive_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -180,34 +180,31 @@ Adds a read role to an archive. ([Roles API](https://docs.datadoghq.com/api/v2/r
 
 ```sql
 INSERT INTO datadog.logs.archive_read_roles (
-data__data,
-archive_id,
-region
+data,
+archive_id
 )
 SELECT 
 '{{ data }}',
-'{{ archive_id }}',
-'{{ region }}'
+'{{ archive_id }}'
 ;
 ```
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: archive_read_roles
   props:
     - name: archive_id
-      value: string
-      description: Required parameter for the archive_read_roles resource.
-    - name: region
-      value: string
+      value: "{{ archive_id }}"
       description: Required parameter for the archive_read_roles resource.
     - name: data
-      value: object
       description: |
         Relationship to role object.
-```
+      value:
+        id: "{{ id }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -227,7 +224,6 @@ Removes a role from an archive. ([Roles API](https://docs.datadoghq.com/api/v2/r
 ```sql
 DELETE FROM datadog.logs.archive_read_roles
 WHERE archive_id = '{{ archive_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

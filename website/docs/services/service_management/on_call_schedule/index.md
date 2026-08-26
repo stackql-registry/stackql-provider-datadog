@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>on_call_schedule</code> resour
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>on_call_schedule</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="on_call_schedule" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.service_management.on_call_schedule" /></td></tr>
 </tbody></table>
@@ -66,7 +67,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Schedules resource type. (default: schedules, example: schedules)</td>
+    <td>Schedules resource type. (schedules) (default: schedules, example: schedules)</td>
 </tr>
 </tbody>
 </table>
@@ -91,28 +92,28 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_on_call_schedule"><CopyableCode code="get_on_call_schedule" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-schedule_id"><code>schedule_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-schedule_id"><code>schedule_id</code></a></td>
     <td><a href="#parameter-include"><code>include</code></a></td>
     <td>Get an On-Call schedule</td>
 </tr>
 <tr>
     <td><a href="#create_on_call_schedule"><CopyableCode code="create_on_call_schedule" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td><a href="#parameter-include"><code>include</code></a></td>
     <td>Create a new On-Call schedule</td>
 </tr>
 <tr>
     <td><a href="#update_on_call_schedule"><CopyableCode code="update_on_call_schedule" /></a></td>
     <td><CopyableCode code="replace" /></td>
-    <td><a href="#parameter-schedule_id"><code>schedule_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-schedule_id"><code>schedule_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td><a href="#parameter-include"><code>include</code></a></td>
     <td>Update a new On-Call schedule</td>
 </tr>
 <tr>
     <td><a href="#delete_on_call_schedule"><CopyableCode code="delete_on_call_schedule" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-schedule_id"><code>schedule_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-schedule_id"><code>schedule_id</code></a></td>
     <td></td>
     <td>Delete an On-Call schedule</td>
 </tr>
@@ -132,15 +133,15 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
-    <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
-</tr>
 <tr id="parameter-schedule_id">
     <td><CopyableCode code="schedule_id" /></td>
     <td><code>string</code></td>
     <td>The ID of the schedule</td>
+</tr>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
+    <td><code>string</code></td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-include">
     <td><CopyableCode code="include" /></td>
@@ -170,7 +171,6 @@ relationships,
 type
 FROM datadog.service_management.on_call_schedule
 WHERE schedule_id = '{{ schedule_id }}' -- required
-AND region = '{{ region }}' -- required
 AND include = '{{ include }}'
 ;
 ```
@@ -193,13 +193,11 @@ Create a new On-Call schedule
 
 ```sql
 INSERT INTO datadog.service_management.on_call_schedule (
-data__data,
-region,
+data,
 include
 )
 SELECT 
 '{{ data }}' /* required */,
-'{{ region }}',
 '{{ include }}'
 RETURNING
 data,
@@ -209,21 +207,39 @@ included
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: on_call_schedule
   props:
-    - name: region
-      value: string
-      description: Required parameter for the on_call_schedule resource.
     - name: data
-      value: object
       description: |
         The core data wrapper for creating a schedule, encompassing attributes, relationships, and the resource type.
+      value:
+        attributes:
+          layers:
+            - effective_date: "{{ effective_date }}"
+              end_date: "{{ end_date }}"
+              interval:
+                days: {{ days }}
+                seconds: {{ seconds }}
+              members: "{{ members }}"
+              name: "{{ name }}"
+              restrictions: "{{ restrictions }}"
+              rotation_start: "{{ rotation_start }}"
+              time_zone: "{{ time_zone }}"
+          name: "{{ name }}"
+          time_zone: "{{ time_zone }}"
+        relationships:
+          teams:
+            data:
+              - id: "{{ id }}"
+                type: "{{ type }}"
+        type: "{{ type }}"
     - name: include
-      value: string
-      description: Comma-separated list of included relationships to be returned. Allowed values: `teams`, `layers`, `layers.members`, `layers.members.user`.
-```
+      value: "{{ include }}"
+      description: Comma-separated list of included relationships to be returned. Allowed values: \`teams\`, \`layers\`, \`layers.members\`, \`layers.members.user\`.
+      description: Comma-separated list of included relationships to be returned. Allowed values: \`teams\`, \`layers\`, \`layers.members\`, \`layers.members.user\`.
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -243,11 +259,10 @@ Update a new On-Call schedule
 ```sql
 REPLACE datadog.service_management.on_call_schedule
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 schedule_id = '{{ schedule_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 AND include = '{{ include}}'
 RETURNING
 data,
@@ -272,7 +287,6 @@ Delete an On-Call schedule
 ```sql
 DELETE FROM datadog.service_management.on_call_schedule
 WHERE schedule_id = '{{ schedule_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

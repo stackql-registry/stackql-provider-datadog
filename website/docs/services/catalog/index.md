@@ -18,18 +18,17 @@ catalog service documentation.
 
 :::info[Service Summary]
 
-total resources: __4__  
+total resources: __3__  
 
 :::
 
 ## Resources
 <div class="row">
 <div class="providerDocColumn">
-<a href="/services/catalog/apis/">apis</a><br />
-<a href="/services/catalog/catalog_entities/">catalog_entities</a>
+<a href="/services/catalog/catalog_entities/">catalog_entities</a><br />
+<a href="/services/catalog/catalog_kinds/">catalog_kinds</a>
 </div>
 <div class="providerDocColumn">
-<a href="/services/catalog/catalog_kinds/">catalog_kinds</a><br />
 <a href="/services/catalog/catalog_relations/">catalog_relations</a>
 </div>
 </div>

@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>tag_configurations</code> resou
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>tag_configurations</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="tag_configurations" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.metrics.tag_configurations" /></td></tr>
 </tbody></table>
@@ -60,9 +61,14 @@ The following fields are returned by `SELECT` queries:
     <td>Object containing the definition of a metric tag configuration attributes.</td>
 </tr>
 <tr>
+    <td><CopyableCode code="relationships" /></td>
+    <td><code>object</code></td>
+    <td>Relationships for a metric.</td>
+</tr>
+<tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The metric tag configuration resource type. (default: manage_tags, example: manage_tags)</td>
+    <td>The metric tag configuration resource type. (manage_tags) (default: manage_tags, example: manage_tags)</td>
 </tr>
 </tbody>
 </table>
@@ -78,6 +84,26 @@ The following fields are returned by `SELECT` queries:
     </tr>
 </thead>
 <tbody>
+<tr>
+    <td><CopyableCode code="id" /></td>
+    <td><code>string</code></td>
+    <td>The metric name for this resource. (example: test.metric.latency)</td>
+</tr>
+<tr>
+    <td><CopyableCode code="attributes" /></td>
+    <td><code>object</code></td>
+    <td>Object containing the definition of a metric tag configuration attributes.</td>
+</tr>
+<tr>
+    <td><CopyableCode code="relationships" /></td>
+    <td><code>object</code></td>
+    <td>Relationships for a metric.</td>
+</tr>
+<tr>
+    <td><CopyableCode code="type" /></td>
+    <td><code>string</code></td>
+    <td>The metric resource type. (metrics) (default: metrics, example: metrics)</td>
+</tr>
 </tbody>
 </table>
 </TabItem>
@@ -101,51 +127,37 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_tag_configuration_by_name"><CopyableCode code="list_tag_configuration_by_name" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-metric_name"><code>metric_name</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-metric_name"><code>metric_name</code></a></td>
     <td></td>
-    <td>Returns the tag configuration for the given metric name.</td>
+    <td>Returns the tag configuration for the given metric name.&lt;br /&gt;&lt;br /&gt;A metric may exist and submit data without having a tag configuration. If no tag configuration exists&lt;br /&gt;for the metric, this endpoint returns `404 Not Found`. This response does not indicate that the metric&lt;br /&gt;itself is missing.</td>
 </tr>
 <tr>
     <td><a href="#list_tag_configurations"><CopyableCode code="list_tag_configurations" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
-    <td><a href="#parameter-filter[configured]"><code>filter[configured]</code></a>, <a href="#parameter-filter[tags_configured]"><code>filter[tags_configured]</code></a>, <a href="#parameter-filter[metric_type]"><code>filter[metric_type]</code></a>, <a href="#parameter-filter[include_percentiles]"><code>filter[include_percentiles]</code></a>, <a href="#parameter-filter[queried]"><code>filter[queried]</code></a>, <a href="#parameter-filter[tags]"><code>filter[tags]</code></a>, <a href="#parameter-filter[related_assets]"><code>filter[related_assets]</code></a>, <a href="#parameter-window[seconds]"><code>window[seconds]</code></a>, <a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-page[cursor]"><code>page[cursor]</code></a></td>
-    <td>Returns all metrics that can be configured in the Metrics Summary page or with Metrics without Limits™ (matching additional filters if specified).<br />Optionally, paginate by using the `page[cursor]` and/or `page[size]` query parameters.<br />To fetch the first page, pass in a query parameter with either a valid `page[size]` or an empty cursor like `page[cursor]=`. To fetch the next page, pass in the `next_cursor` value from the response as the new `page[cursor]` value.<br />Once the `meta.pagination.next_cursor` value is null, all pages have been retrieved.</td>
+    <td></td>
+    <td><a href="#parameter-filter[configured]"><code>filter[configured]</code></a>, <a href="#parameter-filter[is_configurable]"><code>filter[is_configurable]</code></a>, <a href="#parameter-filter[tags_configured]"><code>filter[tags_configured]</code></a>, <a href="#parameter-filter[metric_type]"><code>filter[metric_type]</code></a>, <a href="#parameter-filter[include_percentiles]"><code>filter[include_percentiles]</code></a>, <a href="#parameter-filter[queried]"><code>filter[queried]</code></a>, <a href="#parameter-filter[queried][window][seconds]"><code>filter[queried][window][seconds]</code></a>, <a href="#parameter-filter[tags]"><code>filter[tags]</code></a>, <a href="#parameter-filter[related_assets]"><code>filter[related_assets]</code></a>, <a href="#parameter-include"><code>include</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-window[seconds]"><code>window[seconds]</code></a>, <a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-page[cursor]"><code>page[cursor]</code></a></td>
+    <td>Get a list of actively reporting metrics for your organization. Pagination is optional using the `page&#91;cursor&#93;` and `page&#91;size&#93;` query parameters.&lt;br /&gt;&lt;br /&gt;Query parameters use bracket notation (for example, `filter&#91;tags&#93;`, `filter&#91;queried&#93;&#91;window&#93;&#91;seconds&#93;`). Pass them as standard URL query strings, URL-encoding the brackets if your client does not handle them. For example: `GET /api/v2/metrics?filter&#91;tags&#93;=env:prod&window&#91;seconds&#93;=86400&page&#91;size&#93;=500`.</td>
 </tr>
 <tr>
     <td><a href="#create_tag_configuration"><CopyableCode code="create_tag_configuration" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-metric_name"><code>metric_name</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-metric_name"><code>metric_name</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
-    <td>Create and define a list of queryable tag keys for an existing count/gauge/rate/distribution metric.<br />Optionally, include percentile aggregations on any distribution metric. By setting `exclude_tags_mode`<br />to true, the behavior is changed from an allow-list to a deny-list, and tags in the defined list are<br />not queryable. Can only be used with application keys of users with the `Manage Tags for Metrics`<br />permission.</td>
-</tr>
-<tr>
-    <td><a href="#create_bulk_tags_metrics_configuration"><CopyableCode code="create_bulk_tags_metrics_configuration" /></a></td>
-    <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
-    <td></td>
-    <td>Create and define a list of queryable tag keys for a set of existing count, gauge, rate, and distribution metrics.<br />Metrics are selected by passing a metric name prefix. Use the Delete method of this API path to remove tag configurations.<br />Results can be sent to a set of account email addresses, just like the same operation in the Datadog web app.<br />If multiple calls include the same metric, the last configuration applied (not by submit order) is used, do not<br />expect deterministic ordering of concurrent calls. The `exclude_tags_mode` value will set all metrics that match the prefix to<br />the same exclusion state, metric tag configurations do not support mixed inclusion and exclusion for tags on the same metric.<br />Can only be used with application keys of users with the `Manage Tags for Metrics` permission.</td>
+    <td>Create and define a list of queryable tag keys for an existing count/gauge/rate/distribution metric.&lt;br /&gt;Optionally, include percentile aggregations on any distribution metric. By setting `exclude_tags_mode`&lt;br /&gt;to true, the behavior is changed from an allow-list to a deny-list, and tags in the defined list are&lt;br /&gt;not queryable. Can only be used with application keys of users with the `Manage Tags for Metrics`&lt;br /&gt;permission.</td>
 </tr>
 <tr>
     <td><a href="#update_tag_configuration"><CopyableCode code="update_tag_configuration" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-metric_name"><code>metric_name</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-metric_name"><code>metric_name</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
-    <td>Update the tag configuration of a metric or percentile aggregations of a distribution metric or custom aggregations<br />of a count, rate, or gauge metric. By setting `exclude_tags_mode` to true the behavior is changed<br />from an allow-list to a deny-list, and tags in the defined list will not be queryable.<br />Can only be used with application keys from users with the `Manage Tags for Metrics` permission. This endpoint requires<br />a tag configuration to be created first.</td>
+    <td>Update the tag configuration of a metric or percentile aggregations of a distribution metric or custom aggregations&lt;br /&gt;of a count, rate, or gauge metric. By setting `exclude_tags_mode` to true the behavior is changed&lt;br /&gt;from an allow-list to a deny-list, and tags in the defined list will not be queryable.&lt;br /&gt;Can only be used with application keys from users with the `Manage Tags for Metrics` permission. This endpoint requires&lt;br /&gt;a tag configuration to be created first.</td>
 </tr>
 <tr>
     <td><a href="#delete_tag_configuration"><CopyableCode code="delete_tag_configuration" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-metric_name"><code>metric_name</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-metric_name"><code>metric_name</code></a></td>
     <td></td>
-    <td>Deletes a metric's tag configuration. Can only be used with application<br />keys from users with the `Manage Tags for Metrics` permission.</td>
-</tr>
-<tr>
-    <td><a href="#delete_bulk_tags_metrics_configuration"><CopyableCode code="delete_bulk_tags_metrics_configuration" /></a></td>
-    <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
-    <td></td>
-    <td>Delete all custom lists of queryable tag keys for a set of existing count, gauge, rate, and distribution metrics.<br />Metrics are selected by passing a metric name prefix.<br />Results can be sent to a set of account email addresses, just like the same operation in the Datadog web app.<br />Can only be used with application keys of users with the `Manage Tags for Metrics` permission.</td>
+    <td>Deletes a metric's tag configuration. Can only be used with application&lt;br /&gt;keys from users with the `Manage Tags for Metrics` permission.&lt;br /&gt;Note: This operation is irreversible.</td>
 </tr>
 </tbody>
 </table>
@@ -168,60 +180,80 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The name of the metric. (example: dist.http.endpoint.request)</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter[configured]">
     <td><CopyableCode code="filter[configured]" /></td>
     <td><code>boolean</code></td>
-    <td>Filter custom metrics that have configured tags. (example: true)</td>
+    <td>Only return custom metrics that have been configured (`true`) or not configured (`false`) with Metrics Without Limits. (example: true)</td>
 </tr>
 <tr id="parameter-filter[include_percentiles]">
     <td><CopyableCode code="filter[include_percentiles]" /></td>
     <td><code>boolean</code></td>
-    <td>Filter distributions with additional percentile aggregations enabled or disabled. (example: true)</td>
+    <td>Only return distribution metrics that have percentile aggregations enabled (true) or disabled (false). (example: true)</td>
+</tr>
+<tr id="parameter-filter[is_configurable]">
+    <td><CopyableCode code="filter[is_configurable]" /></td>
+    <td><code>boolean</code></td>
+    <td>Only return metrics that are eligible (`true`) or ineligible (`false`) for configuration with Metrics Without Limits. (example: true)</td>
 </tr>
 <tr id="parameter-filter[metric_type]">
     <td><CopyableCode code="filter[metric_type]" /></td>
     <td><code>string</code></td>
-    <td>Filter metrics by metric type.</td>
+    <td>Only return metrics of the given metric type.</td>
 </tr>
 <tr id="parameter-filter[queried]">
     <td><CopyableCode code="filter[queried]" /></td>
     <td><code>boolean</code></td>
-    <td>(Preview) Filter custom metrics that have or have not been queried in the specified window[seconds]. If no window is provided or the window is less than 2 hours, a default of 2 hours will be applied. (example: true)</td>
+    <td>Only return metrics that have been queried (true) or not queried (false) in the look back window. Set the window with `filter&#91;queried&#93;&#91;window&#93;&#91;seconds&#93;`; if omitted, a default window is used. (example: true)</td>
+</tr>
+<tr id="parameter-filter[queried][window][seconds]">
+    <td><CopyableCode code="filter[queried][window][seconds]" /></td>
+    <td><code>integer (int64)</code></td>
+    <td>This parameter has no effect unless `filter&#91;queried&#93;` is also set. Only return metrics that have been queried or not queried in the specified window. The default value is 2,592,000 seconds (30 days), the maximum value is 15,552,000 seconds (180 days), and the minimum value is 1 second. For example: `filter&#91;queried&#93;=true&filter&#91;queried&#93;&#91;window&#93;&#91;seconds&#93;=604800`. (example: 15552000)</td>
 </tr>
 <tr id="parameter-filter[related_assets]">
     <td><CopyableCode code="filter[related_assets]" /></td>
     <td><code>boolean</code></td>
-    <td>(Preview) Filter metrics that are used in dashboards, monitors, notebooks, SLOs. (example: true)</td>
+    <td>Only return metrics that are used in at least one dashboard, monitor, notebook, or SLO. (example: true)</td>
 </tr>
 <tr id="parameter-filter[tags]">
     <td><CopyableCode code="filter[tags]" /></td>
     <td><code>string</code></td>
-    <td>Filter metrics that have been submitted with the given tags. Supports boolean and wildcard expressions. Can only be combined with the filter[queried] filter. (example: env IN (staging,test) AND service:web)</td>
+    <td>Only return metrics that were submitted with tags matching this expression. You can use AND, OR, IN, and wildcards. For example: `filter&#91;tags&#93;=env IN (staging,test) AND service:web*`. (example: env IN (staging,test) AND service:web*)</td>
 </tr>
 <tr id="parameter-filter[tags_configured]">
     <td><CopyableCode code="filter[tags_configured]" /></td>
     <td><code>string</code></td>
-    <td>Filter tag configurations by configured tags. (example: app)</td>
+    <td>Only return metrics that have the given tag key(s) in their Metrics Without Limits configuration (included or excluded). (example: app,env)</td>
+</tr>
+<tr id="parameter-include">
+    <td><CopyableCode code="include" /></td>
+    <td><code>string</code></td>
+    <td>Include related resources in the response. Set to `metric_volumes` to include indexed and ingested volume counts for each metric. (example: metric_volumes)</td>
 </tr>
 <tr id="parameter-page[cursor]">
     <td><CopyableCode code="page[cursor]" /></td>
     <td><code>string</code></td>
-    <td>String to query the next page of results. This key is provided with each valid response from the API in `meta.pagination.next_cursor`. Once the `meta.pagination.next_cursor` key is null, all pages have been retrieved.</td>
+    <td>Cursor for pagination. Use `page&#91;size&#93;` to opt-in to pagination and get the first page; for subsequent pages, use the value from `meta.pagination.next_cursor` in the response. Pagination is complete when `next_cursor` is null.</td>
 </tr>
 <tr id="parameter-page[size]">
     <td><CopyableCode code="page[size]" /></td>
     <td><code>integer (int32)</code></td>
-    <td>Maximum number of results returned.</td>
+    <td>Maximum number of results per page. Send `page&#91;size&#93;` on the first request to opt in to pagination. On each subsequent request, send `page&#91;cursor&#93;` set to the value of `meta.pagination.next_cursor` from the previous response. The default value is 10000, the maximum value is 10000, and the minimum value is 1.</td>
+</tr>
+<tr id="parameter-sort">
+    <td><CopyableCode code="sort" /></td>
+    <td><code>string</code></td>
+    <td>Sort results by metric volume. Prefix a key with `-` for descending order. Supported keys: `metric_volumes.indexed_volume`, `metric_volumes.ingested_volume`, `metric_volumes.indexed_volume_delta`, `metric_volumes.ingested_volume_delta`. Requires a paginated request (`page&#91;size&#93;` or `page&#91;cursor&#93;`). (example: -metric_volumes.indexed_volume)</td>
 </tr>
 <tr id="parameter-window[seconds]">
     <td><CopyableCode code="window[seconds]" /></td>
     <td><code>integer (int64)</code></td>
-    <td>The number of seconds of look back (from now) to apply to a filter[tag] or filter[queried] query. Default value is 3600 (1 hour), maximum value is 2,592,000 (30 days). (example: 3600)</td>
+    <td>Only return metrics that have been actively reporting in the specified window. The default value is 3600 seconds (1 hour), the maximum value is 2,592,000 seconds (30 days), and the minimum value is 1 second. (example: 3600)</td>
 </tr>
 </tbody>
 </table>
@@ -237,35 +269,41 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 >
 <TabItem value="list_tag_configuration_by_name">
 
-Returns the tag configuration for the given metric name.
+Returns the tag configuration for the given metric name.&lt;br /&gt;&lt;br /&gt;A metric may exist and submit data without having a tag configuration. If no tag configuration exists&lt;br /&gt;for the metric, this endpoint returns `404 Not Found`. This response does not indicate that the metric&lt;br /&gt;itself is missing.
 
 ```sql
 SELECT
 id,
 attributes,
+relationships,
 type
 FROM datadog.metrics.tag_configurations
 WHERE metric_name = '{{ metric_name }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
 <TabItem value="list_tag_configurations">
 
-Returns all metrics that can be configured in the Metrics Summary page or with Metrics without Limits™ (matching additional filters if specified).<br />Optionally, paginate by using the `page[cursor]` and/or `page[size]` query parameters.<br />To fetch the first page, pass in a query parameter with either a valid `page[size]` or an empty cursor like `page[cursor]=`. To fetch the next page, pass in the `next_cursor` value from the response as the new `page[cursor]` value.<br />Once the `meta.pagination.next_cursor` value is null, all pages have been retrieved.
+Get a list of actively reporting metrics for your organization. Pagination is optional using the `page&#91;cursor&#93;` and `page&#91;size&#93;` query parameters.&lt;br /&gt;&lt;br /&gt;Query parameters use bracket notation (for example, `filter&#91;tags&#93;`, `filter&#91;queried&#93;&#91;window&#93;&#91;seconds&#93;`). Pass them as standard URL query strings, URL-encoding the brackets if your client does not handle them. For example: `GET /api/v2/metrics?filter&#91;tags&#93;=env:prod&window&#91;seconds&#93;=86400&page&#91;size&#93;=500`.
 
 ```sql
 SELECT
-*
+id,
+attributes,
+relationships,
+type
 FROM datadog.metrics.tag_configurations
-WHERE region = '{{ region }}' -- required
-AND filter[configured] = '{{ filter[configured] }}'
+WHERE filter[configured] = '{{ filter[configured] }}'
+AND filter[is_configurable] = '{{ filter[is_configurable] }}'
 AND filter[tags_configured] = '{{ filter[tags_configured] }}'
 AND filter[metric_type] = '{{ filter[metric_type] }}'
 AND filter[include_percentiles] = '{{ filter[include_percentiles] }}'
 AND filter[queried] = '{{ filter[queried] }}'
+AND filter[queried][window][seconds] = '{{ filter[queried][window][seconds] }}'
 AND filter[tags] = '{{ filter[tags] }}'
 AND filter[related_assets] = '{{ filter[related_assets] }}'
+AND include = '{{ include }}'
+AND sort = '{{ sort }}'
 AND window[seconds] = '{{ window[seconds] }}'
 AND page[size] = '{{ page[size] }}'
 AND page[cursor] = '{{ page[cursor] }}'
@@ -281,41 +319,21 @@ AND page[cursor] = '{{ page[cursor] }}'
     defaultValue="create_tag_configuration"
     values={[
         { label: 'create_tag_configuration', value: 'create_tag_configuration' },
-        { label: 'create_bulk_tags_metrics_configuration', value: 'create_bulk_tags_metrics_configuration' },
         { label: 'Manifest', value: 'manifest' }
     ]}
 >
 <TabItem value="create_tag_configuration">
 
-Create and define a list of queryable tag keys for an existing count/gauge/rate/distribution metric.<br />Optionally, include percentile aggregations on any distribution metric. By setting `exclude_tags_mode`<br />to true, the behavior is changed from an allow-list to a deny-list, and tags in the defined list are<br />not queryable. Can only be used with application keys of users with the `Manage Tags for Metrics`<br />permission.
+Create and define a list of queryable tag keys for an existing count/gauge/rate/distribution metric.&lt;br /&gt;Optionally, include percentile aggregations on any distribution metric. By setting `exclude_tags_mode`&lt;br /&gt;to true, the behavior is changed from an allow-list to a deny-list, and tags in the defined list are&lt;br /&gt;not queryable. Can only be used with application keys of users with the `Manage Tags for Metrics`&lt;br /&gt;permission.
 
 ```sql
 INSERT INTO datadog.metrics.tag_configurations (
-data__data,
-metric_name,
-region
+data,
+metric_name
 )
 SELECT 
 '{{ data }}' /* required */,
-'{{ metric_name }}',
-'{{ region }}'
-RETURNING
-data
-;
-```
-</TabItem>
-<TabItem value="create_bulk_tags_metrics_configuration">
-
-Create and define a list of queryable tag keys for a set of existing count, gauge, rate, and distribution metrics.<br />Metrics are selected by passing a metric name prefix. Use the Delete method of this API path to remove tag configurations.<br />Results can be sent to a set of account email addresses, just like the same operation in the Datadog web app.<br />If multiple calls include the same metric, the last configuration applied (not by submit order) is used, do not<br />expect deterministic ordering of concurrent calls. The `exclude_tags_mode` value will set all metrics that match the prefix to<br />the same exclusion state, metric tag configurations do not support mixed inclusion and exclusion for tags on the same metric.<br />Can only be used with application keys of users with the `Manage Tags for Metrics` permission.
-
-```sql
-INSERT INTO datadog.metrics.tag_configurations (
-data__data,
-region
-)
-SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ metric_name }}'
 RETURNING
 data
 ;
@@ -323,21 +341,29 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: tag_configurations
   props:
     - name: metric_name
-      value: string
-      description: Required parameter for the tag_configurations resource.
-    - name: region
-      value: string
+      value: "{{ metric_name }}"
       description: Required parameter for the tag_configurations resource.
     - name: data
-      value: object
       description: |
-        Request object to bulk configure tags for metrics matching the given prefix.
-```
+        Object for a single metric to be configure tags on.
+      value:
+        attributes:
+          aggregations:
+            - space: "{{ space }}"
+              time: "{{ time }}"
+          exclude_tags_mode: {{ exclude_tags_mode }}
+          include_percentiles: {{ include_percentiles }}
+          metric_type: "{{ metric_type }}"
+          tags:
+            - "{{ tags }}"
+        id: "{{ id }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -352,16 +378,15 @@ data
 >
 <TabItem value="update_tag_configuration">
 
-Update the tag configuration of a metric or percentile aggregations of a distribution metric or custom aggregations<br />of a count, rate, or gauge metric. By setting `exclude_tags_mode` to true the behavior is changed<br />from an allow-list to a deny-list, and tags in the defined list will not be queryable.<br />Can only be used with application keys from users with the `Manage Tags for Metrics` permission. This endpoint requires<br />a tag configuration to be created first.
+Update the tag configuration of a metric or percentile aggregations of a distribution metric or custom aggregations&lt;br /&gt;of a count, rate, or gauge metric. By setting `exclude_tags_mode` to true the behavior is changed&lt;br /&gt;from an allow-list to a deny-list, and tags in the defined list will not be queryable.&lt;br /&gt;Can only be used with application keys from users with the `Manage Tags for Metrics` permission. This endpoint requires&lt;br /&gt;a tag configuration to be created first.
 
 ```sql
 UPDATE datadog.metrics.tag_configurations
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 metric_name = '{{ metric_name }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -374,28 +399,16 @@ data;
 <Tabs
     defaultValue="delete_tag_configuration"
     values={[
-        { label: 'delete_tag_configuration', value: 'delete_tag_configuration' },
-        { label: 'delete_bulk_tags_metrics_configuration', value: 'delete_bulk_tags_metrics_configuration' }
+        { label: 'delete_tag_configuration', value: 'delete_tag_configuration' }
     ]}
 >
 <TabItem value="delete_tag_configuration">
 
-Deletes a metric's tag configuration. Can only be used with application<br />keys from users with the `Manage Tags for Metrics` permission.
+Deletes a metric's tag configuration. Can only be used with application&lt;br /&gt;keys from users with the `Manage Tags for Metrics` permission.&lt;br /&gt;Note: This operation is irreversible.
 
 ```sql
 DELETE FROM datadog.metrics.tag_configurations
 WHERE metric_name = '{{ metric_name }}' --required
-AND region = '{{ region }}' --required
-;
-```
-</TabItem>
-<TabItem value="delete_bulk_tags_metrics_configuration">
-
-Delete all custom lists of queryable tag keys for a set of existing count, gauge, rate, and distribution metrics.<br />Metrics are selected by passing a metric name prefix.<br />Results can be sent to a set of account email addresses, just like the same operation in the Datadog web app.<br />Can only be used with application keys of users with the `Manage Tags for Metrics` permission.
-
-```sql
-DELETE FROM datadog.metrics.tag_configurations
-WHERE region = '{{ region }}' --required
 ;
 ```
 </TabItem>
