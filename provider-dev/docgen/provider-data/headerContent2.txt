@@ -165,8 +165,8 @@ Audit events for the last day - cursor-paginated, the time window pushed down as
 SELECT
   id,
   json_extract(attributes, '$.timestamp') AS timestamp,
-  json_extract(attributes, '$.attributes.action') AS action,
-  json_extract(attributes, '$.attributes.evt.name') AS event
+  json_extract(attributes, '$.attributes.evt.name') AS event,
+  json_extract(attributes, '$.attributes.usr.email') AS actor
 FROM datadog.organization.audit_logs
 WHERE "filter[from]" = 'now-1d';
 ```
