@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>aws_accounts</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>aws_accounts</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="aws_accounts" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.integrations.aws_accounts" /></td></tr>
 </tbody></table>
@@ -54,7 +55,7 @@ AWS Account object
 <tr>
     <td><CopyableCode code="id" /></td>
     <td><code>string</code></td>
-    <td>Unique Datadog ID of the AWS Account Integration Config. To get the config ID for an account, use the [List all AWS integrations](https://docs.datadoghq.com/api/latest/aws-integration/#list-all-aws-integrations) endpoint and query by AWS Account ID. (example: 00000000-abcd-0001-0000-000000000000)</td>
+    <td>Unique Datadog ID of the AWS Account Integration Config. To get the config ID for an account, use the &#91;List all AWS integrations&#93;(https:​//docs.datadoghq.com/api/latest/aws-integration/#list-all-aws-integrations) endpoint and query by AWS Account ID. (example: 00000000-abcd-0001-0000-000000000000)</td>
 </tr>
 <tr>
     <td><CopyableCode code="attributes" /></td>
@@ -64,7 +65,7 @@ AWS Account object
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>AWS Account resource type. (default: account, example: account)</td>
+    <td>AWS Account resource type. (account) (default: account, example: account)</td>
 </tr>
 </tbody>
 </table>
@@ -85,7 +86,7 @@ AWS Accounts List object
 <tr>
     <td><CopyableCode code="id" /></td>
     <td><code>string</code></td>
-    <td>Unique Datadog ID of the AWS Account Integration Config. To get the config ID for an account, use the [List all AWS integrations](https://docs.datadoghq.com/api/latest/aws-integration/#list-all-aws-integrations) endpoint and query by AWS Account ID. (example: 00000000-abcd-0001-0000-000000000000)</td>
+    <td>Unique Datadog ID of the AWS Account Integration Config. To get the config ID for an account, use the &#91;List all AWS integrations&#93;(https:​//docs.datadoghq.com/api/latest/aws-integration/#list-all-aws-integrations) endpoint and query by AWS Account ID. (example: 00000000-abcd-0001-0000-000000000000)</td>
 </tr>
 <tr>
     <td><CopyableCode code="attributes" /></td>
@@ -95,7 +96,7 @@ AWS Accounts List object
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>AWS Account resource type. (default: account, example: account)</td>
+    <td>AWS Account resource type. (account) (default: account, example: account)</td>
 </tr>
 </tbody>
 </table>
@@ -120,44 +121,58 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_awsaccount"><CopyableCode code="get_awsaccount" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-aws_account_config_id"><code>aws_account_config_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-aws_account_config_id"><code>aws_account_config_id</code></a></td>
     <td></td>
     <td>Get an AWS Account Integration Config by config ID.</td>
 </tr>
 <tr>
     <td><a href="#list_awsaccounts"><CopyableCode code="list_awsaccounts" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-aws_account_id"><code>aws_account_id</code></a></td>
     <td>Get a list of AWS Account Integration Configs.</td>
 </tr>
 <tr>
     <td><a href="#create_awsaccount"><CopyableCode code="create_awsaccount" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Create a new AWS Account Integration Config.</td>
 </tr>
 <tr>
     <td><a href="#update_awsaccount"><CopyableCode code="update_awsaccount" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-aws_account_config_id"><code>aws_account_config_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-aws_account_config_id"><code>aws_account_config_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Update an AWS Account Integration Config by config ID.</td>
 </tr>
 <tr>
     <td><a href="#delete_awsaccount"><CopyableCode code="delete_awsaccount" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-aws_account_config_id"><code>aws_account_config_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-aws_account_config_id"><code>aws_account_config_id</code></a></td>
     <td></td>
     <td>Delete an AWS Account Integration Config by config ID.</td>
 </tr>
 <tr>
+    <td><a href="#preview_awsmetric_name_filter"><CopyableCode code="preview_awsmetric_name_filter" /></a></td>
+    <td><CopyableCode code="exec" /></td>
+    <td><a href="#parameter-aws_account_config_id"><code>aws_account_config_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
+    <td></td>
+    <td>Preview which collected CloudWatch metrics would be filtered by the supplied metric name filters.&lt;br /&gt;The filters are not persisted.</td>
+</tr>
+<tr>
     <td><a href="#create_new_awsexternal_id"><CopyableCode code="create_new_awsexternal_id" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Generate a new external ID for AWS role-based authentication.</td>
+</tr>
+<tr>
+    <td><a href="#validate_awsccmconfig"><CopyableCode code="validate_awsccmconfig" /></a></td>
+    <td><CopyableCode code="exec" /></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
+    <td></td>
+    <td>Validate a Cloud Cost Management config for an AWS account using Cost and Usage Report&lt;br /&gt;(CUR) 2.0 against Datadog's ingest requirements without persisting it.</td>
 </tr>
 </tbody>
 </table>
@@ -178,12 +193,12 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-aws_account_config_id">
     <td><CopyableCode code="aws_account_config_id" /></td>
     <td><code>string</code></td>
-    <td>Unique Datadog ID of the AWS Account Integration Config. To get the config ID for an account, use the [List all AWS integrations](https://docs.datadoghq.com/api/latest/aws-integration/#list-all-aws-integrations) endpoint and query by AWS Account ID.</td>
+    <td>Unique Datadog ID of the AWS Account Integration Config. To get the config ID for an account, use the &#91;List all AWS integrations&#93;(https:​//docs.datadoghq.com/api/latest/aws-integration/#list-all-aws-integrations) endpoint and query by AWS Account ID.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-aws_account_id">
     <td><CopyableCode code="aws_account_id" /></td>
@@ -213,7 +228,6 @@ attributes,
 type
 FROM datadog.integrations.aws_accounts
 WHERE aws_account_config_id = '{{ aws_account_config_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -227,8 +241,7 @@ id,
 attributes,
 type
 FROM datadog.integrations.aws_accounts
-WHERE region = '{{ region }}' -- required
-AND aws_account_id = '{{ aws_account_id }}'
+WHERE aws_account_id = '{{ aws_account_id }}'
 ;
 ```
 </TabItem>
@@ -250,12 +263,10 @@ Create a new AWS Account Integration Config.
 
 ```sql
 INSERT INTO datadog.integrations.aws_accounts (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -263,18 +274,63 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: aws_accounts
   props:
-    - name: region
-      value: string
-      description: Required parameter for the aws_accounts resource.
     - name: data
-      value: object
       description: |
         AWS Account Create Request data.
-```
+      value:
+        attributes:
+          account_tags:
+            - "{{ account_tags }}"
+          auth_config:
+            access_key_id: "{{ access_key_id }}"
+            secret_access_key: "{{ secret_access_key }}"
+            external_id: "{{ external_id }}"
+            role_name: "{{ role_name }}"
+          aws_account_id: "{{ aws_account_id }}"
+          aws_partition: "{{ aws_partition }}"
+          aws_regions:
+            include_all: {{ include_all }}
+            include_only:
+              - "{{ include_only }}"
+          logs_config:
+            lambda_forwarder:
+              lambdas:
+                - "{{ lambdas }}"
+              log_source_config:
+                tag_filters: "{{ tag_filters }}"
+              sources:
+                - "{{ sources }}"
+          metrics_config:
+            automute_enabled: {{ automute_enabled }}
+            collect_cloudwatch_alarms: {{ collect_cloudwatch_alarms }}
+            collect_custom_metrics: {{ collect_custom_metrics }}
+            enabled: {{ enabled }}
+            metric_name_filters:
+              - include_only: "{{ include_only }}"
+                namespace: "{{ namespace }}"
+                exclude_only: "{{ exclude_only }}"
+            namespace_filters:
+              exclude_only:
+                - "{{ exclude_only }}"
+              include_only:
+                - "{{ include_only }}"
+            tag_filters:
+              - namespace: "{{ namespace }}"
+                tags: "{{ tags }}"
+          resources_config:
+            cloud_security_posture_management_collection: {{ cloud_security_posture_management_collection }}
+            extended_collection: {{ extended_collection }}
+          traces_config:
+            xray_services:
+              include_all: {{ include_all }}
+              include_only:
+                - "{{ include_only }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -294,11 +350,10 @@ Update an AWS Account Integration Config by config ID.
 ```sql
 UPDATE datadog.integrations.aws_accounts
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 aws_account_config_id = '{{ aws_account_config_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -321,7 +376,6 @@ Delete an AWS Account Integration Config by config ID.
 ```sql
 DELETE FROM datadog.integrations.aws_accounts
 WHERE aws_account_config_id = '{{ aws_account_config_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>
@@ -330,19 +384,49 @@ AND region = '{{ region }}' --required
 
 ## Lifecycle Methods
 
+EXEC variables use wire (API) names.
+
 <Tabs
-    defaultValue="create_new_awsexternal_id"
+    defaultValue="preview_awsmetric_name_filter"
     values={[
-        { label: 'create_new_awsexternal_id', value: 'create_new_awsexternal_id' }
+        { label: 'preview_awsmetric_name_filter', value: 'preview_awsmetric_name_filter' },
+        { label: 'create_new_awsexternal_id', value: 'create_new_awsexternal_id' },
+        { label: 'validate_awsccmconfig', value: 'validate_awsccmconfig' }
     ]}
 >
+<TabItem value="preview_awsmetric_name_filter">
+
+Preview which collected CloudWatch metrics would be filtered by the supplied metric name filters.&lt;br /&gt;The filters are not persisted.
+
+```sql
+EXEC datadog.integrations.aws_accounts.preview_awsmetric_name_filter 
+@aws_account_config_id='{{ aws_account_config_id }}' --required, 
+@@json=
+'{
+"data": "{{ data }}"
+}'
+;
+```
+</TabItem>
 <TabItem value="create_new_awsexternal_id">
 
 Generate a new external ID for AWS role-based authentication.
 
 ```sql
 EXEC datadog.integrations.aws_accounts.create_new_awsexternal_id 
-@region='{{ region }}' --required
+;
+```
+</TabItem>
+<TabItem value="validate_awsccmconfig">
+
+Validate a Cloud Cost Management config for an AWS account using Cost and Usage Report&lt;br /&gt;(CUR) 2.0 against Datadog's ingest requirements without persisting it.
+
+```sql
+EXEC datadog.integrations.aws_accounts.validate_awsccmconfig 
+@@json=
+'{
+"data": "{{ data }}"
+}'
 ;
 ```
 </TabItem>

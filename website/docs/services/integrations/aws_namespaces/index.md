@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>aws_namespaces</code> resource
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>aws_namespaces</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="aws_namespaces" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.integrations.aws_namespaces" /></td></tr>
 </tbody></table>
@@ -63,7 +64,7 @@ AWS Namespaces List object
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The `AWSNamespacesResponseData` `type`. (default: namespaces, example: namespaces)</td>
+    <td>The `AWSNamespacesResponseData` `type`. (namespaces) (default: namespaces, example: namespaces)</td>
 </tr>
 </tbody>
 </table>
@@ -88,7 +89,7 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_awsnamespaces"><CopyableCode code="list_awsnamespaces" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Get a list of available AWS CloudWatch namespaces that can send metrics to Datadog.</td>
 </tr>
@@ -108,10 +109,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -134,7 +135,6 @@ id,
 attributes,
 type
 FROM datadog.integrations.aws_namespaces
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>

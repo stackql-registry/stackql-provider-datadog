@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>incidents</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>incidents</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="incidents" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.service_management.incidents" /></td></tr>
 </tbody></table>
@@ -68,7 +69,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Incident resource type. (default: incidents, example: incidents)</td>
+    <td>Incident resource type. (incidents) (default: incidents, example: incidents)</td>
 </tr>
 </tbody>
 </table>
@@ -102,7 +103,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Incident resource type. (default: incidents, example: incidents)</td>
+    <td>Incident resource type. (incidents) (default: incidents, example: incidents)</td>
 </tr>
 </tbody>
 </table>
@@ -126,7 +127,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Incident search result type. (default: incidents_search_results, example: incidents_search_results)</td>
+    <td>Incident search result type. (incidents_search_results) (default: incidents_search_results, example: incidents_search_results)</td>
 </tr>
 </tbody>
 </table>
@@ -151,44 +152,51 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_incident"><CopyableCode code="get_incident" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-incident_id"><code>incident_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-incident_id"><code>incident_id</code></a></td>
     <td><a href="#parameter-include"><code>include</code></a></td>
     <td>Get the details of an incident by `incident_id`.</td>
 </tr>
 <tr>
     <td><a href="#list_incidents"><CopyableCode code="list_incidents" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-include"><code>include</code></a>, <a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-page[offset]"><code>page[offset]</code></a></td>
     <td>Get all incidents for the user's organization.</td>
 </tr>
 <tr>
     <td><a href="#search_incidents"><CopyableCode code="search_incidents" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-query"><code>query</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-query"><code>query</code></a></td>
     <td><a href="#parameter-include"><code>include</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-page[offset]"><code>page[offset]</code></a></td>
     <td>Search for incidents matching a certain query.</td>
 </tr>
 <tr>
     <td><a href="#create_incident"><CopyableCode code="create_incident" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Create an incident.</td>
 </tr>
 <tr>
     <td><a href="#update_incident"><CopyableCode code="update_incident" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-incident_id"><code>incident_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-incident_id"><code>incident_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td><a href="#parameter-include"><code>include</code></a></td>
     <td>Updates an incident. Provide only the attributes that should be updated as this request is a partial update.</td>
 </tr>
 <tr>
     <td><a href="#delete_incident"><CopyableCode code="delete_incident" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-incident_id"><code>incident_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-incident_id"><code>incident_id</code></a></td>
     <td></td>
     <td>Deletes an existing incident from the users organization.</td>
+</tr>
+<tr>
+    <td><a href="#import_incident"><CopyableCode code="import_incident" /></a></td>
+    <td><CopyableCode code="exec" /></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
+    <td><a href="#parameter-include"><code>include</code></a></td>
+    <td>Import an incident from an external system. This endpoint allows you to create incidents with&lt;br /&gt;historical data such as custom timestamps for detection, declaration, and resolution.&lt;br /&gt;Imported incidents do not execute integrations or notification rules.</td>
 </tr>
 </tbody>
 </table>
@@ -216,15 +224,15 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>Specifies which incidents should be returned. The query can contain any number of incident facets joined by `ANDs`, along with multiple values for each of those facets joined by `OR`s. For example: `state:active AND severity:(SEV-2 OR SEV-1)`.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-include">
     <td><CopyableCode code="include" /></td>
     <td><code>array</code></td>
-    <td>Specifies which types of related objects should be included in the response.</td>
+    <td>Specifies which related object types to include in the response when importing an incident.</td>
 </tr>
 <tr id="parameter-page[offset]">
     <td><CopyableCode code="page[offset]" /></td>
@@ -234,7 +242,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-page[size]">
     <td><CopyableCode code="page[size]" /></td>
     <td><code>integer (int64)</code></td>
-    <td>Size for a given page. The maximum allowed value is 100.</td>
+    <td>Number of items to return per page. The maximum allowed value is 100.</td>
 </tr>
 <tr id="parameter-sort">
     <td><CopyableCode code="sort" /></td>
@@ -266,7 +274,6 @@ relationships,
 type
 FROM datadog.service_management.incidents
 WHERE incident_id = '{{ incident_id }}' -- required
-AND region = '{{ region }}' -- required
 AND include = '{{ include }}'
 ;
 ```
@@ -282,8 +289,7 @@ attributes,
 relationships,
 type
 FROM datadog.service_management.incidents
-WHERE region = '{{ region }}' -- required
-AND include = '{{ include }}'
+WHERE include = '{{ include }}'
 AND page[size] = '{{ page[size] }}'
 AND page[offset] = '{{ page[offset] }}'
 ;
@@ -299,7 +305,6 @@ attributes,
 type
 FROM datadog.service_management.incidents
 WHERE query = '{{ query }}' -- required
-AND region = '{{ region }}' -- required
 AND include = '{{ include }}'
 AND sort = '{{ sort }}'
 AND page[size] = '{{ page[size] }}'
@@ -325,12 +330,10 @@ Create an incident.
 
 ```sql
 INSERT INTO datadog.service_management.incidents (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data,
 included
@@ -339,18 +342,36 @@ included
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: incidents
   props:
-    - name: region
-      value: string
-      description: Required parameter for the incidents resource.
     - name: data
-      value: object
       description: |
         Incident data for a create request.
-```
+      value:
+        attributes:
+          customer_impact_scope: "{{ customer_impact_scope }}"
+          customer_impacted: {{ customer_impacted }}
+          fields: "{{ fields }}"
+          incident_type_uuid: "{{ incident_type_uuid }}"
+          initial_cells:
+            - cell_type: "{{ cell_type }}"
+              content:
+                content: "{{ content }}"
+              important: {{ important }}
+          is_test: {{ is_test }}
+          notification_handles:
+            - display_name: "{{ display_name }}"
+              handle: "{{ handle }}"
+          title: "{{ title }}"
+        relationships:
+          commander_user:
+            data:
+              id: "{{ id }}"
+              type: "{{ type }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -370,11 +391,10 @@ Updates an incident. Provide only the attributes that should be updated as this 
 ```sql
 UPDATE datadog.service_management.incidents
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 incident_id = '{{ incident_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 AND include = '{{ include}}'
 RETURNING
 data,
@@ -399,7 +419,33 @@ Deletes an existing incident from the users organization.
 ```sql
 DELETE FROM datadog.service_management.incidents
 WHERE incident_id = '{{ incident_id }}' --required
-AND region = '{{ region }}' --required
+;
+```
+</TabItem>
+</Tabs>
+
+
+## Lifecycle Methods
+
+EXEC variables use wire (API) names.
+
+<Tabs
+    defaultValue="import_incident"
+    values={[
+        { label: 'import_incident', value: 'import_incident' }
+    ]}
+>
+<TabItem value="import_incident">
+
+Import an incident from an external system. This endpoint allows you to create incidents with&lt;br /&gt;historical data such as custom timestamps for detection, declaration, and resolution.&lt;br /&gt;Imported incidents do not execute integrations or notification rules.
+
+```sql
+EXEC datadog.service_management.incidents.import_incident 
+@include='{{ include }}' 
+@@json=
+'{
+"data": "{{ data }}"
+}'
 ;
 ```
 </TabItem>

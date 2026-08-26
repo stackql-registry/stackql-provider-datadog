@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>on_call_page</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>on_call_page</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="on_call_page" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.service_management.on_call_page" /></td></tr>
 </tbody></table>
@@ -52,30 +53,30 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#create_on_call_page"><CopyableCode code="create_on_call_page" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
     <td></td>
-    <td>Trigger a new On-Call Page.<br /></td>
+    <td></td>
+    <td>Trigger a new On-Call Page.</td>
 </tr>
 <tr>
     <td><a href="#acknowledge_on_call_page"><CopyableCode code="acknowledge_on_call_page" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-page_id"><code>page_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-page_id"><code>page_id</code></a></td>
     <td></td>
-    <td>Acknowledges an On-Call Page.<br /></td>
+    <td>Acknowledges an On-Call Page.</td>
 </tr>
 <tr>
     <td><a href="#escalate_on_call_page"><CopyableCode code="escalate_on_call_page" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-page_id"><code>page_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-page_id"><code>page_id</code></a></td>
     <td></td>
-    <td>Escalates an On-Call Page.<br /></td>
+    <td>Escalates an On-Call Page.</td>
 </tr>
 <tr>
     <td><a href="#resolve_on_call_page"><CopyableCode code="resolve_on_call_page" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-page_id"><code>page_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-page_id"><code>page_id</code></a></td>
     <td></td>
-    <td>Resolves an On-Call Page.<br /></td>
+    <td>Resolves an On-Call Page.</td>
 </tr>
 </tbody>
 </table>
@@ -98,10 +99,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string (uuid)</code></td>
     <td>The page ID.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -117,16 +118,14 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 >
 <TabItem value="create_on_call_page">
 
-Trigger a new On-Call Page.<br />
+Trigger a new On-Call Page.
 
 ```sql
 INSERT INTO datadog.service_management.on_call_page (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}',
-'{{ region }}'
+'{{ data }}'
 RETURNING
 data
 ;
@@ -134,23 +133,32 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: on_call_page
   props:
-    - name: region
-      value: string
-      description: Required parameter for the on_call_page resource.
     - name: data
-      value: object
       description: |
         The main request body, including attributes and resource type.
-```
+      value:
+        attributes:
+          description: "{{ description }}"
+          tags:
+            - "{{ tags }}"
+          target:
+            identifier: "{{ identifier }}"
+            type: "{{ type }}"
+          title: "{{ title }}"
+          urgency: "{{ urgency }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
 
 ## Lifecycle Methods
+
+EXEC variables use wire (API) names.
 
 <Tabs
     defaultValue="acknowledge_on_call_page"
@@ -162,34 +170,31 @@ data
 >
 <TabItem value="acknowledge_on_call_page">
 
-Acknowledges an On-Call Page.<br />
+Acknowledges an On-Call Page.
 
 ```sql
 EXEC datadog.service_management.on_call_page.acknowledge_on_call_page 
-@page_id='{{ page_id }}' --required, 
-@region='{{ region }}' --required
+@page_id='{{ page_id }}' --required 
 ;
 ```
 </TabItem>
 <TabItem value="escalate_on_call_page">
 
-Escalates an On-Call Page.<br />
+Escalates an On-Call Page.
 
 ```sql
 EXEC datadog.service_management.on_call_page.escalate_on_call_page 
-@page_id='{{ page_id }}' --required, 
-@region='{{ region }}' --required
+@page_id='{{ page_id }}' --required 
 ;
 ```
 </TabItem>
 <TabItem value="resolve_on_call_page">
 
-Resolves an On-Call Page.<br />
+Resolves an On-Call Page.
 
 ```sql
 EXEC datadog.service_management.on_call_page.resolve_on_call_page 
-@page_id='{{ page_id }}' --required, 
-@region='{{ region }}' --required
+@page_id='{{ page_id }}' --required 
 ;
 ```
 </TabItem>

@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>authn_mappings</code> resource
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>authn_mappings</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="authn_mappings" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.organization.authn_mappings" /></td></tr>
 </tbody></table>
@@ -67,7 +68,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>AuthN Mappings resource type. (default: authn_mappings, example: authn_mappings)</td>
+    <td>AuthN Mappings resource type. (authn_mappings) (default: authn_mappings, example: authn_mappings)</td>
 </tr>
 </tbody>
 </table>
@@ -101,7 +102,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>AuthN Mappings resource type. (default: authn_mappings, example: authn_mappings)</td>
+    <td>AuthN Mappings resource type. (authn_mappings) (default: authn_mappings, example: authn_mappings)</td>
 </tr>
 </tbody>
 </table>
@@ -126,35 +127,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_auth_nmapping"><CopyableCode code="get_auth_nmapping" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-authn_mapping_id"><code>authn_mapping_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-authn_mapping_id"><code>authn_mapping_id</code></a></td>
     <td></td>
     <td>Get an AuthN Mapping specified by the AuthN Mapping UUID.</td>
 </tr>
 <tr>
     <td><a href="#list_auth_nmappings"><CopyableCode code="list_auth_nmappings" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-page[number]"><code>page[number]</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-filter"><code>filter</code></a>, <a href="#parameter-resource_type"><code>resource_type</code></a></td>
     <td>List all AuthN Mappings in the org.</td>
 </tr>
 <tr>
     <td><a href="#create_auth_nmapping"><CopyableCode code="create_auth_nmapping" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Create an AuthN Mapping.</td>
 </tr>
 <tr>
     <td><a href="#update_auth_nmapping"><CopyableCode code="update_auth_nmapping" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-authn_mapping_id"><code>authn_mapping_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-authn_mapping_id"><code>authn_mapping_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Edit an AuthN Mapping.</td>
 </tr>
 <tr>
     <td><a href="#delete_auth_nmapping"><CopyableCode code="delete_auth_nmapping" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-authn_mapping_id"><code>authn_mapping_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-authn_mapping_id"><code>authn_mapping_id</code></a></td>
     <td></td>
     <td>Delete an AuthN Mapping specified by AuthN Mapping UUID.</td>
 </tr>
@@ -179,10 +180,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The UUID of the AuthN Mapping.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter">
     <td><CopyableCode code="filter" /></td>
@@ -197,7 +198,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-page[size]">
     <td><CopyableCode code="page[size]" /></td>
     <td><code>integer (int64)</code></td>
-    <td>Size for a given page. The maximum allowed value is 100.</td>
+    <td>Number of items to return per page. The maximum allowed value is 100.</td>
 </tr>
 <tr id="parameter-resource_type">
     <td><CopyableCode code="resource_type" /></td>
@@ -233,7 +234,6 @@ relationships,
 type
 FROM datadog.organization.authn_mappings
 WHERE authn_mapping_id = '{{ authn_mapping_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -248,8 +248,7 @@ attributes,
 relationships,
 type
 FROM datadog.organization.authn_mappings
-WHERE region = '{{ region }}' -- required
-AND page[size] = '{{ page[size] }}'
+WHERE page[size] = '{{ page[size] }}'
 AND page[number] = '{{ page[number] }}'
 AND sort = '{{ sort }}'
 AND filter = '{{ filter }}'
@@ -275,12 +274,10 @@ Create an AuthN Mapping.
 
 ```sql
 INSERT INTO datadog.organization.authn_mappings (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data,
 included
@@ -289,18 +286,28 @@ included
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: authn_mappings
   props:
-    - name: region
-      value: string
-      description: Required parameter for the authn_mappings resource.
     - name: data
-      value: object
       description: |
         Data for creating an AuthN Mapping.
-```
+      value:
+        attributes:
+          attribute_key: "{{ attribute_key }}"
+          attribute_value: "{{ attribute_value }}"
+        relationships:
+          role:
+            data:
+              id: "{{ id }}"
+              type: "{{ type }}"
+          team:
+            data:
+              id: "{{ id }}"
+              type: "{{ type }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -320,11 +327,10 @@ Edit an AuthN Mapping.
 ```sql
 UPDATE datadog.organization.authn_mappings
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 authn_mapping_id = '{{ authn_mapping_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data,
 included;
@@ -348,7 +354,6 @@ Delete an AuthN Mapping specified by AuthN Mapping UUID.
 ```sql
 DELETE FROM datadog.organization.authn_mappings
 WHERE authn_mapping_id = '{{ authn_mapping_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

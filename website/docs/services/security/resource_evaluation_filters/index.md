@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>resource_evaluation_filters</co
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>resource_evaluation_filters</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="resource_evaluation_filters" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.security.resource_evaluation_filters" /></td></tr>
 </tbody></table>
@@ -61,7 +62,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Constant string to identify the request type. (example: csm_resource_filter)</td>
+    <td>Constant string to identify the request type. (csm_resource_filter) (example: csm_resource_filter)</td>
 </tr>
 </tbody>
 </table>
@@ -86,14 +87,14 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_resource_evaluation_filters"><CopyableCode code="get_resource_evaluation_filters" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-cloud_provider"><code>cloud_provider</code></a>, <a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-skip_cache"><code>skip_cache</code></a></td>
     <td>List resource filters.</td>
 </tr>
 <tr>
     <td><a href="#update_resource_evaluation_filters"><CopyableCode code="update_resource_evaluation_filters" /></a></td>
     <td><CopyableCode code="replace" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Update resource filters.</td>
 </tr>
@@ -113,10 +114,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-account_id">
     <td><CopyableCode code="account_id" /></td>
@@ -154,8 +155,7 @@ id,
 attributes,
 type
 FROM datadog.security.resource_evaluation_filters
-WHERE region = '{{ region }}' -- required
-AND cloud_provider = '{{ cloud_provider }}'
+WHERE cloud_provider = '{{ cloud_provider }}'
 AND account_id = '{{ account_id }}'
 AND skip_cache = '{{ skip_cache }}'
 ;
@@ -179,10 +179,9 @@ Update resource filters.
 ```sql
 REPLACE datadog.security.resource_evaluation_filters
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
-region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+data = '{{ data }}' --required
 RETURNING
 data;
 ```

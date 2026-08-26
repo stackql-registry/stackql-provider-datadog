@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>aws_scan_options</code> resour
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>aws_scan_options</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="aws_scan_options" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.security.aws_scan_options" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of the resource. The value should always be `aws_scan_options`. (default: aws_scan_options, example: aws_scan_options)</td>
+    <td>The type of the resource. The value should always be `aws_scan_options`. (aws_scan_options) (default: aws_scan_options, example: aws_scan_options)</td>
 </tr>
 </tbody>
 </table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of the resource. The value should always be `aws_scan_options`. (default: aws_scan_options, example: aws_scan_options)</td>
+    <td>The type of the resource. The value should always be `aws_scan_options`. (aws_scan_options) (default: aws_scan_options, example: aws_scan_options)</td>
 </tr>
 </tbody>
 </table>
@@ -116,35 +117,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_aws_scan_options"><CopyableCode code="get_aws_scan_options" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-account_id"><code>account_id</code></a></td>
     <td></td>
     <td>Fetches the Agentless scan options for an activated account.</td>
 </tr>
 <tr>
     <td><a href="#list_aws_scan_options"><CopyableCode code="list_aws_scan_options" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Fetches the scan options configured for AWS accounts.</td>
 </tr>
 <tr>
     <td><a href="#create_aws_scan_options"><CopyableCode code="create_aws_scan_options" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Activate Agentless scan options for an AWS account.</td>
 </tr>
 <tr>
     <td><a href="#update_aws_scan_options"><CopyableCode code="update_aws_scan_options" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Update the Agentless scan options for an activated account.</td>
 </tr>
 <tr>
     <td><a href="#delete_aws_scan_options"><CopyableCode code="delete_aws_scan_options" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-account_id"><code>account_id</code></a></td>
     <td></td>
     <td>Delete Agentless scan options for an AWS account.</td>
 </tr>
@@ -169,10 +170,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The ID of an AWS account. (example: 123456789012)</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -197,7 +198,6 @@ attributes,
 type
 FROM datadog.security.aws_scan_options
 WHERE account_id = '{{ account_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -211,7 +211,6 @@ id,
 attributes,
 type
 FROM datadog.security.aws_scan_options
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -233,12 +232,10 @@ Activate Agentless scan options for an AWS account.
 
 ```sql
 INSERT INTO datadog.security.aws_scan_options (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -246,18 +243,23 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: aws_scan_options
   props:
-    - name: region
-      value: string
-      description: Required parameter for the aws_scan_options resource.
     - name: data
-      value: object
       description: |
         Object for the scan options of a single AWS account.
-```
+      value:
+        attributes:
+          compliance_host: {{ compliance_host }}
+          lambda: {{ lambda }}
+          sensitive_data: {{ sensitive_data }}
+          vuln_containers_os: {{ vuln_containers_os }}
+          vuln_host_os: {{ vuln_host_os }}
+        id: "{{ id }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -277,11 +279,10 @@ Update the Agentless scan options for an activated account.
 ```sql
 UPDATE datadog.security.aws_scan_options
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 account_id = '{{ account_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required;
+AND data = '{{ data }}' --required;
 ```
 </TabItem>
 </Tabs>
@@ -302,7 +303,6 @@ Delete Agentless scan options for an AWS account.
 ```sql
 DELETE FROM datadog.security.aws_scan_options
 WHERE account_id = '{{ account_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

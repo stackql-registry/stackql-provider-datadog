@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>monitoring_hist_signals</code> 
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>monitoring_hist_signals</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="monitoring_hist_signals" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.security.monitoring_hist_signals" /></td></tr>
 </tbody></table>
@@ -63,7 +64,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of event. (default: signal, example: signal)</td>
+    <td>The type of event. (signal) (default: signal, example: signal)</td>
 </tr>
 </tbody>
 </table>
@@ -92,7 +93,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of event. (default: signal, example: signal)</td>
+    <td>The type of event. (signal) (default: signal, example: signal)</td>
 </tr>
 </tbody>
 </table>
@@ -121,7 +122,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of event. (default: signal, example: signal)</td>
+    <td>The type of event. (signal) (default: signal, example: signal)</td>
 </tr>
 </tbody>
 </table>
@@ -146,35 +147,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_security_monitoring_histsignal"><CopyableCode code="get_security_monitoring_histsignal" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-histsignal_id"><code>histsignal_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-histsignal_id"><code>histsignal_id</code></a></td>
     <td></td>
     <td>Get a hist signal's details.</td>
 </tr>
 <tr>
     <td><a href="#get_security_monitoring_histsignals_by_job_id"><CopyableCode code="get_security_monitoring_histsignals_by_job_id" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-job_id"><code>job_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-job_id"><code>job_id</code></a></td>
     <td><a href="#parameter-filter[query]"><code>filter[query]</code></a>, <a href="#parameter-filter[from]"><code>filter[from]</code></a>, <a href="#parameter-filter[to]"><code>filter[to]</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-page[cursor]"><code>page[cursor]</code></a>, <a href="#parameter-page[limit]"><code>page[limit]</code></a></td>
     <td>Get a job's hist signals.</td>
 </tr>
 <tr>
     <td><a href="#list_security_monitoring_histsignals"><CopyableCode code="list_security_monitoring_histsignals" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-filter[query]"><code>filter[query]</code></a>, <a href="#parameter-filter[from]"><code>filter[from]</code></a>, <a href="#parameter-filter[to]"><code>filter[to]</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-page[cursor]"><code>page[cursor]</code></a>, <a href="#parameter-page[limit]"><code>page[limit]</code></a></td>
     <td>List hist signals.</td>
 </tr>
 <tr>
     <td><a href="#search_security_monitoring_histsignals"><CopyableCode code="search_security_monitoring_histsignals" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Search hist signals.</td>
 </tr>
 <tr>
     <td><a href="#convert_job_result_to_signal"><CopyableCode code="convert_job_result_to_signal" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Convert a job result to a signal.</td>
 </tr>
@@ -204,10 +205,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The ID of the job.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter[from]">
     <td><CopyableCode code="filter[from]" /></td>
@@ -263,7 +264,6 @@ attributes,
 type
 FROM datadog.security.monitoring_hist_signals
 WHERE histsignal_id = '{{ histsignal_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -278,7 +278,6 @@ attributes,
 type
 FROM datadog.security.monitoring_hist_signals
 WHERE job_id = '{{ job_id }}' -- required
-AND region = '{{ region }}' -- required
 AND filter[query] = '{{ filter[query] }}'
 AND filter[from] = '{{ filter[from] }}'
 AND filter[to] = '{{ filter[to] }}'
@@ -298,8 +297,7 @@ id,
 attributes,
 type
 FROM datadog.security.monitoring_hist_signals
-WHERE region = '{{ region }}' -- required
-AND filter[query] = '{{ filter[query] }}'
+WHERE filter[query] = '{{ filter[query] }}'
 AND filter[from] = '{{ filter[from] }}'
 AND filter[to] = '{{ filter[to] }}'
 AND sort = '{{ sort }}'
@@ -312,6 +310,8 @@ AND page[limit] = '{{ page[limit] }}'
 
 
 ## Lifecycle Methods
+
+EXEC variables use wire (API) names.
 
 <Tabs
     defaultValue="search_security_monitoring_histsignals"
@@ -326,7 +326,6 @@ Search hist signals.
 
 ```sql
 EXEC datadog.security.monitoring_hist_signals.search_security_monitoring_histsignals 
-@region='{{ region }}' --required 
 @@json=
 '{
 "filter": "{{ filter }}", 
@@ -342,7 +341,6 @@ Convert a job result to a signal.
 
 ```sql
 EXEC datadog.security.monitoring_hist_signals.convert_job_result_to_signal 
-@region='{{ region }}' --required 
 @@json=
 '{
 "data": "{{ data }}"

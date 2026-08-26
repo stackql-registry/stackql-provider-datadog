@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>filters</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>filters</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="filters" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.security.filters" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of the resource. The value should always be `security_filters`. (default: security_filters, example: security_filters)</td>
+    <td>The type of the resource. The value should always be `security_filters`. (security_filters) (default: security_filters, example: security_filters)</td>
 </tr>
 </tbody>
 </table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of the resource. The value should always be `security_filters`. (default: security_filters, example: security_filters)</td>
+    <td>The type of the resource. The value should always be `security_filters`. (security_filters) (default: security_filters, example: security_filters)</td>
 </tr>
 </tbody>
 </table>
@@ -116,35 +117,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_security_filter"><CopyableCode code="get_security_filter" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-security_filter_id"><code>security_filter_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-security_filter_id"><code>security_filter_id</code></a></td>
     <td></td>
-    <td>Get the details of a specific security filter.<br /><br />See the [security filter guide](https://docs.datadoghq.com/security_platform/guide/how-to-setup-security-filters-using-security-monitoring-api/)<br />for more examples.</td>
+    <td>Get the details of a specific security filter.&lt;br /&gt;&lt;br /&gt;See the &#91;security filter guide&#93;(https:​//docs.datadoghq.com/security_platform/guide/how-to-setup-security-filters-using-security-monitoring-api/)&lt;br /&gt;for more examples.</td>
 </tr>
 <tr>
     <td><a href="#list_security_filters"><CopyableCode code="list_security_filters" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Get the list of configured security filters with their definitions.</td>
 </tr>
 <tr>
     <td><a href="#create_security_filter"><CopyableCode code="create_security_filter" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
-    <td>Create a security filter.<br /><br />See the [security filter guide](https://docs.datadoghq.com/security_platform/guide/how-to-setup-security-filters-using-security-monitoring-api/)<br />for more examples.</td>
+    <td>Create a security filter.&lt;br /&gt;&lt;br /&gt;See the &#91;security filter guide&#93;(https:​//docs.datadoghq.com/security_platform/guide/how-to-setup-security-filters-using-security-monitoring-api/)&lt;br /&gt;for more examples.</td>
 </tr>
 <tr>
     <td><a href="#update_security_filter"><CopyableCode code="update_security_filter" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-security_filter_id"><code>security_filter_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-security_filter_id"><code>security_filter_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
-    <td>Update a specific security filter.<br />Returns the security filter object when the request is successful.</td>
+    <td>Update a specific security filter.&lt;br /&gt;Returns the security filter object when the request is successful.</td>
 </tr>
 <tr>
     <td><a href="#delete_security_filter"><CopyableCode code="delete_security_filter" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-security_filter_id"><code>security_filter_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-security_filter_id"><code>security_filter_id</code></a></td>
     <td></td>
     <td>Delete a specific security filter.</td>
 </tr>
@@ -164,15 +165,15 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
-    <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
-</tr>
 <tr id="parameter-security_filter_id">
     <td><CopyableCode code="security_filter_id" /></td>
     <td><code>string</code></td>
     <td>The ID of the security filter.</td>
+</tr>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
+    <td><code>string</code></td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -188,7 +189,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 >
 <TabItem value="get_security_filter">
 
-Get the details of a specific security filter.<br /><br />See the [security filter guide](https://docs.datadoghq.com/security_platform/guide/how-to-setup-security-filters-using-security-monitoring-api/)<br />for more examples.
+Get the details of a specific security filter.&lt;br /&gt;&lt;br /&gt;See the &#91;security filter guide&#93;(https:​//docs.datadoghq.com/security_platform/guide/how-to-setup-security-filters-using-security-monitoring-api/)&lt;br /&gt;for more examples.
 
 ```sql
 SELECT
@@ -197,7 +198,6 @@ attributes,
 type
 FROM datadog.security.filters
 WHERE security_filter_id = '{{ security_filter_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -211,7 +211,6 @@ id,
 attributes,
 type
 FROM datadog.security.filters
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -229,16 +228,14 @@ WHERE region = '{{ region }}' -- required
 >
 <TabItem value="create_security_filter">
 
-Create a security filter.<br /><br />See the [security filter guide](https://docs.datadoghq.com/security_platform/guide/how-to-setup-security-filters-using-security-monitoring-api/)<br />for more examples.
+Create a security filter.&lt;br /&gt;&lt;br /&gt;See the &#91;security filter guide&#93;(https:​//docs.datadoghq.com/security_platform/guide/how-to-setup-security-filters-using-security-monitoring-api/)&lt;br /&gt;for more examples.
 
 ```sql
 INSERT INTO datadog.security.filters (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data,
 meta
@@ -247,18 +244,24 @@ meta
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: filters
   props:
-    - name: region
-      value: string
-      description: Required parameter for the filters resource.
     - name: data
-      value: object
       description: |
         Object for a single security filter.
-```
+      value:
+        attributes:
+          exclusion_filters:
+            - name: "{{ name }}"
+              query: "{{ query }}"
+          filtered_data_type: "{{ filtered_data_type }}"
+          is_enabled: {{ is_enabled }}
+          name: "{{ name }}"
+          query: "{{ query }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -273,16 +276,15 @@ meta
 >
 <TabItem value="update_security_filter">
 
-Update a specific security filter.<br />Returns the security filter object when the request is successful.
+Update a specific security filter.&lt;br /&gt;Returns the security filter object when the request is successful.
 
 ```sql
 UPDATE datadog.security.filters
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 security_filter_id = '{{ security_filter_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data,
 meta;
@@ -306,7 +308,6 @@ Delete a specific security filter.
 ```sql
 DELETE FROM datadog.security.filters
 WHERE security_filter_id = '{{ security_filter_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

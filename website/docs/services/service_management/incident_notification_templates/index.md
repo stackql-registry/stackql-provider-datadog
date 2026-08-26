@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>incident_notification_template
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>incident_notification_templates</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="incident_notification_templates" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.service_management.incident_notification_templates" /></td></tr>
 </tbody></table>
@@ -67,7 +68,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Notification templates resource type. (example: notification_templates)</td>
+    <td>Notification templates resource type. (notification_templates) (example: notification_templates)</td>
 </tr>
 </tbody>
 </table>
@@ -101,7 +102,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Notification templates resource type. (example: notification_templates)</td>
+    <td>Notification templates resource type. (notification_templates) (example: notification_templates)</td>
 </tr>
 </tbody>
 </table>
@@ -126,35 +127,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_incident_notification_template"><CopyableCode code="get_incident_notification_template" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-id"><code>id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-id"><code>id</code></a></td>
     <td><a href="#parameter-include"><code>include</code></a></td>
     <td>Retrieves a specific notification template by its ID.</td>
 </tr>
 <tr>
     <td><a href="#list_incident_notification_templates"><CopyableCode code="list_incident_notification_templates" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-filter[incident-type]"><code>filter[incident-type]</code></a>, <a href="#parameter-include"><code>include</code></a></td>
     <td>Lists all notification templates. Optionally filter by incident type.</td>
 </tr>
 <tr>
     <td><a href="#create_incident_notification_template"><CopyableCode code="create_incident_notification_template" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Creates a new notification template.</td>
 </tr>
 <tr>
     <td><a href="#update_incident_notification_template"><CopyableCode code="update_incident_notification_template" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-id"><code>id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-id"><code>id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td><a href="#parameter-include"><code>include</code></a></td>
     <td>Updates an existing notification template's attributes.</td>
 </tr>
 <tr>
     <td><a href="#delete_incident_notification_template"><CopyableCode code="delete_incident_notification_template" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-id"><code>id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-id"><code>id</code></a></td>
     <td><a href="#parameter-include"><code>include</code></a></td>
     <td>Deletes a notification template by its ID.</td>
 </tr>
@@ -179,10 +180,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string (uuid)</code></td>
     <td>The ID of the notification template.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter[incident-type]">
     <td><CopyableCode code="filter[incident-type]" /></td>
@@ -192,7 +193,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-include">
     <td><CopyableCode code="include" /></td>
     <td><code>string</code></td>
-    <td>Comma-separated list of relationships to include. Supported values: `created_by_user`, `last_modified_by_user`, `incident_type` </td>
+    <td>Comma-separated list of relationships to include. Supported values: `created_by_user`, `last_modified_by_user`, `incident_type`</td>
 </tr>
 </tbody>
 </table>
@@ -218,7 +219,6 @@ relationships,
 type
 FROM datadog.service_management.incident_notification_templates
 WHERE id = '{{ id }}' -- required
-AND region = '{{ region }}' -- required
 AND include = '{{ include }}'
 ;
 ```
@@ -234,8 +234,7 @@ attributes,
 relationships,
 type
 FROM datadog.service_management.incident_notification_templates
-WHERE region = '{{ region }}' -- required
-AND filter[incident-type] = '{{ filter[incident-type] }}'
+WHERE filter[incident-type] = '{{ filter[incident-type] }}'
 AND include = '{{ include }}'
 ;
 ```
@@ -258,12 +257,10 @@ Creates a new notification template.
 
 ```sql
 INSERT INTO datadog.service_management.incident_notification_templates (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data,
 included
@@ -272,18 +269,26 @@ included
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: incident_notification_templates
   props:
-    - name: region
-      value: string
-      description: Required parameter for the incident_notification_templates resource.
     - name: data
-      value: object
       description: |
         Notification template data for a create request.
-```
+      value:
+        attributes:
+          category: "{{ category }}"
+          content: "{{ content }}"
+          name: "{{ name }}"
+          subject: "{{ subject }}"
+        relationships:
+          incident_type:
+            data:
+              id: "{{ id }}"
+              type: "{{ type }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -303,11 +308,10 @@ Updates an existing notification template's attributes.
 ```sql
 UPDATE datadog.service_management.incident_notification_templates
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 id = '{{ id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 AND include = '{{ include}}'
 RETURNING
 data,
@@ -332,7 +336,6 @@ Deletes a notification template by its ID.
 ```sql
 DELETE FROM datadog.service_management.incident_notification_templates
 WHERE id = '{{ id }}' --required
-AND region = '{{ region }}' --required
 AND include = '{{ include }}'
 ;
 ```

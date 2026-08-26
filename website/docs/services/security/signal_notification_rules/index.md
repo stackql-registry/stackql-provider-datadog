@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>signal_notification_rules</code
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>signal_notification_rules</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="signal_notification_rules" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.security.signal_notification_rules" /></td></tr>
 </tbody></table>
@@ -64,7 +65,7 @@ Notification rule details.
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The rule type associated to notification rules. (example: notification_rules)</td>
+    <td>The rule type associated to notification rules. (notification_rules) (example: notification_rules)</td>
 </tr>
 </tbody>
 </table>
@@ -95,7 +96,7 @@ The list of notification rules.
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The rule type associated to notification rules. (example: notification_rules)</td>
+    <td>The rule type associated to notification rules. (notification_rules) (example: notification_rules)</td>
 </tr>
 </tbody>
 </table>
@@ -120,35 +121,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_signal_notification_rule"><CopyableCode code="get_signal_notification_rule" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-id"><code>id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-id"><code>id</code></a></td>
     <td></td>
     <td>Get the details of a notification rule for security signals.</td>
 </tr>
 <tr>
     <td><a href="#get_signal_notification_rules"><CopyableCode code="get_signal_notification_rules" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Returns the list of notification rules for security signals.</td>
 </tr>
 <tr>
     <td><a href="#create_signal_notification_rule"><CopyableCode code="create_signal_notification_rule" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Create a new notification rule for security signals and return the created rule.</td>
 </tr>
 <tr>
     <td><a href="#patch_signal_notification_rule"><CopyableCode code="patch_signal_notification_rule" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-id"><code>id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-id"><code>id</code></a></td>
     <td></td>
     <td>Partially update the notification rule. All fields are optional; if a field is not provided, it is not updated.</td>
 </tr>
 <tr>
     <td><a href="#delete_signal_notification_rule"><CopyableCode code="delete_signal_notification_rule" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-id"><code>id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-id"><code>id</code></a></td>
     <td></td>
     <td>Delete a notification rule for security signals.</td>
 </tr>
@@ -173,10 +174,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>ID of the notification rule.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -201,7 +202,6 @@ attributes,
 type
 FROM datadog.security.signal_notification_rules
 WHERE id = '{{ id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -215,7 +215,6 @@ id,
 attributes,
 type
 FROM datadog.security.signal_notification_rules
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -237,12 +236,10 @@ Create a new notification rule for security signals and return the created rule.
 
 ```sql
 INSERT INTO datadog.security.signal_notification_rules (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}',
-'{{ region }}'
+'{{ data }}'
 RETURNING
 data
 ;
@@ -250,18 +247,31 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: signal_notification_rules
   props:
-    - name: region
-      value: string
-      description: Required parameter for the signal_notification_rules resource.
     - name: data
-      value: object
       description: |
         Data of the notification rule create request: the rule type, and the rule attributes. All fields are required.
-```
+      value:
+        attributes:
+          enabled: {{ enabled }}
+          name: "{{ name }}"
+          routing:
+            mode: "{{ mode }}"
+          selectors:
+            query: "{{ query }}"
+            rule_types:
+              - "{{ rule_types }}"
+            severities:
+              - "{{ severities }}"
+            trigger_source: "{{ trigger_source }}"
+          targets:
+            - "{{ targets }}"
+          time_aggregation: {{ time_aggregation }}
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -281,10 +291,9 @@ Partially update the notification rule. All fields are optional; if a field is n
 ```sql
 UPDATE datadog.security.signal_notification_rules
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 id = '{{ id }}' --required
-AND region = '{{ region }}' --required
 RETURNING
 data;
 ```
@@ -307,7 +316,6 @@ Delete a notification rule for security signals.
 ```sql
 DELETE FROM datadog.security.signal_notification_rules
 WHERE id = '{{ id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

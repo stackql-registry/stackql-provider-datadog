@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>scorecard_rules</code> resource
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>scorecard_rules</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="scorecard_rules" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.apm.scorecard_rules" /></td></tr>
 </tbody></table>
@@ -66,7 +67,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The JSON:API type for scorecard rules. (default: rule, example: rule)</td>
+    <td>The JSON:API type for scorecard rules. (rule) (default: rule, example: rule)</td>
 </tr>
 </tbody>
 </table>
@@ -91,28 +92,28 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_scorecard_rules"><CopyableCode code="list_scorecard_rules" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-page[offset]"><code>page[offset]</code></a>, <a href="#parameter-include"><code>include</code></a>, <a href="#parameter-filter[rule][id]"><code>filter[rule][id]</code></a>, <a href="#parameter-filter[rule][enabled]"><code>filter[rule][enabled]</code></a>, <a href="#parameter-filter[rule][custom]"><code>filter[rule][custom]</code></a>, <a href="#parameter-filter[rule][name]"><code>filter[rule][name]</code></a>, <a href="#parameter-filter[rule][description]"><code>filter[rule][description]</code></a>, <a href="#parameter-fields[rule]"><code>fields[rule]</code></a>, <a href="#parameter-fields[scorecard]"><code>fields[scorecard]</code></a></td>
     <td>Fetch all rules.</td>
 </tr>
 <tr>
     <td><a href="#create_scorecard_rule"><CopyableCode code="create_scorecard_rule" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Creates a new rule.</td>
 </tr>
 <tr>
     <td><a href="#update_scorecard_rule"><CopyableCode code="update_scorecard_rule" /></a></td>
     <td><CopyableCode code="replace" /></td>
-    <td><a href="#parameter-rule_id"><code>rule_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-rule_id"><code>rule_id</code></a></td>
     <td></td>
     <td>Updates an existing rule.</td>
 </tr>
 <tr>
     <td><a href="#delete_scorecard_rule"><CopyableCode code="delete_scorecard_rule" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-rule_id"><code>rule_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-rule_id"><code>rule_id</code></a></td>
     <td></td>
     <td>Deletes a single rule.</td>
 </tr>
@@ -132,15 +133,15 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
-    <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
-</tr>
 <tr id="parameter-rule_id">
     <td><CopyableCode code="rule_id" /></td>
     <td><code>string</code></td>
     <td>The ID of the rule.</td>
+</tr>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
+    <td><code>string</code></td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-fields[rule]">
     <td><CopyableCode code="fields[rule]" /></td>
@@ -190,7 +191,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-page[size]">
     <td><CopyableCode code="page[size]" /></td>
     <td><code>integer (int64)</code></td>
-    <td>Size for a given page. The maximum allowed value is 100.</td>
+    <td>Number of items to return per page. The maximum allowed value is 100.</td>
 </tr>
 </tbody>
 </table>
@@ -214,8 +215,7 @@ attributes,
 relationships,
 type
 FROM datadog.apm.scorecard_rules
-WHERE region = '{{ region }}' -- required
-AND page[size] = '{{ page[size] }}'
+WHERE page[size] = '{{ page[size] }}'
 AND page[offset] = '{{ page[offset] }}'
 AND include = '{{ include }}'
 AND filter[rule][id] = '{{ filter[rule][id] }}'
@@ -246,12 +246,10 @@ Creates a new rule.
 
 ```sql
 INSERT INTO datadog.apm.scorecard_rules (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}',
-'{{ region }}'
+'{{ data }}'
 RETURNING
 data
 ;
@@ -259,18 +257,24 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: scorecard_rules
   props:
-    - name: region
-      value: string
-      description: Required parameter for the scorecard_rules resource.
     - name: data
-      value: object
       description: |
         Scorecard create rule request data.
-```
+      value:
+        attributes:
+          description: "{{ description }}"
+          enabled: {{ enabled }}
+          level: {{ level }}
+          name: "{{ name }}"
+          owner: "{{ owner }}"
+          scope_query: "{{ scope_query }}"
+          scorecard_name: "{{ scorecard_name }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -290,10 +294,9 @@ Updates an existing rule.
 ```sql
 REPLACE datadog.apm.scorecard_rules
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 rule_id = '{{ rule_id }}' --required
-AND region = '{{ region }}' --required
 RETURNING
 data;
 ```
@@ -316,7 +319,6 @@ Deletes a single rule.
 ```sql
 DELETE FROM datadog.apm.scorecard_rules
 WHERE rule_id = '{{ rule_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

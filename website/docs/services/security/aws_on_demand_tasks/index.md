@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>aws_on_demand_tasks</code> res
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>aws_on_demand_tasks</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="aws_on_demand_tasks" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.security.aws_on_demand_tasks" /></td></tr>
 </tbody></table>
@@ -64,7 +65,7 @@ OK.
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of the on demand task. The value should always be `aws_resource`. (default: aws_resource, example: aws_resource)</td>
+    <td>The type of the on demand task. The value should always be `aws_resource`. (aws_resource) (default: aws_resource, example: aws_resource)</td>
 </tr>
 </tbody>
 </table>
@@ -93,7 +94,7 @@ OK.
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of the on demand task. The value should always be `aws_resource`. (default: aws_resource, example: aws_resource)</td>
+    <td>The type of the on demand task. The value should always be `aws_resource`. (aws_resource) (default: aws_resource, example: aws_resource)</td>
 </tr>
 </tbody>
 </table>
@@ -118,21 +119,21 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_aws_on_demand_task"><CopyableCode code="get_aws_on_demand_task" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-task_id"><code>task_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-task_id"><code>task_id</code></a></td>
     <td></td>
     <td>Fetch the data of a specific on demand task.</td>
 </tr>
 <tr>
     <td><a href="#list_aws_on_demand_tasks"><CopyableCode code="list_aws_on_demand_tasks" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Fetches the most recent 1000 AWS on demand tasks.</td>
 </tr>
 <tr>
     <td><a href="#create_aws_on_demand_task"><CopyableCode code="create_aws_on_demand_task" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Trigger the scan of an AWS resource with a high priority. Agentless scanning must be activated for the AWS account containing the resource to scan.</td>
 </tr>
@@ -152,10 +153,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-task_id">
     <td><CopyableCode code="task_id" /></td>
@@ -185,7 +186,6 @@ attributes,
 type
 FROM datadog.security.aws_on_demand_tasks
 WHERE task_id = '{{ task_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -199,7 +199,6 @@ id,
 attributes,
 type
 FROM datadog.security.aws_on_demand_tasks
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -221,12 +220,10 @@ Trigger the scan of an AWS resource with a high priority. Agentless scanning mus
 
 ```sql
 INSERT INTO datadog.security.aws_on_demand_tasks (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -234,17 +231,17 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: aws_on_demand_tasks
   props:
-    - name: region
-      value: string
-      description: Required parameter for the aws_on_demand_tasks resource.
     - name: data
-      value: object
       description: |
         Object for a single AWS on demand task.
-```
+      value:
+        attributes:
+          arn: "{{ arn }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>

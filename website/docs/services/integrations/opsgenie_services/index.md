@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>opsgenie_services</code> resou
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>opsgenie_services</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="opsgenie_services" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.integrations.opsgenie_services" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Opsgenie service resource type. (default: opsgenie-service, example: opsgenie-service)</td>
+    <td>Opsgenie service resource type. (opsgenie-service) (default: opsgenie-service, example: opsgenie-service)</td>
 </tr>
 </tbody>
 </table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Opsgenie service resource type. (default: opsgenie-service, example: opsgenie-service)</td>
+    <td>Opsgenie service resource type. (opsgenie-service) (default: opsgenie-service, example: opsgenie-service)</td>
 </tr>
 </tbody>
 </table>
@@ -116,35 +117,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_opsgenie_service"><CopyableCode code="get_opsgenie_service" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-integration_service_id"><code>integration_service_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-integration_service_id"><code>integration_service_id</code></a></td>
     <td></td>
     <td>Get a single service from the Datadog Opsgenie integration.</td>
 </tr>
 <tr>
     <td><a href="#list_opsgenie_services"><CopyableCode code="list_opsgenie_services" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Get a list of all services from the Datadog Opsgenie integration.</td>
 </tr>
 <tr>
     <td><a href="#create_opsgenie_service"><CopyableCode code="create_opsgenie_service" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Create a new service object in the Opsgenie integration.</td>
 </tr>
 <tr>
     <td><a href="#update_opsgenie_service"><CopyableCode code="update_opsgenie_service" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-integration_service_id"><code>integration_service_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-integration_service_id"><code>integration_service_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Update a single service object in the Datadog Opsgenie integration.</td>
 </tr>
 <tr>
     <td><a href="#delete_opsgenie_service"><CopyableCode code="delete_opsgenie_service" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-integration_service_id"><code>integration_service_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-integration_service_id"><code>integration_service_id</code></a></td>
     <td></td>
     <td>Delete a single service object in the Datadog Opsgenie integration.</td>
 </tr>
@@ -169,10 +170,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The UUID of the service.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -197,7 +198,6 @@ attributes,
 type
 FROM datadog.integrations.opsgenie_services
 WHERE integration_service_id = '{{ integration_service_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -211,7 +211,6 @@ id,
 attributes,
 type
 FROM datadog.integrations.opsgenie_services
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -233,12 +232,10 @@ Create a new service object in the Opsgenie integration.
 
 ```sql
 INSERT INTO datadog.integrations.opsgenie_services (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -246,18 +243,21 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: opsgenie_services
   props:
-    - name: region
-      value: string
-      description: Required parameter for the opsgenie_services resource.
     - name: data
-      value: object
       description: |
         Opsgenie service data for a create request.
-```
+      value:
+        attributes:
+          custom_url: "{{ custom_url }}"
+          name: "{{ name }}"
+          opsgenie_api_key: "{{ opsgenie_api_key }}"
+          region: "{{ region }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -277,11 +277,10 @@ Update a single service object in the Datadog Opsgenie integration.
 ```sql
 UPDATE datadog.integrations.opsgenie_services
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 integration_service_id = '{{ integration_service_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -304,7 +303,6 @@ Delete a single service object in the Datadog Opsgenie integration.
 ```sql
 DELETE FROM datadog.integrations.opsgenie_services
 WHERE integration_service_id = '{{ integration_service_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

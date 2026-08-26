@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>rum_events</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>rum_events</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="rum_events" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.digital_experience.rum_events" /></td></tr>
 </tbody></table>
@@ -61,7 +62,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Type of the event. (default: rum, example: rum)</td>
+    <td>Type of the event. (rum) (default: rum, example: rum)</td>
 </tr>
 </tbody>
 </table>
@@ -86,23 +87,23 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_rumevents"><CopyableCode code="list_rumevents" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-filter[query]"><code>filter[query]</code></a>, <a href="#parameter-filter[from]"><code>filter[from]</code></a>, <a href="#parameter-filter[to]"><code>filter[to]</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-page[cursor]"><code>page[cursor]</code></a>, <a href="#parameter-page[limit]"><code>page[limit]</code></a></td>
-    <td>List endpoint returns events that match a RUM search query.<br />[Results are paginated][1].<br /><br />Use this endpoint to see your latest RUM events.<br /><br />[1]: https://docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination</td>
+    <td>List endpoint returns events that match a RUM search query.&lt;br /&gt;&#91;Results are paginated&#93;&#91;1&#93;.&lt;br /&gt;&lt;br /&gt;Use this endpoint to see your latest RUM events.&lt;br /&gt;&lt;br /&gt;&#91;1&#93;: https:​//docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination</td>
 </tr>
 <tr>
     <td><a href="#aggregate_rumevents"><CopyableCode code="aggregate_rumevents" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>The API endpoint to aggregate RUM events into buckets of computed metrics and timeseries.</td>
 </tr>
 <tr>
     <td><a href="#search_rumevents"><CopyableCode code="search_rumevents" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
     <td></td>
-    <td>List endpoint returns RUM events that match a RUM search query.<br />[Results are paginated][1].<br /><br />Use this endpoint to build complex RUM events filtering and search.<br /><br />[1]: https://docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination</td>
+    <td></td>
+    <td>List endpoint returns RUM events that match a RUM search query.&lt;br /&gt;&#91;Results are paginated&#93;&#91;1&#93;.&lt;br /&gt;&lt;br /&gt;Use this endpoint to build complex RUM events filtering and search.&lt;br /&gt;&lt;br /&gt;&#91;1&#93;: https:​//docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination</td>
 </tr>
 </tbody>
 </table>
@@ -120,10 +121,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter[from]">
     <td><CopyableCode code="filter[from]" /></td>
@@ -168,7 +169,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 >
 <TabItem value="list_rumevents">
 
-List endpoint returns events that match a RUM search query.<br />[Results are paginated][1].<br /><br />Use this endpoint to see your latest RUM events.<br /><br />[1]: https://docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination
+List endpoint returns events that match a RUM search query.&lt;br /&gt;&#91;Results are paginated&#93;&#91;1&#93;.&lt;br /&gt;&lt;br /&gt;Use this endpoint to see your latest RUM events.&lt;br /&gt;&lt;br /&gt;&#91;1&#93;: https:​//docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination
 
 ```sql
 SELECT
@@ -176,8 +177,7 @@ id,
 attributes,
 type
 FROM datadog.digital_experience.rum_events
-WHERE region = '{{ region }}' -- required
-AND filter[query] = '{{ filter[query] }}'
+WHERE filter[query] = '{{ filter[query] }}'
 AND filter[from] = '{{ filter[from] }}'
 AND filter[to] = '{{ filter[to] }}'
 AND sort = '{{ sort }}'
@@ -190,6 +190,8 @@ AND page[limit] = '{{ page[limit] }}'
 
 
 ## Lifecycle Methods
+
+EXEC variables use wire (API) names.
 
 <Tabs
     defaultValue="aggregate_rumevents"
@@ -204,7 +206,6 @@ The API endpoint to aggregate RUM events into buckets of computed metrics and ti
 
 ```sql
 EXEC datadog.digital_experience.rum_events.aggregate_rumevents 
-@region='{{ region }}' --required 
 @@json=
 '{
 "compute": "{{ compute }}", 
@@ -218,11 +219,10 @@ EXEC datadog.digital_experience.rum_events.aggregate_rumevents
 </TabItem>
 <TabItem value="search_rumevents">
 
-List endpoint returns RUM events that match a RUM search query.<br />[Results are paginated][1].<br /><br />Use this endpoint to build complex RUM events filtering and search.<br /><br />[1]: https://docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination
+List endpoint returns RUM events that match a RUM search query.&lt;br /&gt;&#91;Results are paginated&#93;&#91;1&#93;.&lt;br /&gt;&lt;br /&gt;Use this endpoint to build complex RUM events filtering and search.&lt;br /&gt;&lt;br /&gt;&#91;1&#93;: https:​//docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination
 
 ```sql
 EXEC datadog.digital_experience.rum_events.search_rumevents 
-@region='{{ region }}' --required 
 @@json=
 '{
 "filter": "{{ filter }}", 

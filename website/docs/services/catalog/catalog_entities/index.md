@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>catalog_entities</code> resourc
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>catalog_entities</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="catalog_entities" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.catalog.catalog_entities" /></td></tr>
 </tbody></table>
@@ -96,23 +97,30 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_catalog_entity"><CopyableCode code="list_catalog_entity" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
-    <td><a href="#parameter-page[offset]"><code>page[offset]</code></a>, <a href="#parameter-page[limit]"><code>page[limit]</code></a>, <a href="#parameter-filter[id]"><code>filter[id]</code></a>, <a href="#parameter-filter[ref]"><code>filter[ref]</code></a>, <a href="#parameter-filter[name]"><code>filter[name]</code></a>, <a href="#parameter-filter[kind]"><code>filter[kind]</code></a>, <a href="#parameter-filter[owner]"><code>filter[owner]</code></a>, <a href="#parameter-filter[relation][type]"><code>filter[relation][type]</code></a>, <a href="#parameter-filter[exclude_snapshot]"><code>filter[exclude_snapshot]</code></a>, <a href="#parameter-include"><code>include</code></a></td>
+    <td></td>
+    <td><a href="#parameter-page[offset]"><code>page[offset]</code></a>, <a href="#parameter-page[limit]"><code>page[limit]</code></a>, <a href="#parameter-filter[id]"><code>filter[id]</code></a>, <a href="#parameter-filter[ref]"><code>filter[ref]</code></a>, <a href="#parameter-filter[name]"><code>filter[name]</code></a>, <a href="#parameter-filter[kind]"><code>filter[kind]</code></a>, <a href="#parameter-filter[owner]"><code>filter[owner]</code></a>, <a href="#parameter-filter[relation][type]"><code>filter[relation][type]</code></a>, <a href="#parameter-filter[exclude_snapshot]"><code>filter[exclude_snapshot]</code></a>, <a href="#parameter-include"><code>include</code></a>, <a href="#parameter-include_discovered"><code>include_discovered</code></a></td>
     <td>Get a list of entities from Software Catalog.</td>
 </tr>
 <tr>
     <td><a href="#upsert_catalog_entity"><CopyableCode code="upsert_catalog_entity" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-api_version"><code>api_version</code></a>, <a href="#parameter-kind"><code>kind</code></a>, <a href="#parameter-metadata"><code>metadata</code></a></td>
     <td></td>
     <td>Create or update entities in Software Catalog.</td>
 </tr>
 <tr>
     <td><a href="#delete_catalog_entity"><CopyableCode code="delete_catalog_entity" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-entity_id"><code>entity_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-entity_id"><code>entity_id</code></a></td>
     <td></td>
     <td>Delete a single entity in Software Catalog.</td>
+</tr>
+<tr>
+    <td><a href="#preview_catalog_entities"><CopyableCode code="preview_catalog_entities" /></a></td>
+    <td><CopyableCode code="exec" /></td>
+    <td></td>
+    <td></td>
+    <td></td>
 </tr>
 </tbody>
 </table>
@@ -135,10 +143,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>UUID or Entity Ref.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter[exclude_snapshot]">
     <td><CopyableCode code="filter[exclude_snapshot]" /></td>
@@ -180,6 +188,11 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>Include relationship data.</td>
 </tr>
+<tr id="parameter-include_discovered">
+    <td><CopyableCode code="include_discovered" /></td>
+    <td><code>boolean</code></td>
+    <td>If true, includes discovered services from APM and USM that do not have entity definitions. (wire: includeDiscovered)</td>
+</tr>
 <tr id="parameter-page[limit]">
     <td><CopyableCode code="page[limit]" /></td>
     <td><code>integer (int64)</code></td>
@@ -213,8 +226,7 @@ meta,
 relationships,
 type
 FROM datadog.catalog.catalog_entities
-WHERE region = '{{ region }}' -- required
-AND page[offset] = '{{ page[offset] }}'
+WHERE page[offset] = '{{ page[offset] }}'
 AND page[limit] = '{{ page[limit] }}'
 AND filter[id] = '{{ filter[id] }}'
 AND filter[ref] = '{{ filter[ref] }}'
@@ -224,6 +236,7 @@ AND filter[owner] = '{{ filter[owner] }}'
 AND filter[relation][type] = '{{ filter[relation][type] }}'
 AND filter[exclude_snapshot] = '{{ filter[exclude_snapshot] }}'
 AND include = '{{ include }}'
+AND include_discovered = '{{ include_discovered }}'
 ;
 ```
 </TabItem>
@@ -245,10 +258,22 @@ Create or update entities in Software Catalog.
 
 ```sql
 INSERT INTO datadog.catalog.catalog_entities (
-region
+api_version,
+datadog,
+extensions,
+integrations,
+kind,
+metadata,
+spec
 )
 SELECT 
-'{{ region }}'
+'{{ api_version }}' /* required */,
+'{{ datadog }}',
+'{{ extensions }}',
+'{{ integrations }}',
+'{{ kind }}' /* required */,
+'{{ metadata }}' /* required */,
+'{{ spec }}'
 RETURNING
 data,
 included,
@@ -258,14 +283,92 @@ meta
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: catalog_entities
   props:
-    - name: region
-      value: string
-      description: Required parameter for the catalog_entities resource.
-```
+    - name: api_version
+      value: "{{ api_version }}"
+      description: |
+        The version of the schema data that was used to populate this entity's data. This could be via the API, Terraform, or YAML file in a repository. The field is known as schema-version in the previous version.
+      valid_values: ['v3', 'v2.2', 'v2.1', 'v2']
+    - name: datadog
+      description: |
+        Datadog product integrations for the service entity.
+      value:
+        codeLocations:
+          - paths: "{{ paths }}"
+            repositoryURL: "{{ repositoryURL }}"
+        events:
+          - name: "{{ name }}"
+            query: "{{ query }}"
+        logs:
+          - name: "{{ name }}"
+            query: "{{ query }}"
+        performanceData:
+          tags:
+            - "{{ tags }}"
+        pipelines:
+          fingerprints:
+            - "{{ fingerprints }}"
+    - name: extensions
+      value: "{{ extensions }}"
+      description: |
+        Custom extensions. This is the free-formed field to send client-side metadata. No Datadog features are affected by this field.
+    - name: integrations
+      description: |
+        A base schema for defining third-party integrations.
+      value:
+        opsgenie:
+          region: "{{ region }}"
+          serviceURL: "{{ serviceURL }}"
+        pagerduty:
+          serviceURL: "{{ serviceURL }}"
+    - name: kind
+      value: "{{ kind }}"
+      description: |
+        The definition of Entity V3 Service Kind object.
+      valid_values: ['service']
+    - name: metadata
+      description: |
+        The definition of Entity V3 Metadata object.
+      value:
+        additionalOwners:
+          - name: "{{ name }}"
+            type: "{{ type }}"
+        contacts:
+          - contact: "{{ contact }}"
+            name: "{{ name }}"
+            type: "{{ type }}"
+        description: "{{ description }}"
+        displayName: "{{ displayName }}"
+        id: "{{ id }}"
+        inheritFrom: "{{ inheritFrom }}"
+        links:
+          - name: "{{ name }}"
+            provider: "{{ provider }}"
+            type: "{{ type }}"
+            url: "{{ url }}"
+        managed: "{{ managed }}"
+        name: "{{ name }}"
+        namespace: "{{ namespace }}"
+        owner: "{{ owner }}"
+        tags:
+          - "{{ tags }}"
+    - name: spec
+      description: |
+        The definition of Entity V3 Service Spec object.
+      value:
+        componentOf:
+          - "{{ componentOf }}"
+        dependsOn:
+          - "{{ dependsOn }}"
+        languages:
+          - "{{ languages }}"
+        lifecycle: "{{ lifecycle }}"
+        tier: "{{ tier }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -285,7 +388,28 @@ Delete a single entity in Software Catalog.
 ```sql
 DELETE FROM datadog.catalog.catalog_entities
 WHERE entity_id = '{{ entity_id }}' --required
-AND region = '{{ region }}' --required
+;
+```
+</TabItem>
+</Tabs>
+
+
+## Lifecycle Methods
+
+EXEC variables use wire (API) names.
+
+<Tabs
+    defaultValue="preview_catalog_entities"
+    values={[
+        { label: 'preview_catalog_entities', value: 'preview_catalog_entities' }
+    ]}
+>
+<TabItem value="preview_catalog_entities">
+
+Accepted
+
+```sql
+EXEC datadog.catalog.catalog_entities.preview_catalog_entities 
 ;
 ```
 </TabItem>

@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>application_keys</code> resour
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>application_keys</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="application_keys" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.organization.application_keys" /></td></tr>
 </tbody></table>
@@ -67,7 +68,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Application Keys resource type. (default: application_keys, example: application_keys)</td>
+    <td>Application Keys resource type. (application_keys) (default: application_keys, example: application_keys)</td>
 </tr>
 </tbody>
 </table>
@@ -101,7 +102,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Application Keys resource type. (default: application_keys, example: application_keys)</td>
+    <td>Application Keys resource type. (application_keys) (default: application_keys, example: application_keys)</td>
 </tr>
 </tbody>
 </table>
@@ -126,28 +127,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_application_key"><CopyableCode code="get_application_key" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-app_key_id"><code>app_key_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-app_key_id"><code>app_key_id</code></a></td>
     <td><a href="#parameter-include"><code>include</code></a></td>
     <td>Get an application key for your org.</td>
 </tr>
 <tr>
     <td><a href="#list_application_keys"><CopyableCode code="list_application_keys" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
-    <td><a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-page[number]"><code>page[number]</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-filter"><code>filter</code></a>, <a href="#parameter-filter[created_at][start]"><code>filter[created_at][start]</code></a>, <a href="#parameter-filter[created_at][end]"><code>filter[created_at][end]</code></a>, <a href="#parameter-include"><code>include</code></a></td>
+    <td></td>
+    <td><a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-page[number]"><code>page[number]</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-filter"><code>filter</code></a>, <a href="#parameter-filter[created_at][start]"><code>filter[created_at][start]</code></a>, <a href="#parameter-filter[created_at][end]"><code>filter[created_at][end]</code></a>, <a href="#parameter-filter[owned_by]"><code>filter[owned_by]</code></a>, <a href="#parameter-include"><code>include</code></a></td>
     <td>List all application keys available for your org</td>
+</tr>
+<tr>
+    <td><a href="#create_application_key_v1"><CopyableCode code="create_application_key_v1" /></a></td>
+    <td><CopyableCode code="insert" /></td>
+    <td></td>
+    <td></td>
+    <td>Create an application key with a given name.&lt;br /&gt;This endpoint is disabled for organizations in &#91;One-Time Read mode&#93;(https:​//docs.datadoghq.com/account_management/api-app-keys/#one-time-read-mode).&lt;br /&gt;&lt;br /&gt;**Note**: This endpoint is disabled for the Government sites (US1-FED and US2-FED). Use the &#91;V2 Key Management&#93;(https:​//docs.datadoghq.com/api/latest/key-management/) endpoints instead.</td>
 </tr>
 <tr>
     <td><a href="#update_application_key"><CopyableCode code="update_application_key" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-app_key_id"><code>app_key_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-app_key_id"><code>app_key_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Edit an application key</td>
 </tr>
 <tr>
     <td><a href="#delete_application_key"><CopyableCode code="delete_application_key" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-app_key_id"><code>app_key_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-app_key_id"><code>app_key_id</code></a></td>
     <td></td>
     <td>Delete an application key</td>
 </tr>
@@ -172,10 +180,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The ID of the application key.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter">
     <td><CopyableCode code="filter" /></td>
@@ -192,6 +200,11 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>Only include application keys created on or after the specified date.</td>
 </tr>
+<tr id="parameter-filter[owned_by]">
+    <td><CopyableCode code="filter[owned_by]" /></td>
+    <td><code>string</code></td>
+    <td>Filter application keys by owner ID.</td>
+</tr>
 <tr id="parameter-include">
     <td><CopyableCode code="include" /></td>
     <td><code>string</code></td>
@@ -205,7 +218,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-page[size]">
     <td><CopyableCode code="page[size]" /></td>
     <td><code>integer (int64)</code></td>
-    <td>Size for a given page. The maximum allowed value is 100.</td>
+    <td>Number of items to return per page. The maximum allowed value is 100.</td>
 </tr>
 <tr id="parameter-sort">
     <td><CopyableCode code="sort" /></td>
@@ -236,7 +249,6 @@ relationships,
 type
 FROM datadog.organization.application_keys
 WHERE app_key_id = '{{ app_key_id }}' -- required
-AND region = '{{ region }}' -- required
 AND include = '{{ include }}'
 ;
 ```
@@ -252,16 +264,55 @@ attributes,
 relationships,
 type
 FROM datadog.organization.application_keys
-WHERE region = '{{ region }}' -- required
-AND page[size] = '{{ page[size] }}'
+WHERE page[size] = '{{ page[size] }}'
 AND page[number] = '{{ page[number] }}'
 AND sort = '{{ sort }}'
 AND filter = '{{ filter }}'
 AND filter[created_at][start] = '{{ filter[created_at][start] }}'
 AND filter[created_at][end] = '{{ filter[created_at][end] }}'
+AND filter[owned_by] = '{{ filter[owned_by] }}'
 AND include = '{{ include }}'
 ;
 ```
+</TabItem>
+</Tabs>
+
+
+## `INSERT` examples
+
+<Tabs
+    defaultValue="create_application_key_v1"
+    values={[
+        { label: 'create_application_key_v1', value: 'create_application_key_v1' },
+        { label: 'Manifest', value: 'manifest' }
+    ]}
+>
+<TabItem value="create_application_key_v1">
+
+Create an application key with a given name.&lt;br /&gt;This endpoint is disabled for organizations in &#91;One-Time Read mode&#93;(https:​//docs.datadoghq.com/account_management/api-app-keys/#one-time-read-mode).&lt;br /&gt;&lt;br /&gt;**Note**: This endpoint is disabled for the Government sites (US1-FED and US2-FED). Use the &#91;V2 Key Management&#93;(https:​//docs.datadoghq.com/api/latest/key-management/) endpoints instead.
+
+```sql
+INSERT INTO datadog.organization.application_keys (
+name
+)
+SELECT 
+'{{ name }}'
+RETURNING
+application_key
+;
+```
+</TabItem>
+<TabItem value="manifest">
+
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
+- name: application_keys
+  props:
+    - name: name
+      value: "{{ name }}"
+      description: |
+        Name of an application key.
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -281,11 +332,10 @@ Edit an application key
 ```sql
 UPDATE datadog.organization.application_keys
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 app_key_id = '{{ app_key_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data,
 included;
@@ -309,7 +359,6 @@ Delete an application key
 ```sql
 DELETE FROM datadog.organization.application_keys
 WHERE app_key_id = '{{ app_key_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

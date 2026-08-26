@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>scanning_rules</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>scanning_rules</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="scanning_rules" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.security.scanning_rules" /></td></tr>
 </tbody></table>
@@ -52,21 +53,21 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#create_scanning_rule"><CopyableCode code="create_scanning_rule" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a>, <a href="#parameter-data__meta"><code>data__meta</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a>, <a href="#parameter-meta"><code>meta</code></a></td>
     <td></td>
-    <td>Create a scanning rule in a sensitive data scanner group, ordered last.<br />The posted rule MUST include a group relationship.<br />It MUST include either a standard_pattern relationship or a regex attribute, but not both.<br />If included_attributes is empty or missing, we will scan all attributes except<br />excluded_attributes. If both are missing, we will scan the whole event.</td>
+    <td>Create a scanning rule in a sensitive data scanner group, ordered last.&lt;br /&gt;The posted rule MUST include a group relationship.&lt;br /&gt;It MUST include either a standard_pattern relationship or a regex attribute, but not both.&lt;br /&gt;If included_attributes is empty or missing, we will scan all attributes except&lt;br /&gt;excluded_attributes. If both are missing, we will scan the whole event.</td>
 </tr>
 <tr>
     <td><a href="#update_scanning_rule"><CopyableCode code="update_scanning_rule" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-rule_id"><code>rule_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a>, <a href="#parameter-data__meta"><code>data__meta</code></a></td>
+    <td><a href="#parameter-rule_id"><code>rule_id</code></a>, <a href="#parameter-data"><code>data</code></a>, <a href="#parameter-meta"><code>meta</code></a></td>
     <td></td>
-    <td>Update a scanning rule.<br />The request body MUST NOT include a standard_pattern relationship, as that relationship<br />is non-editable. Trying to edit the regex attribute of a rule with a standard_pattern<br />relationship will also result in an error.</td>
+    <td>Update a scanning rule.&lt;br /&gt;The request body MUST NOT include a standard_pattern relationship, as that relationship&lt;br /&gt;is non-editable. Trying to edit the regex attribute of a rule with a standard_pattern&lt;br /&gt;relationship will also result in an error.</td>
 </tr>
 <tr>
     <td><a href="#delete_scanning_rule"><CopyableCode code="delete_scanning_rule" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-rule_id"><code>rule_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-rule_id"><code>rule_id</code></a></td>
     <td></td>
     <td>Delete a given rule.</td>
 </tr>
@@ -86,15 +87,15 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
-    <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
-</tr>
 <tr id="parameter-rule_id">
     <td><CopyableCode code="rule_id" /></td>
     <td><code>string</code></td>
     <td>The ID of the rule.</td>
+</tr>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
+    <td><code>string</code></td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -110,18 +111,16 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 >
 <TabItem value="create_scanning_rule">
 
-Create a scanning rule in a sensitive data scanner group, ordered last.<br />The posted rule MUST include a group relationship.<br />It MUST include either a standard_pattern relationship or a regex attribute, but not both.<br />If included_attributes is empty or missing, we will scan all attributes except<br />excluded_attributes. If both are missing, we will scan the whole event.
+Create a scanning rule in a sensitive data scanner group, ordered last.&lt;br /&gt;The posted rule MUST include a group relationship.&lt;br /&gt;It MUST include either a standard_pattern relationship or a regex attribute, but not both.&lt;br /&gt;If included_attributes is empty or missing, we will scan all attributes except&lt;br /&gt;excluded_attributes. If both are missing, we will scan the whole event.
 
 ```sql
 INSERT INTO datadog.security.scanning_rules (
-data__data,
-data__meta,
-region
+data,
+meta
 )
 SELECT 
 '{{ data }}' /* required */,
-'{{ meta }}' /* required */,
-'{{ region }}'
+'{{ meta }}' /* required */
 RETURNING
 data,
 meta
@@ -130,22 +129,59 @@ meta
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: scanning_rules
   props:
-    - name: region
-      value: string
-      description: Required parameter for the scanning_rules resource.
     - name: data
-      value: object
       description: |
         Data related to the creation of a rule.
+      value:
+        attributes:
+          description: "{{ description }}"
+          excluded_namespaces:
+            - "{{ excluded_namespaces }}"
+          included_keyword_configuration:
+            character_count: {{ character_count }}
+            keywords:
+              - "{{ keywords }}"
+            use_recommended_keywords: {{ use_recommended_keywords }}
+          is_enabled: {{ is_enabled }}
+          name: "{{ name }}"
+          namespaces:
+            - "{{ namespaces }}"
+          pattern: "{{ pattern }}"
+          priority: {{ priority }}
+          suppressions:
+            ends_with:
+              - "{{ ends_with }}"
+            exact_match:
+              - "{{ exact_match }}"
+            starts_with:
+              - "{{ starts_with }}"
+          tags:
+            - "{{ tags }}"
+          text_replacement:
+            number_of_chars: {{ number_of_chars }}
+            replacement_string: "{{ replacement_string }}"
+            should_save_match: {{ should_save_match }}
+            type: "{{ type }}"
+        relationships:
+          group:
+            data:
+              id: "{{ id }}"
+              type: "{{ type }}"
+          standard_pattern:
+            data:
+              id: "{{ id }}"
+              type: "{{ type }}"
+        type: "{{ type }}"
     - name: meta
-      value: object
       description: |
         Meta payload containing information about the API.
-```
+      value:
+        version: {{ version }}
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -160,18 +196,17 @@ meta
 >
 <TabItem value="update_scanning_rule">
 
-Update a scanning rule.<br />The request body MUST NOT include a standard_pattern relationship, as that relationship<br />is non-editable. Trying to edit the regex attribute of a rule with a standard_pattern<br />relationship will also result in an error.
+Update a scanning rule.&lt;br /&gt;The request body MUST NOT include a standard_pattern relationship, as that relationship&lt;br /&gt;is non-editable. Trying to edit the regex attribute of a rule with a standard_pattern&lt;br /&gt;relationship will also result in an error.
 
 ```sql
 UPDATE datadog.security.scanning_rules
 SET 
-data__data = '{{ data }}',
-data__meta = '{{ meta }}'
+data = '{{ data }}',
+meta = '{{ meta }}'
 WHERE 
 rule_id = '{{ rule_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
-AND data__meta = '{{ meta }}' --required
+AND data = '{{ data }}' --required
+AND meta = '{{ meta }}' --required
 RETURNING
 meta;
 ```
@@ -194,7 +229,6 @@ Delete a given rule.
 ```sql
 DELETE FROM datadog.security.scanning_rules
 WHERE rule_id = '{{ rule_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>active_tag_configurations</cod
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>active_tag_configurations</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="active_tag_configurations" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.metrics.active_tag_configurations" /></td></tr>
 </tbody></table>
@@ -61,7 +62,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The metric actively queried configuration resource type. (default: actively_queried_configurations, example: actively_queried_configurations)</td>
+    <td>The metric actively queried configuration resource type. (actively_queried_configurations) (default: actively_queried_configurations, example: actively_queried_configurations)</td>
 </tr>
 </tbody>
 </table>
@@ -86,7 +87,7 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_active_metric_configurations"><CopyableCode code="list_active_metric_configurations" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-metric_name"><code>metric_name</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-metric_name"><code>metric_name</code></a></td>
     <td><a href="#parameter-window[seconds]"><code>window[seconds]</code></a></td>
     <td>List tags and aggregations that are actively queried on dashboards, notebooks, monitors, the Metrics Explorer, and using the API for a given metric name.</td>
 </tr>
@@ -111,10 +112,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The name of the metric. (example: dist.http.endpoint.request)</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-window[seconds]">
     <td><CopyableCode code="window[seconds]" /></td>
@@ -143,7 +144,6 @@ attributes,
 type
 FROM datadog.metrics.active_tag_configurations
 WHERE metric_name = '{{ metric_name }}' -- required
-AND region = '{{ region }}' -- required
 AND window[seconds] = '{{ window[seconds] }}'
 ;
 ```

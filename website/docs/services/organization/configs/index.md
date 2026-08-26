@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>configs</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>configs</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="configs" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.organization.configs" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Data type of an Org Config. (example: org_configs)</td>
+    <td>Data type of an Org Config. (org_configs) (example: org_configs)</td>
 </tr>
 </tbody>
 </table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Data type of an Org Config. (example: org_configs)</td>
+    <td>Data type of an Org Config. (org_configs) (example: org_configs)</td>
 </tr>
 </tbody>
 </table>
@@ -116,21 +117,21 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_org_config"><CopyableCode code="get_org_config" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-org_config_name"><code>org_config_name</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-org_config_name"><code>org_config_name</code></a></td>
     <td></td>
     <td>Return the name, description, and value of a specific Org Config.</td>
 </tr>
 <tr>
     <td><a href="#list_org_configs"><CopyableCode code="list_org_configs" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Returns all Org Configs (name, description, and value).</td>
 </tr>
 <tr>
     <td><a href="#update_org_config"><CopyableCode code="update_org_config" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-org_config_name"><code>org_config_name</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-org_config_name"><code>org_config_name</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Update the value of a specific Org Config.</td>
 </tr>
@@ -155,10 +156,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The name of an Org Config.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -183,7 +184,6 @@ attributes,
 type
 FROM datadog.organization.configs
 WHERE org_config_name = '{{ org_config_name }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -197,7 +197,6 @@ id,
 attributes,
 type
 FROM datadog.organization.configs
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -219,11 +218,10 @@ Update the value of a specific Org Config.
 ```sql
 UPDATE datadog.organization.configs
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 org_config_name = '{{ org_config_name }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```

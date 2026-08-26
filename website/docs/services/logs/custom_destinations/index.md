@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>custom_destinations</code> reso
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>custom_destinations</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="custom_destinations" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.logs.custom_destinations" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of the resource. The value should always be `custom_destination`. (default: custom_destination, example: custom_destination)</td>
+    <td>The type of the resource. The value should always be `custom_destination`. (custom_destination) (default: custom_destination, example: custom_destination)</td>
 </tr>
 </tbody>
 </table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of the resource. The value should always be `custom_destination`. (default: custom_destination, example: custom_destination)</td>
+    <td>The type of the resource. The value should always be `custom_destination`. (custom_destination) (default: custom_destination, example: custom_destination)</td>
 </tr>
 </tbody>
 </table>
@@ -116,35 +117,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_logs_custom_destination"><CopyableCode code="get_logs_custom_destination" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-custom_destination_id"><code>custom_destination_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-custom_destination_id"><code>custom_destination_id</code></a></td>
     <td></td>
     <td>Get a specific custom destination in your organization.</td>
 </tr>
 <tr>
     <td><a href="#list_logs_custom_destinations"><CopyableCode code="list_logs_custom_destinations" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Get the list of configured custom destinations in your organization with their definitions.</td>
 </tr>
 <tr>
     <td><a href="#create_logs_custom_destination"><CopyableCode code="create_logs_custom_destination" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Create a custom destination in your organization.</td>
 </tr>
 <tr>
     <td><a href="#update_logs_custom_destination"><CopyableCode code="update_logs_custom_destination" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-custom_destination_id"><code>custom_destination_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-custom_destination_id"><code>custom_destination_id</code></a></td>
     <td></td>
     <td>Update the given fields of a specific custom destination in your organization.</td>
 </tr>
 <tr>
     <td><a href="#delete_logs_custom_destination"><CopyableCode code="delete_logs_custom_destination" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-custom_destination_id"><code>custom_destination_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-custom_destination_id"><code>custom_destination_id</code></a></td>
     <td></td>
     <td>Delete a specific custom destination in your organization.</td>
 </tr>
@@ -169,10 +170,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The ID of the custom destination.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -197,7 +198,6 @@ attributes,
 type
 FROM datadog.logs.custom_destinations
 WHERE custom_destination_id = '{{ custom_destination_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -211,7 +211,6 @@ id,
 attributes,
 type
 FROM datadog.logs.custom_destinations
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -233,12 +232,10 @@ Create a custom destination in your organization.
 
 ```sql
 INSERT INTO datadog.logs.custom_destinations (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}',
-'{{ region }}'
+'{{ data }}'
 RETURNING
 data
 ;
@@ -246,18 +243,42 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: custom_destinations
   props:
-    - name: region
-      value: string
-      description: Required parameter for the custom_destinations resource.
     - name: data
-      value: object
       description: |
         The definition of a custom destination.
-```
+      value:
+        attributes:
+          enabled: {{ enabled }}
+          forward_tags: {{ forward_tags }}
+          forward_tags_restriction_list:
+            - "{{ forward_tags_restriction_list }}"
+          forward_tags_restriction_list_type: "{{ forward_tags_restriction_list_type }}"
+          forwarder_destination:
+            auth:
+              password: "{{ password }}"
+              type: "{{ type }}"
+              username: "{{ username }}"
+              header_name: "{{ header_name }}"
+              header_value: "{{ header_value }}"
+            endpoint: "{{ endpoint }}"
+            type: "{{ type }}"
+            access_token: "{{ access_token }}"
+            sourcetype: "{{ sourcetype }}"
+            index_name: "{{ index_name }}"
+            index_rotation: "{{ index_rotation }}"
+            client_id: "{{ client_id }}"
+            data_collection_endpoint: "{{ data_collection_endpoint }}"
+            data_collection_rule_id: "{{ data_collection_rule_id }}"
+            stream_name: "{{ stream_name }}"
+            tenant_id: "{{ tenant_id }}"
+          name: "{{ name }}"
+          query: "{{ query }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -277,10 +298,9 @@ Update the given fields of a specific custom destination in your organization.
 ```sql
 UPDATE datadog.logs.custom_destinations
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 custom_destination_id = '{{ custom_destination_id }}' --required
-AND region = '{{ region }}' --required
 RETURNING
 data;
 ```
@@ -303,7 +323,6 @@ Delete a specific custom destination in your organization.
 ```sql
 DELETE FROM datadog.logs.custom_destinations
 WHERE custom_destination_id = '{{ custom_destination_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

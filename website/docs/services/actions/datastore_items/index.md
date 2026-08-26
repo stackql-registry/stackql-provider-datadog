@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>datastore_items</code> resource
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>datastore_items</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="datastore_items" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.actions.datastore_items" /></td></tr>
 </tbody></table>
@@ -61,7 +62,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The resource type for datastore items. (default: items, example: items)</td>
+    <td>The resource type for datastore items. (items) (default: items, example: items)</td>
 </tr>
 </tbody>
 </table>
@@ -86,28 +87,28 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_datastore_items"><CopyableCode code="list_datastore_items" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-datastore_id"><code>datastore_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-datastore_id"><code>datastore_id</code></a></td>
     <td><a href="#parameter-filter"><code>filter</code></a>, <a href="#parameter-item_key"><code>item_key</code></a>, <a href="#parameter-page[limit]"><code>page[limit]</code></a>, <a href="#parameter-page[offset]"><code>page[offset]</code></a>, <a href="#parameter-sort"><code>sort</code></a></td>
     <td>Lists items from a datastore. You can filter the results by specifying either an item key or a filter query parameter, but not both at the same time. Supports server-side pagination for large datasets.</td>
 </tr>
 <tr>
     <td><a href="#bulk_write_datastore_items"><CopyableCode code="bulk_write_datastore_items" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-datastore_id"><code>datastore_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-datastore_id"><code>datastore_id</code></a></td>
     <td></td>
     <td>Creates or replaces multiple items in a datastore by their keys in a single operation.</td>
 </tr>
 <tr>
     <td><a href="#update_datastore_item"><CopyableCode code="update_datastore_item" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-datastore_id"><code>datastore_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-datastore_id"><code>datastore_id</code></a></td>
     <td></td>
     <td>Partially updates an item in a datastore by its key.</td>
 </tr>
 <tr>
     <td><a href="#delete_datastore_item"><CopyableCode code="delete_datastore_item" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-datastore_id"><code>datastore_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-datastore_id"><code>datastore_id</code></a></td>
     <td></td>
     <td>Deletes an item from a datastore by its key.</td>
 </tr>
@@ -132,15 +133,15 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The unique identifier of the datastore to retrieve.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter">
     <td><CopyableCode code="filter" /></td>
     <td><code>string</code></td>
-    <td>Optional query filter to search items using the [logs search syntax](https://docs.datadoghq.com/logs/explorer/search_syntax/).</td>
+    <td>Optional query filter to search items using the &#91;logs search syntax&#93;(https:​//docs.datadoghq.com/logs/explorer/search_syntax/).</td>
 </tr>
 <tr id="parameter-item_key">
     <td><CopyableCode code="item_key" /></td>
@@ -184,7 +185,6 @@ attributes,
 type
 FROM datadog.actions.datastore_items
 WHERE datastore_id = '{{ datastore_id }}' -- required
-AND region = '{{ region }}' -- required
 AND filter = '{{ filter }}'
 AND item_key = '{{ item_key }}'
 AND page[limit] = '{{ page[limit] }}'
@@ -211,14 +211,12 @@ Creates or replaces multiple items in a datastore by their keys in a single oper
 
 ```sql
 INSERT INTO datadog.actions.datastore_items (
-data__data,
-datastore_id,
-region
+data,
+datastore_id
 )
 SELECT 
 '{{ data }}',
-'{{ datastore_id }}',
-'{{ region }}'
+'{{ datastore_id }}'
 RETURNING
 data
 ;
@@ -226,21 +224,22 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: datastore_items
   props:
     - name: datastore_id
-      value: string
-      description: Required parameter for the datastore_items resource.
-    - name: region
-      value: string
+      value: "{{ datastore_id }}"
       description: Required parameter for the datastore_items resource.
     - name: data
-      value: object
       description: |
         Data wrapper containing the items to insert and their configuration for the bulk insert operation.
-```
+      value:
+        attributes:
+          conflict_mode: "{{ conflict_mode }}"
+          values: "{{ values }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -260,10 +259,9 @@ Partially updates an item in a datastore by its key.
 ```sql
 UPDATE datadog.actions.datastore_items
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 datastore_id = '{{ datastore_id }}' --required
-AND region = '{{ region }}' --required
 RETURNING
 data;
 ```
@@ -286,7 +284,6 @@ Deletes an item from a datastore by its key.
 ```sql
 DELETE FROM datadog.actions.datastore_items
 WHERE datastore_id = '{{ datastore_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

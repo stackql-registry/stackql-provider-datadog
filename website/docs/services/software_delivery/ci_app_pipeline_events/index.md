@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>ci_app_pipeline_events</code> r
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>ci_app_pipeline_events</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="ci_app_pipeline_events" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.software_delivery.ci_app_pipeline_events" /></td></tr>
 </tbody></table>
@@ -61,7 +62,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Type of the event. (example: cipipeline)</td>
+    <td>Type of the event. (cipipeline) (example: cipipeline)</td>
 </tr>
 </tbody>
 </table>
@@ -86,30 +87,30 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_ciapp_pipeline_events"><CopyableCode code="list_ciapp_pipeline_events" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-filter[query]"><code>filter[query]</code></a>, <a href="#parameter-filter[from]"><code>filter[from]</code></a>, <a href="#parameter-filter[to]"><code>filter[to]</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-page[cursor]"><code>page[cursor]</code></a>, <a href="#parameter-page[limit]"><code>page[limit]</code></a></td>
-    <td>List endpoint returns CI Visibility pipeline events that match a [search query](https://docs.datadoghq.com/continuous_integration/explorer/search_syntax/).<br />[Results are paginated similarly to logs](https://docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).<br /><br />Use this endpoint to see your latest pipeline events.</td>
+    <td>List endpoint returns CI Visibility pipeline events that match a &#91;search query&#93;(https:​//docs.datadoghq.com/continuous_integration/explorer/search_syntax/).&lt;br /&gt;&#91;Results are paginated similarly to logs&#93;(https:​//docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).&lt;br /&gt;&lt;br /&gt;Use this endpoint to see your latest pipeline events.</td>
 </tr>
 <tr>
     <td><a href="#create_ciapp_pipeline_event"><CopyableCode code="create_ciapp_pipeline_event" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
     <td></td>
-    <td>Send your pipeline event to your Datadog platform over HTTP. For details about how pipeline executions are modeled and what execution types we support, see [Pipeline Data Model And Execution Types](https://docs.datadoghq.com/continuous_integration/guides/pipeline_data_model/).<br /><br />Multiple events can be sent in an array (up to 1000).<br /><br />Pipeline events can be submitted with a timestamp that is up to 18 hours in the past.</td>
+    <td></td>
+    <td>Send your pipeline event to your Datadog platform over HTTP. For details about how pipeline executions are modeled and what execution types we support, see &#91;Pipeline Data Model And Execution Types&#93;(https:​//docs.datadoghq.com/continuous_integration/guides/pipeline_data_model/).&lt;br /&gt;&lt;br /&gt;Multiple events can be sent in an array (up to 1000).&lt;br /&gt;&lt;br /&gt;Pipeline events can be submitted with a timestamp that is up to 18 hours in the past.&lt;br /&gt;The duration between the event start and end times cannot exceed 1 year.</td>
 </tr>
 <tr>
     <td><a href="#aggregate_ciapp_pipeline_events"><CopyableCode code="aggregate_ciapp_pipeline_events" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Use this API endpoint to aggregate CI Visibility pipeline events into buckets of computed metrics and timeseries.</td>
 </tr>
 <tr>
     <td><a href="#search_ciapp_pipeline_events"><CopyableCode code="search_ciapp_pipeline_events" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
     <td></td>
-    <td>List endpoint returns CI Visibility pipeline events that match a [search query](https://docs.datadoghq.com/continuous_integration/explorer/search_syntax/).<br />[Results are paginated similarly to logs](https://docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).<br /><br />Use this endpoint to build complex events filtering and search.</td>
+    <td></td>
+    <td>List endpoint returns CI Visibility pipeline events that match a &#91;search query&#93;(https:​//docs.datadoghq.com/continuous_integration/explorer/search_syntax/).&lt;br /&gt;&#91;Results are paginated similarly to logs&#93;(https:​//docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).&lt;br /&gt;&lt;br /&gt;Use this endpoint to build complex events filtering and search.</td>
 </tr>
 </tbody>
 </table>
@@ -127,10 +128,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter[from]">
     <td><CopyableCode code="filter[from]" /></td>
@@ -175,7 +176,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 >
 <TabItem value="list_ciapp_pipeline_events">
 
-List endpoint returns CI Visibility pipeline events that match a [search query](https://docs.datadoghq.com/continuous_integration/explorer/search_syntax/).<br />[Results are paginated similarly to logs](https://docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).<br /><br />Use this endpoint to see your latest pipeline events.
+List endpoint returns CI Visibility pipeline events that match a &#91;search query&#93;(https:​//docs.datadoghq.com/continuous_integration/explorer/search_syntax/).&lt;br /&gt;&#91;Results are paginated similarly to logs&#93;(https:​//docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).&lt;br /&gt;&lt;br /&gt;Use this endpoint to see your latest pipeline events.
 
 ```sql
 SELECT
@@ -183,8 +184,7 @@ id,
 attributes,
 type
 FROM datadog.software_delivery.ci_app_pipeline_events
-WHERE region = '{{ region }}' -- required
-AND filter[query] = '{{ filter[query] }}'
+WHERE filter[query] = '{{ filter[query] }}'
 AND filter[from] = '{{ filter[from] }}'
 AND filter[to] = '{{ filter[to] }}'
 AND sort = '{{ sort }}'
@@ -207,38 +207,97 @@ AND page[limit] = '{{ page[limit] }}'
 >
 <TabItem value="create_ciapp_pipeline_event">
 
-Send your pipeline event to your Datadog platform over HTTP. For details about how pipeline executions are modeled and what execution types we support, see [Pipeline Data Model And Execution Types](https://docs.datadoghq.com/continuous_integration/guides/pipeline_data_model/).<br /><br />Multiple events can be sent in an array (up to 1000).<br /><br />Pipeline events can be submitted with a timestamp that is up to 18 hours in the past.
+Send your pipeline event to your Datadog platform over HTTP. For details about how pipeline executions are modeled and what execution types we support, see &#91;Pipeline Data Model And Execution Types&#93;(https:​//docs.datadoghq.com/continuous_integration/guides/pipeline_data_model/).&lt;br /&gt;&lt;br /&gt;Multiple events can be sent in an array (up to 1000).&lt;br /&gt;&lt;br /&gt;Pipeline events can be submitted with a timestamp that is up to 18 hours in the past.&lt;br /&gt;The duration between the event start and end times cannot exceed 1 year.
 
 ```sql
 INSERT INTO datadog.software_delivery.ci_app_pipeline_events (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}',
-'{{ region }}'
+'{{ data }}'
 ;
 ```
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: ci_app_pipeline_events
   props:
-    - name: region
-      value: string
-      description: Required parameter for the ci_app_pipeline_events resource.
     - name: data
-      value: string
       description: |
         Data of the pipeline events to create.
-```
+      value:
+        attributes:
+          env: "{{ env }}"
+          provider_name: "{{ provider_name }}"
+          resource:
+            end: "{{ end }}"
+            error:
+              domain: "{{ domain }}"
+              message: "{{ message }}"
+              stack: "{{ stack }}"
+              type: "{{ type }}"
+            git:
+              author_email: "{{ author_email }}"
+              author_name: "{{ author_name }}"
+              author_time: "{{ author_time }}"
+              branch: "{{ branch }}"
+              commit_time: "{{ commit_time }}"
+              committer_email: "{{ committer_email }}"
+              committer_name: "{{ committer_name }}"
+              default_branch: "{{ default_branch }}"
+              message: "{{ message }}"
+              repository_url: "{{ repository_url }}"
+              sha: "{{ sha }}"
+              tag: "{{ tag }}"
+            is_manual: {{ is_manual }}
+            is_resumed: {{ is_resumed }}
+            level: "{{ level }}"
+            metrics:
+              - "{{ metrics }}"
+            name: "{{ name }}"
+            node:
+              hostname: "{{ hostname }}"
+              labels:
+                - "{{ labels }}"
+              name: "{{ name }}"
+              workspace: "{{ workspace }}"
+            parameters: "{{ parameters }}"
+            parent_pipeline:
+              id: "{{ id }}"
+              url: "{{ url }}"
+            partial_retry: {{ partial_retry }}
+            pipeline_id: "{{ pipeline_id }}"
+            previous_attempt:
+              id: "{{ id }}"
+              url: "{{ url }}"
+            queue_time: {{ queue_time }}
+            start: "{{ start }}"
+            status: "{{ status }}"
+            tags:
+              - "{{ tags }}"
+            unique_id: "{{ unique_id }}"
+            url: "{{ url }}"
+            dependencies:
+              - "{{ dependencies }}"
+            id: "{{ id }}"
+            pipeline_name: "{{ pipeline_name }}"
+            pipeline_unique_id: "{{ pipeline_unique_id }}"
+            stage_id: "{{ stage_id }}"
+            stage_name: "{{ stage_name }}"
+            job_id: "{{ job_id }}"
+            job_name: "{{ job_name }}"
+          service: "{{ service }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
 
 ## Lifecycle Methods
+
+EXEC variables use wire (API) names.
 
 <Tabs
     defaultValue="aggregate_ciapp_pipeline_events"
@@ -253,7 +312,6 @@ Use this API endpoint to aggregate CI Visibility pipeline events into buckets of
 
 ```sql
 EXEC datadog.software_delivery.ci_app_pipeline_events.aggregate_ciapp_pipeline_events 
-@region='{{ region }}' --required 
 @@json=
 '{
 "compute": "{{ compute }}", 
@@ -266,11 +324,10 @@ EXEC datadog.software_delivery.ci_app_pipeline_events.aggregate_ciapp_pipeline_e
 </TabItem>
 <TabItem value="search_ciapp_pipeline_events">
 
-List endpoint returns CI Visibility pipeline events that match a [search query](https://docs.datadoghq.com/continuous_integration/explorer/search_syntax/).<br />[Results are paginated similarly to logs](https://docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).<br /><br />Use this endpoint to build complex events filtering and search.
+List endpoint returns CI Visibility pipeline events that match a &#91;search query&#93;(https:​//docs.datadoghq.com/continuous_integration/explorer/search_syntax/).&lt;br /&gt;&#91;Results are paginated similarly to logs&#93;(https:​//docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).&lt;br /&gt;&lt;br /&gt;Use this endpoint to build complex events filtering and search.
 
 ```sql
 EXEC datadog.software_delivery.ci_app_pipeline_events.search_ciapp_pipeline_events 
-@region='{{ region }}' --required 
 @@json=
 '{
 "filter": "{{ filter }}", 

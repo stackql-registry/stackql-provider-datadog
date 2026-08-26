@@ -18,18 +18,20 @@ actions service documentation.
 
 :::info[Service Summary]
 
-total resources: __4__  
+total resources: __6__  
 
 :::
 
 ## Resources
 <div class="row">
 <div class="providerDocColumn">
+<a href="/services/actions/actions_datastore_items/">actions_datastore_items</a><br />
 <a href="/services/actions/app_key_registrations/">app_key_registrations</a><br />
 <a href="/services/actions/connections/">connections</a>
 </div>
 <div class="providerDocColumn">
 <a href="/services/actions/datastore_items/">datastore_items</a><br />
-<a href="/services/actions/datastores/">datastores</a>
+<a href="/services/actions/datastores/">datastores</a><br />
+<a href="/services/actions/execution_policies/">execution_policies</a>
 </div>
 </div>

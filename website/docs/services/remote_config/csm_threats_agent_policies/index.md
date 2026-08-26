@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>csm_threats_agent_policies</cod
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>csm_threats_agent_policies</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="csm_threats_agent_policies" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.remote_config.csm_threats_agent_policies" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of the resource, must always be `policy` (default: policy, example: policy)</td>
+    <td>The type of the resource, must always be `policy` (policy) (default: policy, example: policy)</td>
 </tr>
 </tbody>
 </table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of the resource, must always be `policy` (default: policy, example: policy)</td>
+    <td>The type of the resource, must always be `policy` (policy) (default: policy, example: policy)</td>
 </tr>
 </tbody>
 </table>
@@ -116,44 +117,37 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_csmthreats_agent_policy"><CopyableCode code="get_csmthreats_agent_policy" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-policy_id"><code>policy_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-policy_id"><code>policy_id</code></a></td>
     <td></td>
-    <td>Get the details of a specific Workload Protection policy.<br /><br />**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.</td>
+    <td>Get the details of a specific Workload Protection policy.&lt;br /&gt;&lt;br /&gt;**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.</td>
 </tr>
 <tr>
     <td><a href="#list_csmthreats_agent_policies"><CopyableCode code="list_csmthreats_agent_policies" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
     <td></td>
-    <td>Get the list of Workload Protection policies.<br /><br />**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.</td>
+    <td></td>
+    <td>Get the list of Workload Protection policies.&lt;br /&gt;&lt;br /&gt;**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.</td>
 </tr>
 <tr>
     <td><a href="#create_csmthreats_agent_policy"><CopyableCode code="create_csmthreats_agent_policy" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
-    <td>Create a new Workload Protection policy with the given parameters.<br /><br />**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.</td>
+    <td>Create a new Workload Protection policy with the given parameters.&lt;br /&gt;&lt;br /&gt;**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.</td>
 </tr>
 <tr>
     <td><a href="#update_csmthreats_agent_policy"><CopyableCode code="update_csmthreats_agent_policy" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-policy_id"><code>policy_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-policy_id"><code>policy_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
-    <td>Update a specific Workload Protection policy.<br />Returns the policy object when the request is successful.<br /><br />**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.</td>
+    <td>Update a specific Workload Protection policy.&lt;br /&gt;Returns the policy object when the request is successful.&lt;br /&gt;&lt;br /&gt;**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.</td>
 </tr>
 <tr>
     <td><a href="#delete_csmthreats_agent_policy"><CopyableCode code="delete_csmthreats_agent_policy" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-policy_id"><code>policy_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-policy_id"><code>policy_id</code></a></td>
     <td></td>
-    <td>Delete a specific Workload Protection policy.<br /><br />**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.</td>
-</tr>
-<tr>
-    <td><a href="#download_csmthreats_policy"><CopyableCode code="download_csmthreats_policy" /></a></td>
-    <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
-    <td></td>
-    <td>The download endpoint generates a Workload Protection policy file from your currently active<br />Workload Protection agent rules, and downloads them as a `.policy` file. This file can then be deployed to<br />your agents to update the policy running in your environment.<br /><br />**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.</td>
+    <td>Delete a specific Workload Protection policy.&lt;br /&gt;&lt;br /&gt;**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.</td>
 </tr>
 </tbody>
 </table>
@@ -176,10 +170,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The ID of the Agent policy (example: 6517fcc1-cec7-4394-a655-8d6e9d085255)</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -195,7 +189,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 >
 <TabItem value="get_csmthreats_agent_policy">
 
-Get the details of a specific Workload Protection policy.<br /><br />**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.
+Get the details of a specific Workload Protection policy.&lt;br /&gt;&lt;br /&gt;**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.
 
 ```sql
 SELECT
@@ -204,13 +198,12 @@ attributes,
 type
 FROM datadog.remote_config.csm_threats_agent_policies
 WHERE policy_id = '{{ policy_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
 <TabItem value="list_csmthreats_agent_policies">
 
-Get the list of Workload Protection policies.<br /><br />**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.
+Get the list of Workload Protection policies.&lt;br /&gt;&lt;br /&gt;**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.
 
 ```sql
 SELECT
@@ -218,7 +211,6 @@ id,
 attributes,
 type
 FROM datadog.remote_config.csm_threats_agent_policies
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -236,16 +228,14 @@ WHERE region = '{{ region }}' -- required
 >
 <TabItem value="create_csmthreats_agent_policy">
 
-Create a new Workload Protection policy with the given parameters.<br /><br />**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.
+Create a new Workload Protection policy with the given parameters.&lt;br /&gt;&lt;br /&gt;**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.
 
 ```sql
 INSERT INTO datadog.remote_config.csm_threats_agent_policies (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -253,18 +243,24 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: csm_threats_agent_policies
   props:
-    - name: region
-      value: string
-      description: Required parameter for the csm_threats_agent_policies resource.
     - name: data
-      value: object
       description: |
         Object for a single Agent rule
-```
+      value:
+        attributes:
+          description: "{{ description }}"
+          enabled: {{ enabled }}
+          hostTags:
+            - "{{ hostTags }}"
+          hostTagsLists:
+            - "{{ hostTagsLists }}"
+          name: "{{ name }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -279,16 +275,15 @@ data
 >
 <TabItem value="update_csmthreats_agent_policy">
 
-Update a specific Workload Protection policy.<br />Returns the policy object when the request is successful.<br /><br />**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.
+Update a specific Workload Protection policy.&lt;br /&gt;Returns the policy object when the request is successful.&lt;br /&gt;&lt;br /&gt;**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.
 
 ```sql
 UPDATE datadog.remote_config.csm_threats_agent_policies
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 policy_id = '{{ policy_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -306,33 +301,11 @@ data;
 >
 <TabItem value="delete_csmthreats_agent_policy">
 
-Delete a specific Workload Protection policy.<br /><br />**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.
+Delete a specific Workload Protection policy.&lt;br /&gt;&lt;br /&gt;**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.
 
 ```sql
 DELETE FROM datadog.remote_config.csm_threats_agent_policies
 WHERE policy_id = '{{ policy_id }}' --required
-AND region = '{{ region }}' --required
-;
-```
-</TabItem>
-</Tabs>
-
-
-## Lifecycle Methods
-
-<Tabs
-    defaultValue="download_csmthreats_policy"
-    values={[
-        { label: 'download_csmthreats_policy', value: 'download_csmthreats_policy' }
-    ]}
->
-<TabItem value="download_csmthreats_policy">
-
-The download endpoint generates a Workload Protection policy file from your currently active<br />Workload Protection agent rules, and downloads them as a `.policy` file. This file can then be deployed to<br />your agents to update the policy running in your environment.<br /><br />**Note**: This endpoint is not available for the Government (US1-FED) site. Please reference the (US1-FED) specific resource below.
-
-```sql
-EXEC datadog.remote_config.csm_threats_agent_policies.download_csmthreats_policy 
-@region='{{ region }}' --required
 ;
 ```
 </TabItem>

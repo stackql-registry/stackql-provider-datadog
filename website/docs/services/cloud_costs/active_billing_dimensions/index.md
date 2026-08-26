@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>active_billing_dimensions</cod
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>active_billing_dimensions</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="active_billing_dimensions" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.cloud_costs.active_billing_dimensions" /></td></tr>
 </tbody></table>
@@ -61,7 +62,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Type of active billing dimensions data. (default: billing_dimensions)</td>
+    <td>Type of active billing dimensions data. (billing_dimensions) (default: billing_dimensions)</td>
 </tr>
 </tbody>
 </table>
@@ -86,7 +87,7 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_active_billing_dimensions"><CopyableCode code="get_active_billing_dimensions" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Get active billing dimensions for cost attribution. Cost data for a given month becomes available no later than the 19th of the following month.</td>
 </tr>
@@ -106,10 +107,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -132,7 +133,6 @@ id,
 attributes,
 type
 FROM datadog.cloud_costs.active_billing_dimensions
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>

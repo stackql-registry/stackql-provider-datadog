@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>app_key_registrations</code> r
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>app_key_registrations</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="app_key_registrations" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.actions.app_key_registrations" /></td></tr>
 </tbody></table>
@@ -57,7 +58,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The definition of `AppKeyRegistrationDataType` object. (example: app_key_registration)</td>
+    <td>The definition of `AppKeyRegistrationDataType` object. (app_key_registration) (example: app_key_registration)</td>
 </tr>
 </tbody>
 </table>
@@ -81,7 +82,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The definition of `AppKeyRegistrationDataType` object. (example: app_key_registration)</td>
+    <td>The definition of `AppKeyRegistrationDataType` object. (app_key_registration) (example: app_key_registration)</td>
 </tr>
 </tbody>
 </table>
@@ -106,28 +107,28 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_app_key_registration"><CopyableCode code="get_app_key_registration" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-app_key_id"><code>app_key_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-app_key_id"><code>app_key_id</code></a></td>
     <td></td>
     <td>Get an existing App Key Registration</td>
 </tr>
 <tr>
     <td><a href="#list_app_key_registrations"><CopyableCode code="list_app_key_registrations" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-page[number]"><code>page[number]</code></a></td>
     <td>List App Key Registrations</td>
 </tr>
 <tr>
     <td><a href="#unregister_app_key"><CopyableCode code="unregister_app_key" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-app_key_id"><code>app_key_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-app_key_id"><code>app_key_id</code></a></td>
     <td></td>
     <td>Unregister an App Key</td>
 </tr>
 <tr>
     <td><a href="#register_app_key"><CopyableCode code="register_app_key" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-app_key_id"><code>app_key_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-app_key_id"><code>app_key_id</code></a></td>
     <td></td>
     <td>Register a new App Key</td>
 </tr>
@@ -152,10 +153,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The ID of the app key</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-page[number]">
     <td><CopyableCode code="page[number]" /></td>
@@ -189,7 +190,6 @@ id,
 type
 FROM datadog.actions.app_key_registrations
 WHERE app_key_id = '{{ app_key_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -202,8 +202,7 @@ SELECT
 id,
 type
 FROM datadog.actions.app_key_registrations
-WHERE region = '{{ region }}' -- required
-AND page[size] = '{{ page[size] }}'
+WHERE page[size] = '{{ page[size] }}'
 AND page[number] = '{{ page[number] }}'
 ;
 ```
@@ -212,6 +211,8 @@ AND page[number] = '{{ page[number] }}'
 
 
 ## Lifecycle Methods
+
+EXEC variables use wire (API) names.
 
 <Tabs
     defaultValue="unregister_app_key"
@@ -226,8 +227,7 @@ Unregister an App Key
 
 ```sql
 EXEC datadog.actions.app_key_registrations.unregister_app_key 
-@app_key_id='{{ app_key_id }}' --required, 
-@region='{{ region }}' --required
+@app_key_id='{{ app_key_id }}' --required 
 ;
 ```
 </TabItem>
@@ -237,8 +237,7 @@ Register a new App Key
 
 ```sql
 EXEC datadog.actions.app_key_registrations.register_app_key 
-@app_key_id='{{ app_key_id }}' --required, 
-@region='{{ region }}' --required
+@app_key_id='{{ app_key_id }}' --required 
 ;
 ```
 </TabItem>

@@ -1,0 +1,20 @@
+{
+  "source": "https://raw.githubusercontent.com/DataDog/datadog-api-client-typescript/master/.generator/schemas",
+  "fetched": "2026-08-26",
+  "specs": {
+    "v1": {
+      "file": "v1-openapi.yaml",
+      "sha256": "e8e3972a2d77b1395e28f7044e830f526258a4bc5e07d9401c2c07b2bcccabb4",
+      "paths": 150,
+      "operations": 235,
+      "openapi": "3.0.0"
+    },
+    "v2": {
+      "file": "v2-openapi.yaml",
+      "sha256": "b99670a872842592344c659e05decbd12ef550af24d5910a41d253fc2cfc09e0",
+      "paths": 976,
+      "operations": 1544,
+      "openapi": "3.0.0"
+    }
+  }
+}

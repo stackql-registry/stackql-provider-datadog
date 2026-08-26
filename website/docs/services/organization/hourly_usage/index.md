@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>hourly_usage</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>hourly_usage</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="hourly_usage" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.organization.hourly_usage" /></td></tr>
 </tbody></table>
@@ -61,7 +62,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Type of usage data. (default: usage_timeseries, example: usage_timeseries)</td>
+    <td>Type of usage data. (usage_timeseries) (default: usage_timeseries, example: usage_timeseries)</td>
 </tr>
 </tbody>
 </table>
@@ -86,7 +87,7 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_hourly_usage"><CopyableCode code="get_hourly_usage" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-filter[timestamp][start]"><code>filter[timestamp][start]</code></a>, <a href="#parameter-filter[product_families]"><code>filter[product_families]</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-filter[timestamp][start]"><code>filter[timestamp][start]</code></a>, <a href="#parameter-filter[product_families]"><code>filter[product_families]</code></a></td>
     <td><a href="#parameter-filter[timestamp][end]"><code>filter[timestamp][end]</code></a>, <a href="#parameter-filter[include_descendants]"><code>filter[include_descendants]</code></a>, <a href="#parameter-filter[include_connected_accounts]"><code>filter[include_connected_accounts]</code></a>, <a href="#parameter-filter[include_breakdown]"><code>filter[include_breakdown]</code></a>, <a href="#parameter-filter[versions]"><code>filter[versions]</code></a>, <a href="#parameter-page[limit]"><code>page[limit]</code></a>, <a href="#parameter-page[next_record_id]"><code>page[next_record_id]</code></a></td>
     <td>Get hourly usage by product family.</td>
 </tr>
@@ -109,17 +110,17 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-filter[product_families]">
     <td><CopyableCode code="filter[product_families]" /></td>
     <td><code>string</code></td>
-    <td>Comma separated list of product families to retrieve. Available families are `all`, `analyzed_logs`, `application_security`, `audit_trail`, `serverless`, `ci_app`, `cloud_cost_management`, `cloud_siem`, `csm_container_enterprise`, `csm_host_enterprise`, `cspm`, `custom_events`, `cws`, `dbm`, `error_tracking`, `fargate`, `infra_hosts`, `incident_management`, `indexed_logs`, `indexed_spans`, `ingested_spans`, `iot`, `lambda_traced_invocations`, `llm_observability`, `logs`, `network_flows`, `network_hosts`, `network_monitoring`, `observability_pipelines`, `online_archive`, `profiling`, `product_analytics`, `rum`, `rum_browser_sessions`, `rum_mobile_sessions`, `sds`, `snmp`, `software_delivery`, `synthetics_api`, `synthetics_browser`, `synthetics_mobile`, `synthetics_parallel_testing`, `timeseries`, `vuln_management` and `workflow_executions`. The following product family has been **deprecated**: `audit_logs`.</td>
+    <td>Comma separated list of product families to retrieve. Available families are `all`, `ai`, `analyzed_logs`, `application_performance_monitoring`, `application_security`, `audit_trail`, `bits_ai`, `serverless`, `ci_app`, `cloud_cost_management`, `cloud_siem`, `csm_container_enterprise`, `csm_host_enterprise`, `csm_host_pro`, `cspm`, `custom_events`, `cws`, `data_observability`, `dbm`, `digital_experience_management`, `error_tracking`, `fargate`, `infra_hosts`, `incident_management`, `indexed_logs`, `indexed_spans`, `infrastructure_monitoring`, `ingested_spans`, `iot`, `lambda_traced_invocations`, `llm_observability`, `log_management`, `logs`, `network_flows`, `network_hosts`, `network_monitoring`, `observability_pipelines`, `online_archive`, `platform_capabilities`, `product_analytics`, `profiling`, `rum`, `rum_browser_sessions`, `rum_mobile_sessions`, `sds`, `security`, `snmp`, `software_delivery`, `synthetics_api`, `synthetics_browser`, `synthetics_mobile`, `synthetics_parallel_testing`, `timeseries`, `vuln_management` and `workflow_executions`. The following product family has been **deprecated**: `audit_logs`.</td>
 </tr>
 <tr id="parameter-filter[timestamp][start]">
     <td><CopyableCode code="filter[timestamp][start]" /></td>
     <td><code>string (date-time)</code></td>
-    <td>Datetime in ISO-8601 format, UTC, precise to hour: [YYYY-MM-DDThh] for usage beginning at this hour.</td>
+    <td>Datetime in ISO-8601 format, UTC, precise to hour: &#91;YYYY-MM-DDThh&#93; for usage beginning at this hour.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter[include_breakdown]">
     <td><CopyableCode code="filter[include_breakdown]" /></td>
@@ -139,7 +140,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-filter[timestamp][end]">
     <td><CopyableCode code="filter[timestamp][end]" /></td>
     <td><code>string (date-time)</code></td>
-    <td>Datetime in ISO-8601 format, UTC, precise to hour: [YYYY-MM-DDThh] for usage ending **before** this hour.</td>
+    <td>Datetime in ISO-8601 format, UTC, precise to hour: &#91;YYYY-MM-DDThh&#93; for usage ending **before** this hour.</td>
 </tr>
 <tr id="parameter-filter[versions]">
     <td><CopyableCode code="filter[versions]" /></td>
@@ -179,7 +180,6 @@ type
 FROM datadog.organization.hourly_usage
 WHERE filter[timestamp][start] = '{{ filter[timestamp][start] }}' -- required
 AND filter[product_families] = '{{ filter[product_families] }}' -- required
-AND region = '{{ region }}' -- required
 AND filter[timestamp][end] = '{{ filter[timestamp][end] }}'
 AND filter[include_descendants] = '{{ filter[include_descendants] }}'
 AND filter[include_connected_accounts] = '{{ filter[include_connected_accounts] }}'

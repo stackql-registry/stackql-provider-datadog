@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>connections</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>connections</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="connections" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.actions.connections" /></td></tr>
 </tbody></table>
@@ -63,7 +64,7 @@ Successfully get Action Connection
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The definition of `ActionConnectionDataType` object. (example: action_connection)</td>
+    <td>The definition of `ActionConnectionDataType` object. (action_connection) (example: action_connection)</td>
 </tr>
 </tbody>
 </table>
@@ -88,30 +89,30 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_action_connection"><CopyableCode code="get_action_connection" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-connection_id"><code>connection_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-connection_id"><code>connection_id</code></a></td>
     <td></td>
-    <td>Get an existing Action Connection. This API requires a [registered application key](https://docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key).</td>
+    <td>Get an existing Action Connection. This API requires a &#91;registered application key&#93;(https:​//docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key).</td>
 </tr>
 <tr>
     <td><a href="#create_action_connection"><CopyableCode code="create_action_connection" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
-    <td>Create a new Action Connection. This API requires a [registered application key](https://docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key).</td>
+    <td>Create a new Action Connection. This API requires a &#91;registered application key&#93;(https:​//docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key).</td>
 </tr>
 <tr>
     <td><a href="#update_action_connection"><CopyableCode code="update_action_connection" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-connection_id"><code>connection_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-connection_id"><code>connection_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
-    <td>Update an existing Action Connection. This API requires a [registered application key](https://docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key).</td>
+    <td>Update an existing Action Connection. This API requires a &#91;registered application key&#93;(https:​//docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key).</td>
 </tr>
 <tr>
     <td><a href="#delete_action_connection"><CopyableCode code="delete_action_connection" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-connection_id"><code>connection_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-connection_id"><code>connection_id</code></a></td>
     <td></td>
-    <td>Delete an existing Action Connection. This API requires a [registered application key](https://docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions [in the UI](https://docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
+    <td>Delete an existing Action Connection. This API requires a &#91;registered application key&#93;(https:​//docs.datadoghq.com/api/latest/action-connection/#register-a-new-app-key). Alternatively, you can configure these permissions &#91;in the UI&#93;(https:​//docs.datadoghq.com/account_management/api-app-keys/#actions-api-access).</td>
 </tr>
 </tbody>
 </table>
@@ -134,10 +135,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The ID of the action connection</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -161,7 +162,6 @@ attributes,
 type
 FROM datadog.actions.connections
 WHERE connection_id = '{{ connection_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -183,12 +183,10 @@ Create a new Action Connection. This API requires a [registered application key]
 
 ```sql
 INSERT INTO datadog.actions.connections (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -196,18 +194,30 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: connections
   props:
-    - name: region
-      value: string
-      description: Required parameter for the connections resource.
     - name: data
-      value: object
       description: |
         Data related to the connection.
-```
+      value:
+        attributes:
+          integration:
+            credentials:
+              account_id: "{{ account_id }}"
+              external_id: "{{ external_id }}"
+              principal_id: "{{ principal_id }}"
+              role: "{{ role }}"
+              type: "{{ type }}"
+            type: "{{ type }}"
+            base_url: "{{ base_url }}"
+          name: "{{ name }}"
+          tags:
+            - "{{ tags }}"
+        id: "{{ id }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -227,11 +237,10 @@ Update an existing Action Connection. This API requires a [registered applicatio
 ```sql
 UPDATE datadog.actions.connections
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 connection_id = '{{ connection_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -254,7 +263,6 @@ Delete an existing Action Connection. This API requires a [registered applicatio
 ```sql
 DELETE FROM datadog.actions.connections
 WHERE connection_id = '{{ connection_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>datastores</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>datastores</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="datastores" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.actions.datastores" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The resource type for datastores. (default: datastores, example: datastores)</td>
+    <td>The resource type for datastores. (datastores) (default: datastores, example: datastores)</td>
 </tr>
 </tbody>
 </table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The resource type for datastores. (default: datastores, example: datastores)</td>
+    <td>The resource type for datastores. (datastores) (default: datastores, example: datastores)</td>
 </tr>
 </tbody>
 </table>
@@ -116,35 +117,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_datastore"><CopyableCode code="get_datastore" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-datastore_id"><code>datastore_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-datastore_id"><code>datastore_id</code></a></td>
     <td></td>
     <td>Retrieves a specific datastore by its ID.</td>
 </tr>
 <tr>
     <td><a href="#list_datastores"><CopyableCode code="list_datastores" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Lists all datastores for the organization.</td>
 </tr>
 <tr>
     <td><a href="#create_datastore"><CopyableCode code="create_datastore" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Creates a new datastore.</td>
 </tr>
 <tr>
     <td><a href="#update_datastore"><CopyableCode code="update_datastore" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-datastore_id"><code>datastore_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-datastore_id"><code>datastore_id</code></a></td>
     <td></td>
     <td>Updates an existing datastore's attributes.</td>
 </tr>
 <tr>
     <td><a href="#delete_datastore"><CopyableCode code="delete_datastore" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-datastore_id"><code>datastore_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-datastore_id"><code>datastore_id</code></a></td>
     <td></td>
     <td>Deletes a datastore by its unique identifier.</td>
 </tr>
@@ -169,10 +170,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The unique identifier of the datastore to retrieve.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -197,7 +198,6 @@ attributes,
 type
 FROM datadog.actions.datastores
 WHERE datastore_id = '{{ datastore_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -211,7 +211,6 @@ id,
 attributes,
 type
 FROM datadog.actions.datastores
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -233,12 +232,10 @@ Creates a new datastore.
 
 ```sql
 INSERT INTO datadog.actions.datastores (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}',
-'{{ region }}'
+'{{ data }}'
 RETURNING
 data
 ;
@@ -246,18 +243,23 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: datastores
   props:
-    - name: region
-      value: string
-      description: Required parameter for the datastores resource.
     - name: data
-      value: object
       description: |
         Data wrapper containing the configuration needed to create a new datastore.
-```
+      value:
+        attributes:
+          description: "{{ description }}"
+          name: "{{ name }}"
+          org_access: "{{ org_access }}"
+          primary_column_name: "{{ primary_column_name }}"
+          primary_key_generation_strategy: "{{ primary_key_generation_strategy }}"
+        id: "{{ id }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -277,10 +279,9 @@ Updates an existing datastore's attributes.
 ```sql
 UPDATE datadog.actions.datastores
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 datastore_id = '{{ datastore_id }}' --required
-AND region = '{{ region }}' --required
 RETURNING
 data;
 ```
@@ -303,7 +304,6 @@ Deletes a datastore by its unique identifier.
 ```sql
 DELETE FROM datadog.actions.datastores
 WHERE datastore_id = '{{ datastore_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

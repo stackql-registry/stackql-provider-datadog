@@ -18,7 +18,7 @@ remote_config service documentation.
 
 :::info[Service Summary]
 
-total resources: __5__  
+total resources: __6__  
 
 :::
 
@@ -27,10 +27,11 @@ total resources: __5__
 <div class="providerDocColumn">
 <a href="/services/remote_config/csm_threats_agent_policies/">csm_threats_agent_policies</a><br />
 <a href="/services/remote_config/csm_threats_agent_rules/">csm_threats_agent_rules</a><br />
-<a href="/services/remote_config/observability_pipelines/">observability_pipelines</a>
+<a href="/services/remote_config/rum_configs/">rum_configs</a>
 </div>
 <div class="providerDocColumn">
 <a href="/services/remote_config/waf_custom_rules/">waf_custom_rules</a><br />
-<a href="/services/remote_config/waf_exclusion_filters/">waf_exclusion_filters</a>
+<a href="/services/remote_config/waf_exclusion_filters/">waf_exclusion_filters</a><br />
+<a href="/services/remote_config/waf_policies/">waf_policies</a>
 </div>
 </div>

@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>tag_cardinality_details</code> 
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>tag_cardinality_details</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="tag_cardinality_details" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.metrics.tag_cardinality_details" /></td></tr>
 </tbody></table>
@@ -86,7 +87,7 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_metric_tag_cardinality_details"><CopyableCode code="get_metric_tag_cardinality_details" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-metric_name"><code>metric_name</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-metric_name"><code>metric_name</code></a></td>
     <td></td>
     <td>Returns the cardinality details of tags for a specific metric.</td>
 </tr>
@@ -111,10 +112,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The name of the metric. (example: dist.http.endpoint.request)</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -138,7 +139,6 @@ attributes,
 type
 FROM datadog.metrics.tag_cardinality_details
 WHERE metric_name = '{{ metric_name }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>

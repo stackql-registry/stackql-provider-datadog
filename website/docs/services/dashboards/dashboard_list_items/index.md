@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>dashboard_list_items</code> res
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>dashboard_list_items</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="dashboard_list_items" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.dashboards.dashboard_list_items" /></td></tr>
 </tbody></table>
@@ -111,7 +112,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The type of the dashboard. (example: host_timeboard)</td>
+    <td>The type of the dashboard. (custom_timeboard, custom_screenboard, integration_screenboard, integration_timeboard, host_timeboard) (example: host_timeboard)</td>
 </tr>
 <tr>
     <td><CopyableCode code="url" /></td>
@@ -141,28 +142,28 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_dashboard_list_items"><CopyableCode code="get_dashboard_list_items" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-dashboard_list_id"><code>dashboard_list_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-dashboard_list_id"><code>dashboard_list_id</code></a></td>
     <td></td>
     <td>Fetch the dashboard list’s dashboard definitions.</td>
 </tr>
 <tr>
     <td><a href="#create_dashboard_list_items"><CopyableCode code="create_dashboard_list_items" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-dashboard_list_id"><code>dashboard_list_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-dashboard_list_id"><code>dashboard_list_id</code></a></td>
     <td></td>
     <td>Add dashboards to an existing dashboard list.</td>
 </tr>
 <tr>
     <td><a href="#update_dashboard_list_items"><CopyableCode code="update_dashboard_list_items" /></a></td>
     <td><CopyableCode code="replace" /></td>
-    <td><a href="#parameter-dashboard_list_id"><code>dashboard_list_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-dashboard_list_id"><code>dashboard_list_id</code></a></td>
     <td></td>
     <td>Update dashboards of an existing dashboard list.</td>
 </tr>
 <tr>
     <td><a href="#delete_dashboard_list_items"><CopyableCode code="delete_dashboard_list_items" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-dashboard_list_id"><code>dashboard_list_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-dashboard_list_id"><code>dashboard_list_id</code></a></td>
     <td></td>
     <td>Delete dashboards from an existing dashboard list.</td>
 </tr>
@@ -187,10 +188,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>integer (int64)</code></td>
     <td>ID of the dashboard list to delete items from.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -225,7 +226,6 @@ type,
 url
 FROM datadog.dashboards.dashboard_list_items
 WHERE dashboard_list_id = '{{ dashboard_list_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -247,14 +247,12 @@ Add dashboards to an existing dashboard list.
 
 ```sql
 INSERT INTO datadog.dashboards.dashboard_list_items (
-data__dashboards,
-dashboard_list_id,
-region
+dashboards,
+dashboard_list_id
 )
 SELECT 
 '{{ dashboards }}',
-'{{ dashboard_list_id }}',
-'{{ region }}'
+'{{ dashboard_list_id }}'
 RETURNING
 added_dashboards_to_list
 ;
@@ -262,21 +260,20 @@ added_dashboards_to_list
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: dashboard_list_items
   props:
     - name: dashboard_list_id
-      value: integer (int64)
-      description: Required parameter for the dashboard_list_items resource.
-    - name: region
-      value: string
+      value: "{{ dashboard_list_id }}"
       description: Required parameter for the dashboard_list_items resource.
     - name: dashboards
-      value: array
       description: |
         List of dashboards to add the dashboard list.
-```
+      value:
+        - id: "{{ id }}"
+          type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -296,10 +293,9 @@ Update dashboards of an existing dashboard list.
 ```sql
 REPLACE datadog.dashboards.dashboard_list_items
 SET 
-data__dashboards = '{{ dashboards }}'
+dashboards = '{{ dashboards }}'
 WHERE 
 dashboard_list_id = '{{ dashboard_list_id }}' --required
-AND region = '{{ region }}' --required
 RETURNING
 dashboards;
 ```
@@ -322,7 +318,6 @@ Delete dashboards from an existing dashboard list.
 ```sql
 DELETE FROM datadog.dashboards.dashboard_list_items
 WHERE dashboard_list_id = '{{ dashboard_list_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

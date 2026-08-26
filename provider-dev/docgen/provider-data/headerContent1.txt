@@ -10,7 +10,7 @@ keywords:
   - cloud inventory
 description: Query, monitor, and manage Datadog resources using SQL
 custom_edit_url: null
-image: /img/providers/datadog/stackql-datadog-provider-featured-image.png
+image: /img/stackql-datadog-provider-featured-image.png
 id: 'provider-intro'
 ---
 

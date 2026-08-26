@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>data_deletion_requests</code> r
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>data_deletion_requests</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="data_deletion_requests" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.organization.data_deletion_requests" /></td></tr>
 </tbody></table>
@@ -86,21 +87,21 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_data_deletion_requests"><CopyableCode code="get_data_deletion_requests" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-next_page"><code>next_page</code></a>, <a href="#parameter-product"><code>product</code></a>, <a href="#parameter-query"><code>query</code></a>, <a href="#parameter-status"><code>status</code></a>, <a href="#parameter-page_size"><code>page_size</code></a></td>
     <td>Gets a list of data deletion requests based on several filter parameters.</td>
 </tr>
 <tr>
     <td><a href="#create_data_deletion_request"><CopyableCode code="create_data_deletion_request" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-product"><code>product</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-product"><code>product</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Creates a data deletion request by providing a query and a timeframe targeting the proper data.</td>
 </tr>
 <tr>
     <td><a href="#cancel_data_deletion_request"><CopyableCode code="cancel_data_deletion_request" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-id"><code>id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-id"><code>id</code></a></td>
     <td></td>
     <td>Cancels a data deletion request by providing its ID.</td>
 </tr>
@@ -128,12 +129,12 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-product">
     <td><CopyableCode code="product" /></td>
     <td><code>string</code></td>
-    <td>Name of the product to be deleted, either `logs` or `rum`.</td>
+    <td>Name of the product to be deleted. Only `logs` is supported.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-next_page">
     <td><CopyableCode code="next_page" /></td>
@@ -181,8 +182,7 @@ id,
 attributes,
 type
 FROM datadog.organization.data_deletion_requests
-WHERE region = '{{ region }}' -- required
-AND next_page = '{{ next_page }}'
+WHERE next_page = '{{ next_page }}'
 AND product = '{{ product }}'
 AND query = '{{ query }}'
 AND status = '{{ status }}'
@@ -208,14 +208,12 @@ Creates a data deletion request by providing a query and a timeframe targeting t
 
 ```sql
 INSERT INTO datadog.organization.data_deletion_requests (
-data__data,
-product,
-region
+data,
+product
 )
 SELECT 
 '{{ data }}' /* required */,
-'{{ product }}',
-'{{ region }}'
+'{{ product }}'
 RETURNING
 data,
 meta
@@ -224,26 +222,33 @@ meta
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: data_deletion_requests
   props:
     - name: product
-      value: string
-      description: Required parameter for the data_deletion_requests resource.
-    - name: region
-      value: string
+      value: "{{ product }}"
       description: Required parameter for the data_deletion_requests resource.
     - name: data
-      value: object
       description: |
         Data needed to create a data deletion request.
-```
+      value:
+        attributes:
+          displayed_total: {{ displayed_total }}
+          from: {{ from }}
+          indexes:
+            - "{{ indexes }}"
+          query: "{{ query }}"
+          to: {{ to }}
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
 
 ## Lifecycle Methods
+
+EXEC variables use wire (API) names.
 
 <Tabs
     defaultValue="cancel_data_deletion_request"
@@ -257,8 +262,7 @@ Cancels a data deletion request by providing its ID.
 
 ```sql
 EXEC datadog.organization.data_deletion_requests.cancel_data_deletion_request 
-@id='{{ id }}' --required, 
-@region='{{ region }}' --required
+@id='{{ id }}' --required 
 ;
 ```
 </TabItem>

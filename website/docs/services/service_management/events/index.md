@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>events</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>events</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="events" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.service_management.events" /></td></tr>
 </tbody></table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Type of the event. (default: event, example: event)</td>
+    <td>Type of the event. (event) (default: event, example: event)</td>
 </tr>
 </tbody>
 </table>
@@ -116,30 +117,30 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_event"><CopyableCode code="get_event" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-event_id"><code>event_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-event_id"><code>event_id</code></a></td>
     <td></td>
     <td>Get the details of an event by `event_id`.</td>
 </tr>
 <tr>
     <td><a href="#list_events"><CopyableCode code="list_events" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-filter[query]"><code>filter[query]</code></a>, <a href="#parameter-filter[from]"><code>filter[from]</code></a>, <a href="#parameter-filter[to]"><code>filter[to]</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-page[cursor]"><code>page[cursor]</code></a>, <a href="#parameter-page[limit]"><code>page[limit]</code></a></td>
-    <td>List endpoint returns events that match an events search query.<br />[Results are paginated similarly to logs](https://docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).<br /><br />Use this endpoint to see your latest events.</td>
+    <td>List endpoint returns events that match an events search query.&lt;br /&gt;&#91;Results are paginated similarly to logs&#93;(https:​//docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).&lt;br /&gt;&lt;br /&gt;Use this endpoint to see your latest events.</td>
 </tr>
 <tr>
     <td><a href="#create_event"><CopyableCode code="create_event" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
-    <td>This endpoint allows you to publish events.<br /><br />**Note:** To utilize this endpoint with our client libraries, please ensure you are using the latest version released on or after July 1, 2025. Earlier versions do not support this functionality.<br /><br />✅ **Only events with the `change` or `alert` category** are in General Availability. For change events, see [Change Tracking](https://docs.datadoghq.com/change_tracking) for more details.<br /><br />❌ For use cases involving other event categories, use the V1 endpoint or reach out to [support](https://www.datadoghq.com/support/).<br /><br />❌ Notifications are not yet supported for events sent to this endpoint. Use the V1 endpoint for notification functionality.</td>
+    <td>This endpoint allows you to publish events.&lt;br /&gt;&lt;br /&gt;**Note:** To utilize this endpoint with our client libraries, please ensure you are using the latest version released on or after July 1, 2025. Earlier versions do not support this functionality.&lt;br /&gt;&lt;br /&gt;**Important:** Upgrade to the latest client library version to use the updated endpoint at `https:​//event-management-intake.&#123;site&#125;/api/v2/events`. Older client library versions of the Post an event (v2) API send requests to a deprecated endpoint (`https:​//api.&#123;site&#125;/api/v2/events`).&lt;br /&gt;&lt;br /&gt;✅ **Only events with the `change` or `alert` category** are in General Availability. For change events, see &#91;Change Tracking&#93;(https:​//docs.datadoghq.com/change_tracking) for more details.&lt;br /&gt;&lt;br /&gt;❌ For use cases involving other event categories, use the V1 endpoint or reach out to &#91;support&#93;(https:​//www.datadoghq.com/support/).</td>
 </tr>
 <tr>
     <td><a href="#search_events"><CopyableCode code="search_events" /></a></td>
-    <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td><CopyableCode code="exec" /></td>
     <td></td>
-    <td>List endpoint returns events that match an events search query.<br />[Results are paginated similarly to logs](https://docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).<br /><br />Use this endpoint to build complex events filtering and search.</td>
+    <td></td>
+    <td>List endpoint returns events that match an events search query.&lt;br /&gt;&#91;Results are paginated similarly to logs&#93;(https:​//docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).&lt;br /&gt;&lt;br /&gt;Use this endpoint to build complex events filtering and search.</td>
 </tr>
 </tbody>
 </table>
@@ -162,10 +163,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The UID of the event.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-filter[from]">
     <td><CopyableCode code="filter[from]" /></td>
@@ -220,13 +221,12 @@ attributes,
 type
 FROM datadog.service_management.events
 WHERE event_id = '{{ event_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
 <TabItem value="list_events">
 
-List endpoint returns events that match an events search query.<br />[Results are paginated similarly to logs](https://docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).<br /><br />Use this endpoint to see your latest events.
+List endpoint returns events that match an events search query.&lt;br /&gt;&#91;Results are paginated similarly to logs&#93;(https:​//docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).&lt;br /&gt;&lt;br /&gt;Use this endpoint to see your latest events.
 
 ```sql
 SELECT
@@ -234,8 +234,7 @@ id,
 attributes,
 type
 FROM datadog.service_management.events
-WHERE region = '{{ region }}' -- required
-AND filter[query] = '{{ filter[query] }}'
+WHERE filter[query] = '{{ filter[query] }}'
 AND filter[from] = '{{ filter[from] }}'
 AND filter[to] = '{{ filter[to] }}'
 AND sort = '{{ sort }}'
@@ -253,84 +252,95 @@ AND page[limit] = '{{ page[limit] }}'
     defaultValue="create_event"
     values={[
         { label: 'create_event', value: 'create_event' },
-        { label: 'search_events', value: 'search_events' },
         { label: 'Manifest', value: 'manifest' }
     ]}
 >
 <TabItem value="create_event">
 
-This endpoint allows you to publish events.<br /><br />**Note:** To utilize this endpoint with our client libraries, please ensure you are using the latest version released on or after July 1, 2025. Earlier versions do not support this functionality.<br /><br />✅ **Only events with the `change` or `alert` category** are in General Availability. For change events, see [Change Tracking](https://docs.datadoghq.com/change_tracking) for more details.<br /><br />❌ For use cases involving other event categories, use the V1 endpoint or reach out to [support](https://www.datadoghq.com/support/).<br /><br />❌ Notifications are not yet supported for events sent to this endpoint. Use the V1 endpoint for notification functionality.
+This endpoint allows you to publish events.&lt;br /&gt;&lt;br /&gt;**Note:** To utilize this endpoint with our client libraries, please ensure you are using the latest version released on or after July 1, 2025. Earlier versions do not support this functionality.&lt;br /&gt;&lt;br /&gt;**Important:** Upgrade to the latest client library version to use the updated endpoint at `https:​//event-management-intake.&#123;site&#125;/api/v2/events`. Older client library versions of the Post an event (v2) API send requests to a deprecated endpoint (`https:​//api.&#123;site&#125;/api/v2/events`).&lt;br /&gt;&lt;br /&gt;✅ **Only events with the `change` or `alert` category** are in General Availability. For change events, see &#91;Change Tracking&#93;(https:​//docs.datadoghq.com/change_tracking) for more details.&lt;br /&gt;&lt;br /&gt;❌ For use cases involving other event categories, use the V1 endpoint or reach out to &#91;support&#93;(https:​//www.datadoghq.com/support/).
 
 ```sql
 INSERT INTO datadog.service_management.events (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data,
 links
 ;
 ```
 </TabItem>
-<TabItem value="search_events">
-
-List endpoint returns events that match an events search query.<br />[Results are paginated similarly to logs](https://docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).<br /><br />Use this endpoint to build complex events filtering and search.
-
-```sql
-INSERT INTO datadog.service_management.events (
-data__filter,
-data__options,
-data__page,
-data__sort,
-region
-)
-SELECT 
-'{{ filter }}',
-'{{ options }}',
-'{{ page }}',
-'{{ sort }}',
-'{{ region }}'
-RETURNING
-data,
-links,
-meta
-;
-```
-</TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: events
   props:
-    - name: region
-      value: string
-      description: Required parameter for the events resource.
     - name: data
-      value: object
       description: |
         An event object.
-    - name: filter
-      value: object
-      description: |
-        The search and filter query settings.
-    - name: options
-      value: object
-      description: |
-        The global query options that are used. Either provide a timezone or a time offset but not both,
-        otherwise the query fails.
-    - name: page
-      value: object
-      description: |
-        Pagination settings.
-    - name: sort
-      value: string
-      description: |
-        The sort parameters when querying events.
-      valid_values: ['timestamp', '-timestamp']
+      value:
+        attributes:
+          aggregation_key: "{{ aggregation_key }}"
+          attributes:
+            author:
+              name: "{{ name }}"
+              type: "{{ type }}"
+            change_metadata: "{{ change_metadata }}"
+            changed_resource:
+              name: "{{ name }}"
+              type: "{{ type }}"
+            impacted_resources:
+              - name: "{{ name }}"
+                type: "{{ type }}"
+            new_value: "{{ new_value }}"
+            prev_value: "{{ prev_value }}"
+            custom: "{{ custom }}"
+            links:
+              - category: "{{ category }}"
+                title: "{{ title }}"
+                url: "{{ url }}"
+            priority: "{{ priority }}"
+            status: "{{ status }}"
+          category: "{{ category }}"
+          host: "{{ host }}"
+          integration_id: "{{ integration_id }}"
+          message: "{{ message }}"
+          tags:
+            - "{{ tags }}"
+          timestamp: "{{ timestamp }}"
+          title: "{{ title }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
+</TabItem>
+</Tabs>
+
+
+## Lifecycle Methods
+
+EXEC variables use wire (API) names.
+
+<Tabs
+    defaultValue="search_events"
+    values={[
+        { label: 'search_events', value: 'search_events' }
+    ]}
+>
+<TabItem value="search_events">
+
+List endpoint returns events that match an events search query.&lt;br /&gt;&#91;Results are paginated similarly to logs&#93;(https:​//docs.datadoghq.com/logs/guide/collect-multiple-logs-with-pagination).&lt;br /&gt;&lt;br /&gt;Use this endpoint to build complex events filtering and search.
+
+```sql
+EXEC datadog.service_management.events.search_events 
+@@json=
+'{
+"filter": "{{ filter }}", 
+"options": "{{ options }}", 
+"page": "{{ page }}", 
+"sort": "{{ sort }}"
+}'
+;
 ```
 </TabItem>
 </Tabs>

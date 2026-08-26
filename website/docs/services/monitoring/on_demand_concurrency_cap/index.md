@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>on_demand_concurrency_cap</cod
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>on_demand_concurrency_cap</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="on_demand_concurrency_cap" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.monitoring.on_demand_concurrency_cap" /></td></tr>
 </tbody></table>
@@ -56,7 +57,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>On-demand concurrency cap type.</td>
+    <td>On-demand concurrency cap type. (on_demand_concurrency_cap)</td>
 </tr>
 </tbody>
 </table>
@@ -81,14 +82,14 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_on_demand_concurrency_cap"><CopyableCode code="get_on_demand_concurrency_cap" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Get the on-demand concurrency cap.</td>
 </tr>
 <tr>
     <td><a href="#set_on_demand_concurrency_cap"><CopyableCode code="set_on_demand_concurrency_cap" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Save new value for on-demand concurrency cap.</td>
 </tr>
@@ -108,10 +109,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -133,7 +134,6 @@ SELECT
 attributes,
 type
 FROM datadog.monitoring.on_demand_concurrency_cap
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -155,12 +155,10 @@ Save new value for on-demand concurrency cap.
 
 ```sql
 INSERT INTO datadog.monitoring.on_demand_concurrency_cap (
-data__on_demand_concurrency_cap,
-region
+on_demand_concurrency_cap
 )
 SELECT 
-{{ on_demand_concurrency_cap }},
-'{{ region }}'
+{{ on_demand_concurrency_cap }}
 RETURNING
 data
 ;
@@ -168,17 +166,14 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: on_demand_concurrency_cap
   props:
-    - name: region
-      value: string
-      description: Required parameter for the on_demand_concurrency_cap resource.
     - name: on_demand_concurrency_cap
-      value: number
+      value: {{ on_demand_concurrency_cap }}
       description: |
         Value of the on-demand concurrency cap.
-```
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>

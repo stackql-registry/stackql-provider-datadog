@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>teams</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>teams</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="teams" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.organization.teams" /></td></tr>
 </tbody></table>
@@ -67,7 +68,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Team type (default: team, example: team)</td>
+    <td>Team type (team) (default: team, example: team)</td>
 </tr>
 </tbody>
 </table>
@@ -101,7 +102,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Team type (default: team, example: team)</td>
+    <td>Team type (team) (default: team, example: team)</td>
 </tr>
 </tbody>
 </table>
@@ -126,44 +127,44 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_team"><CopyableCode code="get_team" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-team_id"><code>team_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-team_id"><code>team_id</code></a></td>
     <td></td>
     <td>Get a single team using the team's `id`.</td>
 </tr>
 <tr>
     <td><a href="#list_teams"><CopyableCode code="list_teams" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-page[number]"><code>page[number]</code></a>, <a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-sort"><code>sort</code></a>, <a href="#parameter-include"><code>include</code></a>, <a href="#parameter-filter[keyword]"><code>filter[keyword]</code></a>, <a href="#parameter-filter[me]"><code>filter[me]</code></a>, <a href="#parameter-fields[team]"><code>fields[team]</code></a></td>
-    <td>Get all teams.<br />Can be used to search for teams using the `filter[keyword]` and `filter[me]` query parameters.</td>
+    <td>Get all teams.&lt;br /&gt;Can be used to search for teams using the `filter&#91;keyword&#93;` and `filter&#91;me&#93;` query parameters.</td>
 </tr>
 <tr>
     <td><a href="#create_team"><CopyableCode code="create_team" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
-    <td>Create a new team.<br />User IDs passed through the `users` relationship field are added to the team.</td>
+    <td>Create a new team.&lt;br /&gt;User IDs passed through the `users` relationship field are added to the team.</td>
 </tr>
 <tr>
     <td><a href="#update_team"><CopyableCode code="update_team" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-team_id"><code>team_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-team_id"><code>team_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
-    <td>Update a team using the team's `id`.<br />If the `team_links` relationship is present, the associated links are updated to be in the order they appear in the array, and any existing team links not present are removed.</td>
+    <td>Update a team using the team's `id`.&lt;br /&gt;If the `team_links` relationship is present, the associated links are updated to be in the order they appear in the array, and any existing team links not present are removed.</td>
 </tr>
 <tr>
     <td><a href="#delete_team"><CopyableCode code="delete_team" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-team_id"><code>team_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-team_id"><code>team_id</code></a></td>
     <td></td>
     <td>Remove a team using the team's `id`.</td>
 </tr>
 <tr>
     <td><a href="#sync_teams"><CopyableCode code="sync_teams" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data"><code>data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
-    <td>This endpoint attempts to link your existing Datadog teams with GitHub teams by matching their names.<br />It evaluates all current Datadog teams and compares them against teams in the GitHub organization<br />connected to your Datadog account, based on Datadog Team handle and GitHub Team slug<br />(lowercased and kebab-cased).<br /><br />This operation is read-only on the GitHub side, no teams will be modified or created.<br /><br />[A GitHub organization must be connected to your Datadog account](https://docs.datadoghq.com/integrations/github/),<br />and the GitHub App integrated with Datadog must have the `Members Read` permission. Matching is performed by comparing the Datadog team handle to the GitHub team slug<br />using a normalized exact match; case is ignored and spaces are removed. No modifications are made<br />to teams in GitHub. This will not create new Teams in Datadog.</td>
+    <td>This endpoint configures synchronization between your existing Datadog teams and GitHub teams by matching their names.&lt;br /&gt;It evaluates all current Datadog teams and compares them against teams in the GitHub organization&lt;br /&gt;connected to your Datadog account, based on Datadog Team handle and GitHub Team slug&lt;br /&gt;(lowercased and kebab-cased).&lt;br /&gt;&lt;br /&gt;This operation is read-only on the GitHub side, no teams will be modified or created.&lt;br /&gt;&lt;br /&gt;Optionally, provide `selection_state` to limit synchronization&lt;br /&gt;to specific teams or organizations and their subtrees, instead&lt;br /&gt;of syncing all teams.&lt;br /&gt;&lt;br /&gt;&#91;A GitHub organization must be connected to your Datadog account&#93;(https:​//docs.datadoghq.com/integrations/github/),&lt;br /&gt;and the GitHub App integrated with Datadog must have the `Members Read` permission. Matching is performed by comparing the Datadog team handle to the GitHub team slug&lt;br /&gt;using a normalized exact match; case is ignored and spaces are removed. No modifications are made&lt;br /&gt;to teams in GitHub. This only creates new teams in Datadog when type is set to `provision`.</td>
 </tr>
 </tbody>
 </table>
@@ -181,10 +182,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-team_id">
     <td><CopyableCode code="team_id" /></td>
@@ -219,7 +220,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-page[size]">
     <td><CopyableCode code="page[size]" /></td>
     <td><code>integer (int64)</code></td>
-    <td>Size for a given page. The maximum allowed value is 100.</td>
+    <td>Number of items to return per page. The maximum allowed value is 100.</td>
 </tr>
 <tr id="parameter-sort">
     <td><CopyableCode code="sort" /></td>
@@ -250,13 +251,12 @@ relationships,
 type
 FROM datadog.organization.teams
 WHERE team_id = '{{ team_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
 <TabItem value="list_teams">
 
-Get all teams.<br />Can be used to search for teams using the `filter[keyword]` and `filter[me]` query parameters.
+Get all teams.&lt;br /&gt;Can be used to search for teams using the `filter&#91;keyword&#93;` and `filter&#91;me&#93;` query parameters.
 
 ```sql
 SELECT
@@ -265,8 +265,7 @@ attributes,
 relationships,
 type
 FROM datadog.organization.teams
-WHERE region = '{{ region }}' -- required
-AND page[number] = '{{ page[number] }}'
+WHERE page[number] = '{{ page[number] }}'
 AND page[size] = '{{ page[size] }}'
 AND sort = '{{ sort }}'
 AND include = '{{ include }}'
@@ -290,16 +289,14 @@ AND fields[team] = '{{ fields[team] }}'
 >
 <TabItem value="create_team">
 
-Create a new team.<br />User IDs passed through the `users` relationship field are added to the team.
+Create a new team.&lt;br /&gt;User IDs passed through the `users` relationship field are added to the team.
 
 ```sql
 INSERT INTO datadog.organization.teams (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -307,18 +304,31 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: teams
   props:
-    - name: region
-      value: string
-      description: Required parameter for the teams resource.
     - name: data
-      value: object
       description: |
         Team create
-```
+      value:
+        attributes:
+          avatar: "{{ avatar }}"
+          banner: {{ banner }}
+          description: "{{ description }}"
+          handle: "{{ handle }}"
+          hidden_modules:
+            - "{{ hidden_modules }}"
+          name: "{{ name }}"
+          visible_modules:
+            - "{{ visible_modules }}"
+        relationships:
+          users:
+            data:
+              - id: "{{ id }}"
+                type: "{{ type }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -333,16 +343,15 @@ data
 >
 <TabItem value="update_team">
 
-Update a team using the team's `id`.<br />If the `team_links` relationship is present, the associated links are updated to be in the order they appear in the array, and any existing team links not present are removed.
+Update a team using the team's `id`.&lt;br /&gt;If the `team_links` relationship is present, the associated links are updated to be in the order they appear in the array, and any existing team links not present are removed.
 
 ```sql
 UPDATE datadog.organization.teams
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 team_id = '{{ team_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -365,7 +374,6 @@ Remove a team using the team's `id`.
 ```sql
 DELETE FROM datadog.organization.teams
 WHERE team_id = '{{ team_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>
@@ -373,6 +381,8 @@ AND region = '{{ region }}' --required
 
 
 ## Lifecycle Methods
+
+EXEC variables use wire (API) names.
 
 <Tabs
     defaultValue="sync_teams"
@@ -382,11 +392,10 @@ AND region = '{{ region }}' --required
 >
 <TabItem value="sync_teams">
 
-This endpoint attempts to link your existing Datadog teams with GitHub teams by matching their names.<br />It evaluates all current Datadog teams and compares them against teams in the GitHub organization<br />connected to your Datadog account, based on Datadog Team handle and GitHub Team slug<br />(lowercased and kebab-cased).<br /><br />This operation is read-only on the GitHub side, no teams will be modified or created.<br /><br />[A GitHub organization must be connected to your Datadog account](https://docs.datadoghq.com/integrations/github/),<br />and the GitHub App integrated with Datadog must have the `Members Read` permission. Matching is performed by comparing the Datadog team handle to the GitHub team slug<br />using a normalized exact match; case is ignored and spaces are removed. No modifications are made<br />to teams in GitHub. This will not create new Teams in Datadog.
+This endpoint configures synchronization between your existing Datadog teams and GitHub teams by matching their names.&lt;br /&gt;It evaluates all current Datadog teams and compares them against teams in the GitHub organization&lt;br /&gt;connected to your Datadog account, based on Datadog Team handle and GitHub Team slug&lt;br /&gt;(lowercased and kebab-cased).&lt;br /&gt;&lt;br /&gt;This operation is read-only on the GitHub side, no teams will be modified or created.&lt;br /&gt;&lt;br /&gt;Optionally, provide `selection_state` to limit synchronization&lt;br /&gt;to specific teams or organizations and their subtrees, instead&lt;br /&gt;of syncing all teams.&lt;br /&gt;&lt;br /&gt;&#91;A GitHub organization must be connected to your Datadog account&#93;(https:​//docs.datadoghq.com/integrations/github/),&lt;br /&gt;and the GitHub App integrated with Datadog must have the `Members Read` permission. Matching is performed by comparing the Datadog team handle to the GitHub team slug&lt;br /&gt;using a normalized exact match; case is ignored and spaces are removed. No modifications are made&lt;br /&gt;to teams in GitHub. This only creates new teams in Datadog when type is set to `provision`.
 
 ```sql
 EXEC datadog.organization.teams.sync_teams 
-@region='{{ region }}' --required 
 @@json=
 '{
 "data": "{{ data }}"

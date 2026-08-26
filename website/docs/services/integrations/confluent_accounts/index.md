@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>confluent_accounts</code> resou
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>confluent_accounts</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="confluent_accounts" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.integrations.confluent_accounts" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The JSON:API type for this API. Should always be `confluent-cloud-accounts`. (default: confluent-cloud-accounts, example: confluent-cloud-accounts)</td>
+    <td>The JSON:API type for this API. Should always be `confluent-cloud-accounts`. (confluent-cloud-accounts) (default: confluent-cloud-accounts, example: confluent-cloud-accounts)</td>
 </tr>
 </tbody>
 </table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The JSON:API type for this API. Should always be `confluent-cloud-accounts`. (default: confluent-cloud-accounts, example: confluent-cloud-accounts)</td>
+    <td>The JSON:API type for this API. Should always be `confluent-cloud-accounts`. (confluent-cloud-accounts) (default: confluent-cloud-accounts, example: confluent-cloud-accounts)</td>
 </tr>
 </tbody>
 </table>
@@ -116,35 +117,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_confluent_account"><CopyableCode code="get_confluent_account" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-account_id"><code>account_id</code></a></td>
     <td></td>
     <td>Get the Confluent account with the provided account ID.</td>
 </tr>
 <tr>
     <td><a href="#list_confluent_account"><CopyableCode code="list_confluent_account" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>List Confluent accounts.</td>
 </tr>
 <tr>
     <td><a href="#create_confluent_account"><CopyableCode code="create_confluent_account" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Create a Confluent account.</td>
 </tr>
 <tr>
     <td><a href="#update_confluent_account"><CopyableCode code="update_confluent_account" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Update the Confluent account with the provided account ID.</td>
 </tr>
 <tr>
     <td><a href="#delete_confluent_account"><CopyableCode code="delete_confluent_account" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-account_id"><code>account_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-account_id"><code>account_id</code></a></td>
     <td></td>
     <td>Delete a Confluent account with the provided account ID.</td>
 </tr>
@@ -169,10 +170,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>Confluent Account ID.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -197,7 +198,6 @@ attributes,
 type
 FROM datadog.integrations.confluent_accounts
 WHERE account_id = '{{ account_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -211,7 +211,6 @@ id,
 attributes,
 type
 FROM datadog.integrations.confluent_accounts
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -233,12 +232,10 @@ Create a Confluent account.
 
 ```sql
 INSERT INTO datadog.integrations.confluent_accounts (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -246,18 +243,26 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: confluent_accounts
   props:
-    - name: region
-      value: string
-      description: Required parameter for the confluent_accounts resource.
     - name: data
-      value: object
       description: |
         The data body for adding a Confluent account.
-```
+      value:
+        attributes:
+          api_key: "{{ api_key }}"
+          api_secret: "{{ api_secret }}"
+          resources:
+            - enable_custom_metrics: {{ enable_custom_metrics }}
+              id: "{{ id }}"
+              resource_type: "{{ resource_type }}"
+              tags: "{{ tags }}"
+          tags:
+            - "{{ tags }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -277,11 +282,10 @@ Update the Confluent account with the provided account ID.
 ```sql
 UPDATE datadog.integrations.confluent_accounts
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 account_id = '{{ account_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -304,7 +308,6 @@ Delete a Confluent account with the provided account ID.
 ```sql
 DELETE FROM datadog.integrations.confluent_accounts
 WHERE account_id = '{{ account_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists an <code>invitations</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>invitations</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="invitations" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.organization.invitations" /></td></tr>
 </tbody></table>
@@ -66,7 +67,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>User invitations type. (default: user_invitations, example: user_invitations)</td>
+    <td>User invitations type. (user_invitations) (default: user_invitations, example: user_invitations)</td>
 </tr>
 </tbody>
 </table>
@@ -91,14 +92,14 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_invitation"><CopyableCode code="get_invitation" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-user_invitation_uuid"><code>user_invitation_uuid</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-user_invitation_uuid"><code>user_invitation_uuid</code></a></td>
     <td></td>
     <td>Returns a single user invitation by its UUID.</td>
 </tr>
 <tr>
     <td><a href="#send_invitations"><CopyableCode code="send_invitations" /></a></td>
     <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data"><code>data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Sends emails to one or more users inviting them to join the organization.</td>
 </tr>
@@ -118,10 +119,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-user_invitation_uuid">
     <td><CopyableCode code="user_invitation_uuid" /></td>
@@ -151,7 +152,6 @@ relationships,
 type
 FROM datadog.organization.invitations
 WHERE user_invitation_uuid = '{{ user_invitation_uuid }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -159,6 +159,8 @@ AND region = '{{ region }}' -- required
 
 
 ## Lifecycle Methods
+
+EXEC variables use wire (API) names.
 
 <Tabs
     defaultValue="send_invitations"
@@ -172,7 +174,6 @@ Sends emails to one or more users inviting them to join the organization.
 
 ```sql
 EXEC datadog.organization.invitations.send_invitations 
-@region='{{ region }}' --required 
 @@json=
 '{
 "data": "{{ data }}"

@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>scorecard_outcomes</code> resou
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>scorecard_outcomes</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="scorecard_outcomes" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.apm.scorecard_outcomes" /></td></tr>
 </tbody></table>
@@ -66,7 +67,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>The JSON:API type for an outcome. (default: outcome, example: outcome)</td>
+    <td>The JSON:API type for an outcome. (outcome) (default: outcome, example: outcome)</td>
 </tr>
 </tbody>
 </table>
@@ -91,21 +92,14 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#list_scorecard_outcomes"><CopyableCode code="list_scorecard_outcomes" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td><a href="#parameter-page[size]"><code>page[size]</code></a>, <a href="#parameter-page[offset]"><code>page[offset]</code></a>, <a href="#parameter-include"><code>include</code></a>, <a href="#parameter-fields[outcome]"><code>fields[outcome]</code></a>, <a href="#parameter-fields[rule]"><code>fields[rule]</code></a>, <a href="#parameter-filter[outcome][service_name]"><code>filter[outcome][service_name]</code></a>, <a href="#parameter-filter[outcome][state]"><code>filter[outcome][state]</code></a>, <a href="#parameter-filter[rule][enabled]"><code>filter[rule][enabled]</code></a>, <a href="#parameter-filter[rule][id]"><code>filter[rule][id]</code></a>, <a href="#parameter-filter[rule][name]"><code>filter[rule][name]</code></a></td>
     <td>Fetches all rule outcomes.</td>
 </tr>
 <tr>
-    <td><a href="#create_scorecard_outcomes_batch"><CopyableCode code="create_scorecard_outcomes_batch" /></a></td>
+    <td><a href="#update_scorecard_outcomes"><CopyableCode code="update_scorecard_outcomes" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
     <td></td>
-    <td>Sets multiple service-rule outcomes in a single batched request.</td>
-</tr>
-<tr>
-    <td><a href="#update_scorecard_outcomes_async"><CopyableCode code="update_scorecard_outcomes_async" /></a></td>
-    <td><CopyableCode code="exec" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
     <td></td>
     <td>Updates multiple scorecard rule outcomes in a single batched request.</td>
 </tr>
@@ -125,10 +119,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-fields[outcome]">
     <td><CopyableCode code="fields[outcome]" /></td>
@@ -143,17 +137,17 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-filter[outcome][service_name]">
     <td><CopyableCode code="filter[outcome][service_name]" /></td>
     <td><code>string</code></td>
-    <td>Filter the outcomes on a specific service name.</td>
+    <td>Filter outcomes on a specific service name.</td>
 </tr>
 <tr id="parameter-filter[outcome][state]">
     <td><CopyableCode code="filter[outcome][state]" /></td>
     <td><code>string</code></td>
-    <td>Filter the outcomes by a specific state.</td>
+    <td>Filter outcomes by a specific state.</td>
 </tr>
 <tr id="parameter-filter[rule][enabled]">
     <td><CopyableCode code="filter[rule][enabled]" /></td>
     <td><code>boolean</code></td>
-    <td>Filter outcomes on whether a rule is enabled/disabled.</td>
+    <td>Filter outcomes based on whether a rule is enabled or disabled.</td>
 </tr>
 <tr id="parameter-filter[rule][id]">
     <td><CopyableCode code="filter[rule][id]" /></td>
@@ -178,7 +172,7 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-page[size]">
     <td><CopyableCode code="page[size]" /></td>
     <td><code>integer (int64)</code></td>
-    <td>Size for a given page. The maximum allowed value is 100.</td>
+    <td>Number of items to return per page. The maximum allowed value is 100.</td>
 </tr>
 </tbody>
 </table>
@@ -202,8 +196,7 @@ attributes,
 relationships,
 type
 FROM datadog.apm.scorecard_outcomes
-WHERE region = '{{ region }}' -- required
-AND page[size] = '{{ page[size] }}'
+WHERE page[size] = '{{ page[size] }}'
 AND page[offset] = '{{ page[offset] }}'
 AND include = '{{ include }}'
 AND fields[outcome] = '{{ fields[outcome] }}'
@@ -222,68 +215,42 @@ AND filter[rule][name] = '{{ filter[rule][name] }}'
 ## `INSERT` examples
 
 <Tabs
-    defaultValue="create_scorecard_outcomes_batch"
+    defaultValue="update_scorecard_outcomes"
     values={[
-        { label: 'create_scorecard_outcomes_batch', value: 'create_scorecard_outcomes_batch' },
+        { label: 'update_scorecard_outcomes', value: 'update_scorecard_outcomes' },
         { label: 'Manifest', value: 'manifest' }
     ]}
 >
-<TabItem value="create_scorecard_outcomes_batch">
+<TabItem value="update_scorecard_outcomes">
 
-Sets multiple service-rule outcomes in a single batched request.
+Updates multiple scorecard rule outcomes in a single batched request.
 
 ```sql
 INSERT INTO datadog.apm.scorecard_outcomes (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}',
-'{{ region }}'
-RETURNING
-data,
-meta
+'{{ data }}'
 ;
 ```
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: scorecard_outcomes
   props:
-    - name: region
-      value: string
-      description: Required parameter for the scorecard_outcomes resource.
     - name: data
-      value: object
       description: |
         Scorecard outcomes batch request data.
-```
-</TabItem>
-</Tabs>
+      value:
+        attributes:
+          results:
+            - entity_reference: "{{ entity_reference }}"
+              remarks: "{{ remarks }}"
+              rule_id: "{{ rule_id }}"
+              state: "{{ state }}"
+        type: "{{ type }}"
+`}</CodeBlock>
 
-
-## Lifecycle Methods
-
-<Tabs
-    defaultValue="update_scorecard_outcomes_async"
-    values={[
-        { label: 'update_scorecard_outcomes_async', value: 'update_scorecard_outcomes_async' }
-    ]}
->
-<TabItem value="update_scorecard_outcomes_async">
-
-Updates multiple scorecard rule outcomes in a single batched request.
-
-```sql
-EXEC datadog.apm.scorecard_outcomes.update_scorecard_outcomes_async 
-@region='{{ region }}' --required 
-@@json=
-'{
-"data": "{{ data }}"
-}'
-;
-```
 </TabItem>
 </Tabs>

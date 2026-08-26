@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>rum_applications</code> resourc
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>rum_applications</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="rum_applications" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.digital_experience.rum_applications" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>RUM application response type. (default: rum_application, example: rum_application)</td>
+    <td>RUM application response type. (rum_application) (default: rum_application, example: rum_application)</td>
 </tr>
 </tbody>
 </table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>RUM application list type. (default: rum_application, example: rum_application)</td>
+    <td>RUM application list type. (rum_application) (default: rum_application, example: rum_application)</td>
 </tr>
 </tbody>
 </table>
@@ -116,35 +117,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_rumapplication"><CopyableCode code="get_rumapplication" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-id"><code>id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-id"><code>id</code></a></td>
     <td></td>
     <td>Get the RUM application with given ID in your organization.</td>
 </tr>
 <tr>
     <td><a href="#get_rumapplications"><CopyableCode code="get_rumapplications" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>List all the RUM applications in your organization.</td>
 </tr>
 <tr>
     <td><a href="#create_rumapplication"><CopyableCode code="create_rumapplication" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Create a new RUM application in your organization.</td>
 </tr>
 <tr>
     <td><a href="#update_rumapplication"><CopyableCode code="update_rumapplication" /></a></td>
     <td><CopyableCode code="update" /></td>
-    <td><a href="#parameter-id"><code>id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-id"><code>id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Update the RUM application with given ID in your organization.</td>
 </tr>
 <tr>
     <td><a href="#delete_rumapplication"><CopyableCode code="delete_rumapplication" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-id"><code>id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-id"><code>id</code></a></td>
     <td></td>
     <td>Delete an existing RUM application in your organization.</td>
 </tr>
@@ -169,10 +170,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>RUM application ID.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -197,7 +198,6 @@ attributes,
 type
 FROM datadog.digital_experience.rum_applications
 WHERE id = '{{ id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -211,7 +211,6 @@ id,
 attributes,
 type
 FROM datadog.digital_experience.rum_applications
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -233,12 +232,10 @@ Create a new RUM application in your organization.
 
 ```sql
 INSERT INTO datadog.digital_experience.rum_applications (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -246,18 +243,21 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: rum_applications
   props:
-    - name: region
-      value: string
-      description: Required parameter for the rum_applications resource.
     - name: data
-      value: object
       description: |
         RUM application creation.
-```
+      value:
+        attributes:
+          name: "{{ name }}"
+          product_analytics_retention_state: "{{ product_analytics_retention_state }}"
+          rum_event_processing_state: "{{ rum_event_processing_state }}"
+          type: "{{ type }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -277,11 +277,10 @@ Update the RUM application with given ID in your organization.
 ```sql
 UPDATE datadog.digital_experience.rum_applications
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 id = '{{ id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -304,7 +303,6 @@ Delete an existing RUM application in your organization.
 ```sql
 DELETE FROM datadog.digital_experience.rum_applications
 WHERE id = '{{ id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

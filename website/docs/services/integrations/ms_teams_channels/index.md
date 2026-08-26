@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>ms_teams_channels</code> resour
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>ms_teams_channels</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="ms_teams_channels" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.integrations.ms_teams_channels" /></td></tr>
 </tbody></table>
@@ -61,7 +62,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Channel info resource type. (default: ms-teams-channel-info, example: ms-teams-channel-info)</td>
+    <td>Channel info resource type. (ms-teams-channel-info) (default: ms-teams-channel-info, example: ms-teams-channel-info)</td>
 </tr>
 </tbody>
 </table>
@@ -86,7 +87,7 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_channel_by_name"><CopyableCode code="get_channel_by_name" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-tenant_name"><code>tenant_name</code></a>, <a href="#parameter-team_name"><code>team_name</code></a>, <a href="#parameter-channel_name"><code>channel_name</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-tenant_name"><code>tenant_name</code></a>, <a href="#parameter-team_name"><code>team_name</code></a>, <a href="#parameter-channel_name"><code>channel_name</code></a></td>
     <td></td>
     <td>Get the tenant, team, and channel ID of a channel in the Datadog Microsoft Teams integration.</td>
 </tr>
@@ -111,10 +112,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>Your channel name.</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-team_name">
     <td><CopyableCode code="team_name" /></td>
@@ -150,7 +151,6 @@ FROM datadog.integrations.ms_teams_channels
 WHERE tenant_name = '{{ tenant_name }}' -- required
 AND team_name = '{{ team_name }}' -- required
 AND channel_name = '{{ channel_name }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>

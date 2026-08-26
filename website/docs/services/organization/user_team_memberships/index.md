@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>user_team_memberships</code> re
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>user_team_memberships</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="user_team_memberships" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.organization.user_team_memberships" /></td></tr>
 </tbody></table>
@@ -68,7 +69,7 @@ Represents a user's association to a team
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Team membership type (default: team_memberships, example: team_memberships)</td>
+    <td>Team membership type (team_memberships) (default: team_memberships, example: team_memberships)</td>
 </tr>
 </tbody>
 </table>
@@ -93,7 +94,7 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_user_memberships"><CopyableCode code="get_user_memberships" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-user_uuid"><code>user_uuid</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-user_uuid"><code>user_uuid</code></a></td>
     <td></td>
     <td>Get a list of memberships for a user</td>
 </tr>
@@ -113,10 +114,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     </tr>
 </thead>
 <tbody>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 <tr id="parameter-user_uuid">
     <td><CopyableCode code="user_uuid" /></td>
@@ -146,7 +147,6 @@ relationships,
 type
 FROM datadog.organization.user_team_memberships
 WHERE user_uuid = '{{ user_uuid }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>

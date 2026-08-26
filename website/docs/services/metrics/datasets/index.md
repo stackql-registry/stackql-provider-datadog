@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>datasets</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>datasets</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="datasets" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.metrics.datasets" /></td></tr>
 </tbody></table>
@@ -62,7 +63,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Resource type, always set to `dataset`. (default: dataset, example: dataset)</td>
+    <td>Resource type, always set to `dataset`. (dataset) (default: dataset, example: dataset)</td>
 </tr>
 </tbody>
 </table>
@@ -91,7 +92,7 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Resource type, always set to `dataset`. (default: dataset, example: dataset)</td>
+    <td>Resource type, always set to `dataset`. (dataset) (default: dataset, example: dataset)</td>
 </tr>
 </tbody>
 </table>
@@ -116,35 +117,35 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_dataset"><CopyableCode code="get_dataset" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-dataset_id"><code>dataset_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-dataset_id"><code>dataset_id</code></a></td>
     <td></td>
     <td>Retrieves the dataset associated with the ID.</td>
 </tr>
 <tr>
     <td><a href="#get_all_datasets"><CopyableCode code="get_all_datasets" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Get all datasets that have been configured for an organization.</td>
 </tr>
 <tr>
     <td><a href="#create_dataset"><CopyableCode code="create_dataset" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Create a dataset with the configurations in the request.</td>
 </tr>
 <tr>
     <td><a href="#update_dataset"><CopyableCode code="update_dataset" /></a></td>
     <td><CopyableCode code="replace" /></td>
-    <td><a href="#parameter-dataset_id"><code>dataset_id</code></a>, <a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-dataset_id"><code>dataset_id</code></a>, <a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Edits the dataset associated with the ID.</td>
 </tr>
 <tr>
     <td><a href="#delete_dataset"><CopyableCode code="delete_dataset" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-dataset_id"><code>dataset_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-dataset_id"><code>dataset_id</code></a></td>
     <td></td>
     <td>Deletes the dataset associated with the ID.</td>
 </tr>
@@ -169,10 +170,10 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
     <td><code>string</code></td>
     <td>The ID of a defined dataset. (example: 0879ce27-29a1-481f-a12e-bc2a48ec9ae1)</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -197,7 +198,6 @@ attributes,
 type
 FROM datadog.metrics.datasets
 WHERE dataset_id = '{{ dataset_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -211,7 +211,6 @@ id,
 attributes,
 type
 FROM datadog.metrics.datasets
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -233,12 +232,10 @@ Create a dataset with the configurations in the request.
 
 ```sql
 INSERT INTO datadog.metrics.datasets (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -246,15 +243,10 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: datasets
   props:
-    - name: region
-      value: string
-      description: Required parameter for the datasets resource.
     - name: data
-      value: object
       description: |
         **Datasets Object Constraints**
         - **Tag limit per dataset**:
@@ -265,7 +257,17 @@ data
         - **Tag value uniqueness**:
         - Tag values must be unique within a single dataset.
         - A tag value used in one dataset cannot be reused in another dataset of the same telemetry type.
-```
+      value:
+        attributes:
+          name: "{{ name }}"
+          principals:
+            - "{{ principals }}"
+          product_filters:
+            - filters: "{{ filters }}"
+              product: "{{ product }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -285,11 +287,10 @@ Edits the dataset associated with the ID.
 ```sql
 REPLACE datadog.metrics.datasets
 SET 
-data__data = '{{ data }}'
+data = '{{ data }}'
 WHERE 
 dataset_id = '{{ dataset_id }}' --required
-AND region = '{{ region }}' --required
-AND data__data = '{{ data }}' --required
+AND data = '{{ data }}' --required
 RETURNING
 data;
 ```
@@ -312,7 +313,6 @@ Deletes the dataset associated with the ID.
 ```sql
 DELETE FROM datadog.metrics.datasets
 WHERE dataset_id = '{{ dataset_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>

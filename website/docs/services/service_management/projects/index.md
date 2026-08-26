@@ -15,6 +15,7 @@ image: /img/stackql-datadog-provider-featured-image.png
 ---
 
 import CopyableCode from '@site/src/components/CopyableCode/CopyableCode';
+import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -22,7 +23,7 @@ Creates, updates, deletes, gets or lists a <code>projects</code> resource.
 
 ## Overview
 <table><tbody>
-<tr><td><b>Name</b></td><td><code>projects</code></td></tr>
+<tr><td><b>Name</b></td><td><CopyableCode code="projects" /></td></tr>
 <tr><td><b>Type</b></td><td>Resource</td></tr>
 <tr><td><b>Id</b></td><td><CopyableCode code="datadog.service_management.projects" /></td></tr>
 </tbody></table>
@@ -52,22 +53,22 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="id" /></td>
     <td><code>string</code></td>
-    <td>The Project's identifier (example: aeadc05e-98a8-11ec-ac2c-da7ad0900001)</td>
+    <td>The Project's identifier. (example: aeadc05e-98a8-11ec-ac2c-da7ad0900001)</td>
 </tr>
 <tr>
     <td><CopyableCode code="attributes" /></td>
     <td><code>object</code></td>
-    <td>Project attributes</td>
+    <td>Project attributes.</td>
 </tr>
 <tr>
     <td><CopyableCode code="relationships" /></td>
     <td><code>object</code></td>
-    <td>Project relationships</td>
+    <td>Project relationships.</td>
 </tr>
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Project resource type (default: project, example: project)</td>
+    <td>Project resource type. (project) (default: project, example: project)</td>
 </tr>
 </tbody>
 </table>
@@ -86,22 +87,22 @@ The following fields are returned by `SELECT` queries:
 <tr>
     <td><CopyableCode code="id" /></td>
     <td><code>string</code></td>
-    <td>The Project's identifier (example: aeadc05e-98a8-11ec-ac2c-da7ad0900001)</td>
+    <td>The Project's identifier. (example: aeadc05e-98a8-11ec-ac2c-da7ad0900001)</td>
 </tr>
 <tr>
     <td><CopyableCode code="attributes" /></td>
     <td><code>object</code></td>
-    <td>Project attributes</td>
+    <td>Project attributes.</td>
 </tr>
 <tr>
     <td><CopyableCode code="relationships" /></td>
     <td><code>object</code></td>
-    <td>Project relationships</td>
+    <td>Project relationships.</td>
 </tr>
 <tr>
     <td><CopyableCode code="type" /></td>
     <td><code>string</code></td>
-    <td>Project resource type (default: project, example: project)</td>
+    <td>Project resource type. (project) (default: project, example: project)</td>
 </tr>
 </tbody>
 </table>
@@ -126,28 +127,28 @@ The following methods are available for this resource:
 <tr>
     <td><a href="#get_project"><CopyableCode code="get_project" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-project_id"><code>project_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-project_id"><code>project_id</code></a></td>
     <td></td>
     <td>Get the details of a project by `project_id`.</td>
 </tr>
 <tr>
     <td><a href="#get_projects"><CopyableCode code="get_projects" /></a></td>
     <td><CopyableCode code="select" /></td>
-    <td><a href="#parameter-region"><code>region</code></a></td>
+    <td></td>
     <td></td>
     <td>Get all projects.</td>
 </tr>
 <tr>
     <td><a href="#create_project"><CopyableCode code="create_project" /></a></td>
     <td><CopyableCode code="insert" /></td>
-    <td><a href="#parameter-region"><code>region</code></a>, <a href="#parameter-data__data"><code>data__data</code></a></td>
+    <td><a href="#parameter-data"><code>data</code></a></td>
     <td></td>
     <td>Create a project.</td>
 </tr>
 <tr>
     <td><a href="#delete_project"><CopyableCode code="delete_project" /></a></td>
     <td><CopyableCode code="delete" /></td>
-    <td><a href="#parameter-project_id"><code>project_id</code></a>, <a href="#parameter-region"><code>region</code></a></td>
+    <td><a href="#parameter-project_id"><code>project_id</code></a></td>
     <td></td>
     <td>Remove a project using the project's `id`.</td>
 </tr>
@@ -170,12 +171,12 @@ Parameters can be passed in the `WHERE` clause of a query. Check the [Methods](#
 <tr id="parameter-project_id">
     <td><CopyableCode code="project_id" /></td>
     <td><code>string</code></td>
-    <td>Project UUID (example: e555e290-ed65-49bd-ae18-8acbfcf18db7)</td>
+    <td>Project UUID. (example: e555e290-ed65-49bd-ae18-8acbfcf18db7)</td>
 </tr>
-<tr id="parameter-region">
-    <td><CopyableCode code="region" /></td>
+<tr id="parameter-site">
+    <td><CopyableCode code="site" /></td>
     <td><code>string</code></td>
-    <td>(default: datadoghq.com)</td>
+    <td>The Datadog site (region) for your organization, for example datadoghq.com, us3.datadoghq.com, us5.datadoghq.com, ap1.datadoghq.com, ap2.datadoghq.com, datadoghq.eu, ddog-gov.com. Resolved from the DD_SITE environment variable when set. Optional: defaults to datadoghq.com, or the value of the DD_SITE environment variable when set; a WHERE value overrides both.</td>
 </tr>
 </tbody>
 </table>
@@ -201,7 +202,6 @@ relationships,
 type
 FROM datadog.service_management.projects
 WHERE project_id = '{{ project_id }}' -- required
-AND region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -216,7 +216,6 @@ attributes,
 relationships,
 type
 FROM datadog.service_management.projects
-WHERE region = '{{ region }}' -- required
 ;
 ```
 </TabItem>
@@ -238,12 +237,10 @@ Create a project.
 
 ```sql
 INSERT INTO datadog.service_management.projects (
-data__data,
-region
+data
 )
 SELECT 
-'{{ data }}' /* required */,
-'{{ region }}'
+'{{ data }}' /* required */
 RETURNING
 data
 ;
@@ -251,18 +248,22 @@ data
 </TabItem>
 <TabItem value="manifest">
 
-```yaml
-# Description fields are for documentation purposes
+<CodeBlock language="yaml">{`# Description fields are for documentation purposes
 - name: projects
   props:
-    - name: region
-      value: string
-      description: Required parameter for the projects resource.
     - name: data
-      value: object
       description: |
-        Project create
-```
+        Project create.
+      value:
+        attributes:
+          enabled_custom_case_types:
+            - "{{ enabled_custom_case_types }}"
+          key: "{{ key }}"
+          name: "{{ name }}"
+          team_uuid: "{{ team_uuid }}"
+        type: "{{ type }}"
+`}</CodeBlock>
+
 </TabItem>
 </Tabs>
 
@@ -282,7 +283,6 @@ Remove a project using the project's `id`.
 ```sql
 DELETE FROM datadog.service_management.projects
 WHERE project_id = '{{ project_id }}' --required
-AND region = '{{ region }}' --required
 ;
 ```
 </TabItem>
