@@ -85,7 +85,11 @@ The provider merges the Datadog v1 and v2 REST APIs into 18 services (`monitorin
 
 List operations with cursor pagination (`page[cursor]`) are traversed automatically; a SQL `LIMIT` is pushed to the API's page size parameter. Query parameters such as `filter[query]`, `filter[from]` or `tags` are used directly as `WHERE` predicates.
 
-## Monitors
+## Example Queries
+
+Try the following queries using `stackql shell`, or run them from a script or CI pipeline with `stackql exec`.
+
+### Monitors
 
 Every monitor with its state - the first query most teams run:
 
@@ -110,7 +114,7 @@ FROM datadog.monitoring.monitor_search_results
 WHERE query = 'type:metric status:alert';
 ```
 
-## Users, roles and keys
+### Users, roles and keys
 
 User audit with status and login method:
 
@@ -147,7 +151,7 @@ FROM datadog.organization.api_keys
 ORDER BY created_at;
 ```
 
-## Dashboards and SLOs
+### Dashboards and SLOs
 
 ```sql
 SELECT id, title, layout_type, author_handle, modified_at
@@ -157,7 +161,7 @@ SELECT id, name, type, json_extract(thresholds, '$[0].target') AS target
 FROM datadog.service_management.slos;
 ```
 
-## Infrastructure
+### Infrastructure
 
 Hosts reporting to Datadog, with their apps and mute state:
 
@@ -177,7 +181,7 @@ FROM datadog.metrics.active_metrics
 WHERE "from" = strftime('%s', 'now') - 3600;
 ```
 
-## Logs, audit and usage
+### Logs, audit and usage
 
 Log indexes and their retention:
 
@@ -206,7 +210,7 @@ FROM datadog.organization.usage_summary
 WHERE start_month = '2026-08';
 ```
 
-## Provision, mutate and tear down
+### Provision, mutate and tear down
 
 Mutations use the same SQL grammar. A v1 resource (monitor) takes its fields as columns; a v2 resource (role, API key, downtime) takes the JSON:API `data` document. A monitor end to end:
 
