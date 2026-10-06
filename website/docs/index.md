@@ -22,6 +22,7 @@ Monitoring, alerting and reporting platform for cloud platforms and applications
 
 total services: __18__  
 total resources: __615__  
+source project: __[stackql-provider-datadog](https://github.com/stackql-registry/stackql-provider-datadog)__  
 
 :::
 

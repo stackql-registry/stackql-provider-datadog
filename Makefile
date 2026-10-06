@@ -45,6 +45,7 @@ SHELL := bash
 .DEFAULT_GOAL := help
 
 PROVIDER := datadog
+SOURCE_PROJECT ?= https://github.com/stackql-registry/stackql-provider-$(PROVIDER)
 VERSION := v00.00.00000
 SOURCE_DIR := provider-dev/source
 CONFIG_DIR := provider-dev/config
@@ -157,7 +158,8 @@ docs: ## generate the website docs (snake_case surface, provider-utils >= 0.7.8)
 	  --provider-dir ./$(PROVIDER_DIR) \
 	  --output-dir ./$(WEBSITE_DIR) \
 	  --provider-data-dir ./provider-dev/docgen/provider-data \
-	  --snake-case-aliases
+	  --snake-case-aliases \
+	  --source-project $(SOURCE_PROJECT)
 	node $(WEBSITE_DIR)/scripts/sanitize-docs.mjs
 
 website: ## build the docusaurus microsite (vendors the shared config first)
